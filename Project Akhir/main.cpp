@@ -1,7 +1,99 @@
 
 #include <windows.h>
 #include <GL/glut.h>
-int gerak = 0 ;
+float gerak = 0;
+float xx    = 0;
+float yy    = 0;
+int ver     = 2;
+float marka[]           ={0.0f,2.0f,4.0f,6.0f,8.0f,10.0f};
+float fireball_all[]    ={7.0f,10.0f};
+///Start lvl 1
+float rumputlvl1[]      ={0.0f,2.0f,4.0f,6.0f,8.0f,10.0f};
+float stonelvl1         =40.0f;
+float treelvl1[]        ={-4.0f,-2.0f,0.0f,2.0f,4.0f,6.0f};
+float cloudlvl1[]       ={0.0f,2.0f,6.0f,5.0f};
+///End lvl 1
+///Start lvl 2
+float   lamplvl2[]        ={0.0f,1.5f,3.0f,6.0f,9.0f,12.0f,15.0f};
+float   gotlvl2[]         ={9.0f,30.0f};
+float roadlinelvl2[]      ={-2.5f,-1.5f,-0.5f,1.5f,2.5f,3.5f,4.5f};
+double  buildlvl2         = -2;
+///End lvl 2
+///Start lvl 3
+double piramidlvl3      =0;
+float   kaktuscol[4][8]   ={{2.0f,3.0f,1.3f,1.7f,2.0f,2.0f,0.0f,0.0f},
+                           {2.0f,3.0f,1.3f,1.7f,8.0f,2.0f,0.0f,0.0f},
+                           {2.0f,3.0f,1.3f,1.7f,8.0f,1.0f,0.0f,0.0f},
+                           {2.0f,3.0f,1.3f,1.7f,10.0f,1.0f,0.0f,0.0f}};
+float moven[]   = {0.15f,  1.05f,  1.5f,  1.7f,  0.0f,  1.0f  ,0.0f,0.0f};
+///x1,x2,y1,y2,transx,locationy,relativex1,relativex2
+bool scene[]    = {true, false, false, false, false, false};
+float panah[]   = {0.0f, 0.5f};
+
+void *font = GLUT_BITMAP_TIMES_ROMAN_24;
+void *font2 = GLUT_BITMAP_HELVETICA_12;
+
+///HELVETICA
+void hastag(int x, int y, char *string ) {
+    glRasterPos2f(4.5,3.5);
+
+    int len = (int) strlen(string);
+    for (int i = 0; i < len; i++) {
+        glutBitmapCharacter(font2, string[i]);
+    }
+}
+///Times New Roman
+void textPlay(int x, int y, char *string ) {
+    glRasterPos2f(4.5,3.5);
+
+    int len = (int) strlen(string);
+    for (int i = 0; i < len; i++) {
+        glutBitmapCharacter(font, string[i]);
+    }
+}
+
+///Times New Roman
+void textAbout(int x, int y, char *string ) {
+    glRasterPos2f(4.47,3);
+
+    int len = (int) strlen(string);
+    for (int i = 0; i < len; i++) {
+        glutBitmapCharacter(font, string[i]);
+    }
+}
+
+///Times New Roman
+void isiAbout(int x, int y, char *string ) {
+    glRasterPos2f(4.47,3);
+
+    int len = (int) strlen(string);
+    for (int i = 0; i < len; i++) {
+        glutBitmapCharacter(font, string[i]);
+    }
+}
+
+///Times New Roman
+void textExit(int x, int y, char *string ) {
+    glRasterPos2f(4.47,2.5);
+
+    int len = (int) strlen(string);
+    for (int i = 0; i < len; i++) {
+        glutBitmapCharacter(font, string[i]);
+    }
+}
+
+void quads(){
+    glPushMatrix();
+    glTranslated(-0.85,-1.5,0);
+    glColor3ub(255,255,255);
+    glBegin(GL_QUADS);
+        glVertex2f(1  ,2);
+        glVertex2f(1.9,2);
+        glVertex2f(1.9,2.2);
+        glVertex2f(1  ,2.2);
+    glEnd();
+    glPopMatrix();
+}
 
 //Background Awal
 void backgroundTrans () {
@@ -143,7 +235,7 @@ void road (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(0,1.2,0);
+    glTranslated(marka[0],1.2,0);
     glColor3ub(255,255,255);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -154,7 +246,7 @@ void road (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(2,1.2,0);
+    glTranslated(marka[1],1.2,0);
     glColor3ub(255,255,255);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -165,7 +257,7 @@ void road (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(4,1.2,0);
+    glTranslated(marka[2],1.2,0);
     glColor3ub(255,255,255);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -176,7 +268,7 @@ void road (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(6,1.2,0);
+    glTranslated(marka[3],1.2,0);
     glColor3ub(255,255,255);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -187,7 +279,7 @@ void road (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(8,1.2,0);
+    glTranslated(marka[4],1.2,0);
     glColor3ub(255,255,255);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -198,18 +290,7 @@ void road (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(10,1.2,0);
-    glColor3ub(255,255,255);
-    glBegin(GL_POLYGON);
-        glVertex2f(0.111809588206, 0.5969561258988);
-        glVertex2f(1.1095346664577, 0.5969561258988);
-        glVertex2f(1.1095346664577, 0.7078144679268);
-        glVertex2f(0.111809588206, 0.7078144679268);
-    glEnd();
-    glPopMatrix();
-
-    glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(12,1.2,0);
+    glTranslated(marka[5],1.2,0);
     glColor3ub(255,255,255);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -221,8 +302,9 @@ void road (){
 }
 
 void cloud (){
+
     glPushMatrix();                 //Awan Warna kebiruan
-    glTranslated(3,9,0);
+    glTranslated(cloudlvl1[0],9,0);
     glScaled(-0.12,-0.12,0);
     glColor3ub(135, 203, 204);
     glBegin(GL_POLYGON);
@@ -309,7 +391,7 @@ void cloud (){
     glPopMatrix();
 
     glPushMatrix();
-    glTranslated(4,8,0);
+    glTranslated(cloudlvl1[1],8,0);
     glScaled(-0.12,-0.12,0);
     glColor3ub(135, 203, 204);
     glBegin(GL_POLYGON);
@@ -396,7 +478,7 @@ void cloud (){
     glPopMatrix();
 
     glPushMatrix();
-    glTranslated(6,9,0);
+    glTranslated(cloudlvl1[2],9,0);
     glScaled(-0.12,-0.12,0);
     glColor3ub(135, 203, 204);
     glBegin(GL_POLYGON);
@@ -483,7 +565,7 @@ void cloud (){
     glPopMatrix();
 
     glPushMatrix();
-    glTranslated(7,7.6,0);
+    glTranslated(cloudlvl1[3],7.6,0);
     glScaled(-0.12,-0.12,0);
     glColor3ub(135, 203, 204);
     glBegin(GL_POLYGON);
@@ -1326,28 +1408,67 @@ void text(){
 
 }
 
-void *font = GLUT_BITMAP_TIMES_ROMAN_24;
-
-///Times New Roman
-void textMulai(int x, int y, char *string ) {
-    glColor3ub(0,0,0);
-    glRasterPos2f(4.5,3.5);
-
-    int len = (int) strlen(string);
-    for (int i = 0; i < len; i++) {
-        glutBitmapCharacter(font, string[i]);
-    }
+void aboutDisplay(){
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glPushMatrix();
+    glScaled(2,2,0);
+    glColor3ub(147, 168, 212);
+    glBegin(GL_QUADS);
+        glVertex2f(1, 4);
+        glVertex2f(1, 2);
+        glColor3ub(81, 103, 39);
+        glVertex2f(4, 2);
+        glVertex2f(4, 4);
+    glEnd();
+    glPopMatrix();
 }
 
-///Times New Roman
-void textSelesai(int x, int y, char *string ) {
-    glColor3ub(0,0,0);
-    glRasterPos2f(4.47,3);
+void blackScreen(){
+    glPushMatrix();
+    glBegin(GL_QUADS);
+        glColor3ub(0,0,0);
+        glVertex2f(0,0);
+        glVertex2f(10,0);
+        glVertex2f(10,10);
+        glVertex2f(0,10);
+    glEnd();
+    glPopMatrix();
 
-    int len = (int) strlen(string);
-    for (int i = 0; i < len; i++) {
-        glutBitmapCharacter(font, string[i]);
-    }
+    glPushMatrix();
+    glColor3ub(255,255,255);
+    textPlay(0,0,"Again");
+    textAbout(0,0,"About");
+    textExit(0,0,"End");
+    glPopMatrix();
+}
+
+void arahPanah (){
+    glPushMatrix();
+    glTranslated(3.3,2.9,0);
+    glScaled(0.3,0.3,0);
+    glColor3ub(148, 143, 143);
+    glBegin(GL_POLYGON);
+        glVertex2f(1.467732861856, 3.0644273083918);
+        glVertex2f(3.0971178154019, 2.3904011585437);
+        glVertex2f(2.1065924299729, 2.3904011585437);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glVertex2f(2.1065924299729, 2.3904011585437);
+        glVertex2f(3.0971178154019, 2.3904011585437);
+        glVertex2f(1.4735939588112, 1.7456804934716);
+    glEnd();
+
+    glLineWidth(3);
+    glColor3ub(48, 48, 48);
+    glBegin(GL_LINE_LOOP);
+        glVertex2f(1.467732861856, 3.0644273083918);
+        glVertex2f(3.0971178154019, 2.3904011585437);
+        glVertex2f(1.4735939588112, 1.7456804934716);
+        glVertex2f(2.1065924299729, 2.3904011585437);
+    glEnd();
+    glPopMatrix();
 }
 
 //Void untuk di DisplayFunc
@@ -1372,8 +1493,39 @@ void backgroundawal(){
     text();
     glPopMatrix();
 
-    textMulai(0,0,"Mulai");
-    textSelesai(0,0,"Selesai");
+    glPushMatrix();
+    glColor3ub(0,0,0);
+    textPlay(0,0,"Play");
+    textAbout(0,0,"About");
+    textExit(0,0,"Exit");
+    glPopMatrix();
+}
+
+void backgroundawalAboutDisplay(){
+    glPushMatrix();
+    background();
+    glPopMatrix();
+
+    glPushMatrix();
+    mountain();
+    glPopMatrix();
+
+    road();
+
+    cloud();
+
+    backgroundTrans();
+
+    glPushMatrix();
+    glScaled(1.5,1.5,0);
+    text();
+    glPopMatrix();
+
+    textPlay(0,0,"Play");
+    textAbout(0,0,"About");
+    textExit(0,0,"Exit");
+
+    aboutDisplay();
 }
 
 //Level 1
@@ -1392,7 +1544,972 @@ void backgroundlevel1(){
 
 void rumput (){
     glPushMatrix();
-    glTranslated(0,-0.8,0);
+    glTranslated(rumputlvl1[0],-0.8,0);                                 //FUngsi Untuk Gerak
+    //Bayangan rumput
+    glPushMatrix();
+    glTranslated(-1.88,2.78,0);
+    glScaled(0.5,0.84,0);
+    glColor3ub(0,0,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.7190552063643, 0.5268542867645);
+        glVertex2f(3.7551366921135, 0.6872164456502);
+        glVertex2f(3.8393268255285, 0.8435695505637);
+        glVertex2f(3.9315350668877, 0.9518140078115);
+        glVertex2f(4.0437885781077, 1.0400131951986);
+        glVertex2f(4.1520330353555, 1.1041580587528);
+        glVertex2f(4.2923499243805, 1.1602848143628);
+        glVertex2f(4.4446939753218, 1.19235724614);
+        glVertex2f(4.564965594486, 1.2003753540842);
+        glVertex2f(4.677219105706, 1.2003753540842);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7493452870858, 1.399897994033);
+        glVertex2f(4.8, 1.6);
+        glVertex2f(4.8398509404064, 1.7809744290672);
+        glVertex2f(4.8922489502236, 1.923878092205);
+        glVertex2f(4.9779911481063, 2.0620182999049);
+        glVertex2f(5.058969890551, 2.1668143195393);
+        glVertex2f(5.1590024547475, 2.2430296065461);
+        glVertex2f(5.2733253852578, 2.3240083489909);
+        glVertex2f(5.4448097810231, 2.381169814246);
+        glVertex2f(5.5638961669713, 2.4240409131873);
+        glVertex2f(5.7306171072987, 2.4383312795011);
+        glVertex2f(5.8735207704366, 2.443094734939);
+        glVertex2f(6.0259513444502, 2.4145140023115);
+        glVertex2f(6.1307473640846, 2.3716429033701);
+        glVertex2f(6.2545972054707, 2.3097179826771);
+        glVertex2f(6.3451028587913, 2.2382661511082);
+        glVertex2f(6.4356085121119, 2.1477604977876);
+        glVertex2f(6.5118237991188, 2.0810721216566);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6075659970015, 0.5189491043303);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6618807259707, 2.0346881340904);
+        glVertex2f(6.7086119328102, 2.0751885133513);
+        glVertex2f(6.7833818637534, 2.1468430305052);
+        glVertex2f(6.8581517946967, 2.2216129614485);
+        glVertex2f(6.9298063118506, 2.2839212372345);
+        glVertex2f(6.9921145876366, 2.3337678578633);
+        glVertex2f(7.0793461737371, 2.3867298922815);
+        glVertex2f(7.1291927943659, 2.4147686163852);
+        glVertex2f(7.1946164839413, 2.4365765129103);
+        glVertex2f(7.2631555873059, 2.4552689956461);
+        glVertex2f(7.3285792768812, 2.4677306508033);
+        glVertex2f(7.3971183802459, 2.4739614783819);
+        glVertex2f(7.4563112422426, 2.4708460645926);
+        glVertex2f(7.543542828343, 2.4583844094354);
+        glVertex2f(7.6370052420221, 2.4365765129103);
+        glVertex2f(7.7211214143332, 2.4147686163852);
+        glVertex2f(7.8052375866444, 2.3742682371243);
+        glVertex2f(7.8862383451662, 2.3244216164954);
+        glVertex2f(7.9578928623202, 2.2745749958666);
+        glVertex2f(8.0357782070527, 2.1904588235555);
+        glVertex2f(8.0887402414708, 2.1188043064015);
+        glVertex2f(8.1354714483104, 2.0378035478797);
+        glVertex2f(8.1759718275713, 1.9443411342006);
+        glVertex2f(8.2164722068322, 1.8384170653644);
+        glVertex2f(8.2382801033573, 1.741839237896);
+        glVertex2f(8.2538571723038, 1.6452614104277);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.2752293601814, 0.5227100407116);
+        glVertex2f(6.5975659970015, 0.5229491043303);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.3511270930914, 1.559140812539);
+        glVertex2f(8.4384847462886, 1.5658606320157);
+        glVertex2f(8.5359221287009, 1.5725804514924);
+        glVertex2f(8.6434392403282, 1.5625007222774);
+        glVertex2f(8.7475964422172, 1.5423412638472);
+        glVertex2f(8.8517536441062, 1.5121020762021);
+        glVertex2f(8.9458311167801, 1.4617034301267);
+        glVertex2f(9.0499883186691, 1.3777056866679);
+        glVertex2f(9.1407058816046, 1.2601088458255);
+        glVertex2f(9.2179838055868, 1.1492318244598);
+        glVertex2f(9.2986216393073, 1.018195344664);
+        glVertex2f(9.3591000145977, 0.8636394966997);
+        glVertex2f(9.4061387509346, 0.7158034682121);
+        glVertex2f(9.4262982093647, 0.5242886131259);
+        glVertex2f(8.2752293601814, 0.5247100407116);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-1.87,2.70,0);
+    glScaled(0.5,0.84,0);
+    glColor3ub(57, 124, 11);
+    glBegin(GL_POLYGON);
+        glColor3ub(88, 189, 66);
+        glVertex2f(3.7190552063643, 0.5268542867645);
+        glVertex2f(3.7551366921135, 0.6872164456502);
+        glVertex2f(3.8393268255285, 0.8435695505637);
+        glVertex2f(3.9315350668877, 0.9518140078115);
+        glVertex2f(4.0437885781077, 1.0400131951986);
+        glVertex2f(4.1520330353555, 1.1041580587528);
+        glVertex2f(4.2923499243805, 1.1602848143628);
+        glVertex2f(4.4446939753218, 1.19235724614);
+        glVertex2f(4.564965594486, 1.2003753540842);
+        glVertex2f(4.677219105706, 1.2003753540842);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7493452870858, 1.399897994033);
+        glVertex2f(4.8, 1.6);
+        glVertex2f(4.8398509404064, 1.7809744290672);
+        glVertex2f(4.8922489502236, 1.923878092205);
+        glVertex2f(4.9779911481063, 2.0620182999049);
+        glVertex2f(5.058969890551, 2.1668143195393);
+        glVertex2f(5.1590024547475, 2.2430296065461);
+        glVertex2f(5.2733253852578, 2.3240083489909);
+        glVertex2f(5.4448097810231, 2.381169814246);
+        glVertex2f(5.5638961669713, 2.4240409131873);
+        glVertex2f(5.7306171072987, 2.4383312795011);
+        glVertex2f(5.8735207704366, 2.443094734939);
+        glVertex2f(6.0259513444502, 2.4145140023115);
+        glVertex2f(6.1307473640846, 2.3716429033701);
+        glVertex2f(6.2545972054707, 2.3097179826771);
+        glVertex2f(6.3451028587913, 2.2382661511082);
+        glVertex2f(6.4356085121119, 2.1477604977876);
+        glVertex2f(6.5118237991188, 2.0810721216566);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6075659970015, 0.5189491043303);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6618807259707, 2.0346881340904);
+        glVertex2f(6.7086119328102, 2.0751885133513);
+        glVertex2f(6.7833818637534, 2.1468430305052);
+        glVertex2f(6.8581517946967, 2.2216129614485);
+        glVertex2f(6.9298063118506, 2.2839212372345);
+        glVertex2f(6.9921145876366, 2.3337678578633);
+        glVertex2f(7.0793461737371, 2.3867298922815);
+        glVertex2f(7.1291927943659, 2.4147686163852);
+        glVertex2f(7.1946164839413, 2.4365765129103);
+        glVertex2f(7.2631555873059, 2.4552689956461);
+        glVertex2f(7.3285792768812, 2.4677306508033);
+        glVertex2f(7.3971183802459, 2.4739614783819);
+        glVertex2f(7.4563112422426, 2.4708460645926);
+        glVertex2f(7.543542828343, 2.4583844094354);
+        glVertex2f(7.6370052420221, 2.4365765129103);
+        glVertex2f(7.7211214143332, 2.4147686163852);
+        glVertex2f(7.8052375866444, 2.3742682371243);
+        glVertex2f(7.8862383451662, 2.3244216164954);
+        glVertex2f(7.9578928623202, 2.2745749958666);
+        glVertex2f(8.0357782070527, 2.1904588235555);
+        glVertex2f(8.0887402414708, 2.1188043064015);
+        glVertex2f(8.1354714483104, 2.0378035478797);
+        glVertex2f(8.1759718275713, 1.9443411342006);
+        glVertex2f(8.2164722068322, 1.8384170653644);
+        glVertex2f(8.2382801033573, 1.741839237896);
+        glVertex2f(8.2538571723038, 1.6452614104277);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.2752293601814, 0.5227100407116);
+        glVertex2f(6.5975659970015, 0.5229491043303);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.3511270930914, 1.559140812539);
+        glVertex2f(8.4384847462886, 1.5658606320157);
+        glVertex2f(8.5359221287009, 1.5725804514924);
+        glVertex2f(8.6434392403282, 1.5625007222774);
+        glVertex2f(8.7475964422172, 1.5423412638472);
+        glVertex2f(8.8517536441062, 1.5121020762021);
+        glVertex2f(8.9458311167801, 1.4617034301267);
+        glVertex2f(9.0499883186691, 1.3777056866679);
+        glVertex2f(9.1407058816046, 1.2601088458255);
+        glVertex2f(9.2179838055868, 1.1492318244598);
+        glVertex2f(9.2986216393073, 1.018195344664);
+        glVertex2f(9.3591000145977, 0.8636394966997);
+        glVertex2f(9.4061387509346, 0.7158034682121);
+        glVertex2f(9.4262982093647, 0.5242886131259);
+        glVertex2f(8.2752293601814, 0.5247100407116);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(rumputlvl1[1],-0.8,0);                                 //Fungsi Untuk Gerak
+    //Bayangan rumput
+    glPushMatrix();
+    glTranslated(-1.88,2.78,0);
+    glScaled(0.5,0.84,0);
+    glColor3ub(0,0,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.7190552063643, 0.5268542867645);
+        glVertex2f(3.7551366921135, 0.6872164456502);
+        glVertex2f(3.8393268255285, 0.8435695505637);
+        glVertex2f(3.9315350668877, 0.9518140078115);
+        glVertex2f(4.0437885781077, 1.0400131951986);
+        glVertex2f(4.1520330353555, 1.1041580587528);
+        glVertex2f(4.2923499243805, 1.1602848143628);
+        glVertex2f(4.4446939753218, 1.19235724614);
+        glVertex2f(4.564965594486, 1.2003753540842);
+        glVertex2f(4.677219105706, 1.2003753540842);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7493452870858, 1.399897994033);
+        glVertex2f(4.8, 1.6);
+        glVertex2f(4.8398509404064, 1.7809744290672);
+        glVertex2f(4.8922489502236, 1.923878092205);
+        glVertex2f(4.9779911481063, 2.0620182999049);
+        glVertex2f(5.058969890551, 2.1668143195393);
+        glVertex2f(5.1590024547475, 2.2430296065461);
+        glVertex2f(5.2733253852578, 2.3240083489909);
+        glVertex2f(5.4448097810231, 2.381169814246);
+        glVertex2f(5.5638961669713, 2.4240409131873);
+        glVertex2f(5.7306171072987, 2.4383312795011);
+        glVertex2f(5.8735207704366, 2.443094734939);
+        glVertex2f(6.0259513444502, 2.4145140023115);
+        glVertex2f(6.1307473640846, 2.3716429033701);
+        glVertex2f(6.2545972054707, 2.3097179826771);
+        glVertex2f(6.3451028587913, 2.2382661511082);
+        glVertex2f(6.4356085121119, 2.1477604977876);
+        glVertex2f(6.5118237991188, 2.0810721216566);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6075659970015, 0.5189491043303);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6618807259707, 2.0346881340904);
+        glVertex2f(6.7086119328102, 2.0751885133513);
+        glVertex2f(6.7833818637534, 2.1468430305052);
+        glVertex2f(6.8581517946967, 2.2216129614485);
+        glVertex2f(6.9298063118506, 2.2839212372345);
+        glVertex2f(6.9921145876366, 2.3337678578633);
+        glVertex2f(7.0793461737371, 2.3867298922815);
+        glVertex2f(7.1291927943659, 2.4147686163852);
+        glVertex2f(7.1946164839413, 2.4365765129103);
+        glVertex2f(7.2631555873059, 2.4552689956461);
+        glVertex2f(7.3285792768812, 2.4677306508033);
+        glVertex2f(7.3971183802459, 2.4739614783819);
+        glVertex2f(7.4563112422426, 2.4708460645926);
+        glVertex2f(7.543542828343, 2.4583844094354);
+        glVertex2f(7.6370052420221, 2.4365765129103);
+        glVertex2f(7.7211214143332, 2.4147686163852);
+        glVertex2f(7.8052375866444, 2.3742682371243);
+        glVertex2f(7.8862383451662, 2.3244216164954);
+        glVertex2f(7.9578928623202, 2.2745749958666);
+        glVertex2f(8.0357782070527, 2.1904588235555);
+        glVertex2f(8.0887402414708, 2.1188043064015);
+        glVertex2f(8.1354714483104, 2.0378035478797);
+        glVertex2f(8.1759718275713, 1.9443411342006);
+        glVertex2f(8.2164722068322, 1.8384170653644);
+        glVertex2f(8.2382801033573, 1.741839237896);
+        glVertex2f(8.2538571723038, 1.6452614104277);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.2752293601814, 0.5227100407116);
+        glVertex2f(6.5975659970015, 0.5229491043303);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.3511270930914, 1.559140812539);
+        glVertex2f(8.4384847462886, 1.5658606320157);
+        glVertex2f(8.5359221287009, 1.5725804514924);
+        glVertex2f(8.6434392403282, 1.5625007222774);
+        glVertex2f(8.7475964422172, 1.5423412638472);
+        glVertex2f(8.8517536441062, 1.5121020762021);
+        glVertex2f(8.9458311167801, 1.4617034301267);
+        glVertex2f(9.0499883186691, 1.3777056866679);
+        glVertex2f(9.1407058816046, 1.2601088458255);
+        glVertex2f(9.2179838055868, 1.1492318244598);
+        glVertex2f(9.2986216393073, 1.018195344664);
+        glVertex2f(9.3591000145977, 0.8636394966997);
+        glVertex2f(9.4061387509346, 0.7158034682121);
+        glVertex2f(9.4262982093647, 0.5242886131259);
+        glVertex2f(8.2752293601814, 0.5247100407116);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-1.87,2.70,0);
+    glScaled(0.5,0.84,0);
+    glColor3ub(57, 124, 11);
+    glBegin(GL_POLYGON);
+        glColor3ub(88, 189, 66);
+        glVertex2f(3.7190552063643, 0.5268542867645);
+        glVertex2f(3.7551366921135, 0.6872164456502);
+        glVertex2f(3.8393268255285, 0.8435695505637);
+        glVertex2f(3.9315350668877, 0.9518140078115);
+        glVertex2f(4.0437885781077, 1.0400131951986);
+        glVertex2f(4.1520330353555, 1.1041580587528);
+        glVertex2f(4.2923499243805, 1.1602848143628);
+        glVertex2f(4.4446939753218, 1.19235724614);
+        glVertex2f(4.564965594486, 1.2003753540842);
+        glVertex2f(4.677219105706, 1.2003753540842);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7493452870858, 1.399897994033);
+        glVertex2f(4.8, 1.6);
+        glVertex2f(4.8398509404064, 1.7809744290672);
+        glVertex2f(4.8922489502236, 1.923878092205);
+        glVertex2f(4.9779911481063, 2.0620182999049);
+        glVertex2f(5.058969890551, 2.1668143195393);
+        glVertex2f(5.1590024547475, 2.2430296065461);
+        glVertex2f(5.2733253852578, 2.3240083489909);
+        glVertex2f(5.4448097810231, 2.381169814246);
+        glVertex2f(5.5638961669713, 2.4240409131873);
+        glVertex2f(5.7306171072987, 2.4383312795011);
+        glVertex2f(5.8735207704366, 2.443094734939);
+        glVertex2f(6.0259513444502, 2.4145140023115);
+        glVertex2f(6.1307473640846, 2.3716429033701);
+        glVertex2f(6.2545972054707, 2.3097179826771);
+        glVertex2f(6.3451028587913, 2.2382661511082);
+        glVertex2f(6.4356085121119, 2.1477604977876);
+        glVertex2f(6.5118237991188, 2.0810721216566);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6075659970015, 0.5189491043303);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6618807259707, 2.0346881340904);
+        glVertex2f(6.7086119328102, 2.0751885133513);
+        glVertex2f(6.7833818637534, 2.1468430305052);
+        glVertex2f(6.8581517946967, 2.2216129614485);
+        glVertex2f(6.9298063118506, 2.2839212372345);
+        glVertex2f(6.9921145876366, 2.3337678578633);
+        glVertex2f(7.0793461737371, 2.3867298922815);
+        glVertex2f(7.1291927943659, 2.4147686163852);
+        glVertex2f(7.1946164839413, 2.4365765129103);
+        glVertex2f(7.2631555873059, 2.4552689956461);
+        glVertex2f(7.3285792768812, 2.4677306508033);
+        glVertex2f(7.3971183802459, 2.4739614783819);
+        glVertex2f(7.4563112422426, 2.4708460645926);
+        glVertex2f(7.543542828343, 2.4583844094354);
+        glVertex2f(7.6370052420221, 2.4365765129103);
+        glVertex2f(7.7211214143332, 2.4147686163852);
+        glVertex2f(7.8052375866444, 2.3742682371243);
+        glVertex2f(7.8862383451662, 2.3244216164954);
+        glVertex2f(7.9578928623202, 2.2745749958666);
+        glVertex2f(8.0357782070527, 2.1904588235555);
+        glVertex2f(8.0887402414708, 2.1188043064015);
+        glVertex2f(8.1354714483104, 2.0378035478797);
+        glVertex2f(8.1759718275713, 1.9443411342006);
+        glVertex2f(8.2164722068322, 1.8384170653644);
+        glVertex2f(8.2382801033573, 1.741839237896);
+        glVertex2f(8.2538571723038, 1.6452614104277);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.2752293601814, 0.5227100407116);
+        glVertex2f(6.5975659970015, 0.5229491043303);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.3511270930914, 1.559140812539);
+        glVertex2f(8.4384847462886, 1.5658606320157);
+        glVertex2f(8.5359221287009, 1.5725804514924);
+        glVertex2f(8.6434392403282, 1.5625007222774);
+        glVertex2f(8.7475964422172, 1.5423412638472);
+        glVertex2f(8.8517536441062, 1.5121020762021);
+        glVertex2f(8.9458311167801, 1.4617034301267);
+        glVertex2f(9.0499883186691, 1.3777056866679);
+        glVertex2f(9.1407058816046, 1.2601088458255);
+        glVertex2f(9.2179838055868, 1.1492318244598);
+        glVertex2f(9.2986216393073, 1.018195344664);
+        glVertex2f(9.3591000145977, 0.8636394966997);
+        glVertex2f(9.4061387509346, 0.7158034682121);
+        glVertex2f(9.4262982093647, 0.5242886131259);
+        glVertex2f(8.2752293601814, 0.5247100407116);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(rumputlvl1[2],-0.8,0);                             //FUngsi untuk gerak
+    //Bayangan rumput
+    glPushMatrix();
+    glTranslated(-1.88,2.78,0);
+    glScaled(0.5,0.84,0);
+    glColor3ub(0,0,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.7190552063643, 0.5268542867645);
+        glVertex2f(3.7551366921135, 0.6872164456502);
+        glVertex2f(3.8393268255285, 0.8435695505637);
+        glVertex2f(3.9315350668877, 0.9518140078115);
+        glVertex2f(4.0437885781077, 1.0400131951986);
+        glVertex2f(4.1520330353555, 1.1041580587528);
+        glVertex2f(4.2923499243805, 1.1602848143628);
+        glVertex2f(4.4446939753218, 1.19235724614);
+        glVertex2f(4.564965594486, 1.2003753540842);
+        glVertex2f(4.677219105706, 1.2003753540842);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7493452870858, 1.399897994033);
+        glVertex2f(4.8, 1.6);
+        glVertex2f(4.8398509404064, 1.7809744290672);
+        glVertex2f(4.8922489502236, 1.923878092205);
+        glVertex2f(4.9779911481063, 2.0620182999049);
+        glVertex2f(5.058969890551, 2.1668143195393);
+        glVertex2f(5.1590024547475, 2.2430296065461);
+        glVertex2f(5.2733253852578, 2.3240083489909);
+        glVertex2f(5.4448097810231, 2.381169814246);
+        glVertex2f(5.5638961669713, 2.4240409131873);
+        glVertex2f(5.7306171072987, 2.4383312795011);
+        glVertex2f(5.8735207704366, 2.443094734939);
+        glVertex2f(6.0259513444502, 2.4145140023115);
+        glVertex2f(6.1307473640846, 2.3716429033701);
+        glVertex2f(6.2545972054707, 2.3097179826771);
+        glVertex2f(6.3451028587913, 2.2382661511082);
+        glVertex2f(6.4356085121119, 2.1477604977876);
+        glVertex2f(6.5118237991188, 2.0810721216566);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6075659970015, 0.5189491043303);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6618807259707, 2.0346881340904);
+        glVertex2f(6.7086119328102, 2.0751885133513);
+        glVertex2f(6.7833818637534, 2.1468430305052);
+        glVertex2f(6.8581517946967, 2.2216129614485);
+        glVertex2f(6.9298063118506, 2.2839212372345);
+        glVertex2f(6.9921145876366, 2.3337678578633);
+        glVertex2f(7.0793461737371, 2.3867298922815);
+        glVertex2f(7.1291927943659, 2.4147686163852);
+        glVertex2f(7.1946164839413, 2.4365765129103);
+        glVertex2f(7.2631555873059, 2.4552689956461);
+        glVertex2f(7.3285792768812, 2.4677306508033);
+        glVertex2f(7.3971183802459, 2.4739614783819);
+        glVertex2f(7.4563112422426, 2.4708460645926);
+        glVertex2f(7.543542828343, 2.4583844094354);
+        glVertex2f(7.6370052420221, 2.4365765129103);
+        glVertex2f(7.7211214143332, 2.4147686163852);
+        glVertex2f(7.8052375866444, 2.3742682371243);
+        glVertex2f(7.8862383451662, 2.3244216164954);
+        glVertex2f(7.9578928623202, 2.2745749958666);
+        glVertex2f(8.0357782070527, 2.1904588235555);
+        glVertex2f(8.0887402414708, 2.1188043064015);
+        glVertex2f(8.1354714483104, 2.0378035478797);
+        glVertex2f(8.1759718275713, 1.9443411342006);
+        glVertex2f(8.2164722068322, 1.8384170653644);
+        glVertex2f(8.2382801033573, 1.741839237896);
+        glVertex2f(8.2538571723038, 1.6452614104277);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.2752293601814, 0.5227100407116);
+        glVertex2f(6.5975659970015, 0.5229491043303);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.3511270930914, 1.559140812539);
+        glVertex2f(8.4384847462886, 1.5658606320157);
+        glVertex2f(8.5359221287009, 1.5725804514924);
+        glVertex2f(8.6434392403282, 1.5625007222774);
+        glVertex2f(8.7475964422172, 1.5423412638472);
+        glVertex2f(8.8517536441062, 1.5121020762021);
+        glVertex2f(8.9458311167801, 1.4617034301267);
+        glVertex2f(9.0499883186691, 1.3777056866679);
+        glVertex2f(9.1407058816046, 1.2601088458255);
+        glVertex2f(9.2179838055868, 1.1492318244598);
+        glVertex2f(9.2986216393073, 1.018195344664);
+        glVertex2f(9.3591000145977, 0.8636394966997);
+        glVertex2f(9.4061387509346, 0.7158034682121);
+        glVertex2f(9.4262982093647, 0.5242886131259);
+        glVertex2f(8.2752293601814, 0.5247100407116);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-1.87,2.70,0);
+    glScaled(0.5,0.84,0);
+    glColor3ub(57, 124, 11);
+    glBegin(GL_POLYGON);
+        glColor3ub(88, 189, 66);
+        glVertex2f(3.7190552063643, 0.5268542867645);
+        glVertex2f(3.7551366921135, 0.6872164456502);
+        glVertex2f(3.8393268255285, 0.8435695505637);
+        glVertex2f(3.9315350668877, 0.9518140078115);
+        glVertex2f(4.0437885781077, 1.0400131951986);
+        glVertex2f(4.1520330353555, 1.1041580587528);
+        glVertex2f(4.2923499243805, 1.1602848143628);
+        glVertex2f(4.4446939753218, 1.19235724614);
+        glVertex2f(4.564965594486, 1.2003753540842);
+        glVertex2f(4.677219105706, 1.2003753540842);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7493452870858, 1.399897994033);
+        glVertex2f(4.8, 1.6);
+        glVertex2f(4.8398509404064, 1.7809744290672);
+        glVertex2f(4.8922489502236, 1.923878092205);
+        glVertex2f(4.9779911481063, 2.0620182999049);
+        glVertex2f(5.058969890551, 2.1668143195393);
+        glVertex2f(5.1590024547475, 2.2430296065461);
+        glVertex2f(5.2733253852578, 2.3240083489909);
+        glVertex2f(5.4448097810231, 2.381169814246);
+        glVertex2f(5.5638961669713, 2.4240409131873);
+        glVertex2f(5.7306171072987, 2.4383312795011);
+        glVertex2f(5.8735207704366, 2.443094734939);
+        glVertex2f(6.0259513444502, 2.4145140023115);
+        glVertex2f(6.1307473640846, 2.3716429033701);
+        glVertex2f(6.2545972054707, 2.3097179826771);
+        glVertex2f(6.3451028587913, 2.2382661511082);
+        glVertex2f(6.4356085121119, 2.1477604977876);
+        glVertex2f(6.5118237991188, 2.0810721216566);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6075659970015, 0.5189491043303);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6618807259707, 2.0346881340904);
+        glVertex2f(6.7086119328102, 2.0751885133513);
+        glVertex2f(6.7833818637534, 2.1468430305052);
+        glVertex2f(6.8581517946967, 2.2216129614485);
+        glVertex2f(6.9298063118506, 2.2839212372345);
+        glVertex2f(6.9921145876366, 2.3337678578633);
+        glVertex2f(7.0793461737371, 2.3867298922815);
+        glVertex2f(7.1291927943659, 2.4147686163852);
+        glVertex2f(7.1946164839413, 2.4365765129103);
+        glVertex2f(7.2631555873059, 2.4552689956461);
+        glVertex2f(7.3285792768812, 2.4677306508033);
+        glVertex2f(7.3971183802459, 2.4739614783819);
+        glVertex2f(7.4563112422426, 2.4708460645926);
+        glVertex2f(7.543542828343, 2.4583844094354);
+        glVertex2f(7.6370052420221, 2.4365765129103);
+        glVertex2f(7.7211214143332, 2.4147686163852);
+        glVertex2f(7.8052375866444, 2.3742682371243);
+        glVertex2f(7.8862383451662, 2.3244216164954);
+        glVertex2f(7.9578928623202, 2.2745749958666);
+        glVertex2f(8.0357782070527, 2.1904588235555);
+        glVertex2f(8.0887402414708, 2.1188043064015);
+        glVertex2f(8.1354714483104, 2.0378035478797);
+        glVertex2f(8.1759718275713, 1.9443411342006);
+        glVertex2f(8.2164722068322, 1.8384170653644);
+        glVertex2f(8.2382801033573, 1.741839237896);
+        glVertex2f(8.2538571723038, 1.6452614104277);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.2752293601814, 0.5227100407116);
+        glVertex2f(6.5975659970015, 0.5229491043303);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.3511270930914, 1.559140812539);
+        glVertex2f(8.4384847462886, 1.5658606320157);
+        glVertex2f(8.5359221287009, 1.5725804514924);
+        glVertex2f(8.6434392403282, 1.5625007222774);
+        glVertex2f(8.7475964422172, 1.5423412638472);
+        glVertex2f(8.8517536441062, 1.5121020762021);
+        glVertex2f(8.9458311167801, 1.4617034301267);
+        glVertex2f(9.0499883186691, 1.3777056866679);
+        glVertex2f(9.1407058816046, 1.2601088458255);
+        glVertex2f(9.2179838055868, 1.1492318244598);
+        glVertex2f(9.2986216393073, 1.018195344664);
+        glVertex2f(9.3591000145977, 0.8636394966997);
+        glVertex2f(9.4061387509346, 0.7158034682121);
+        glVertex2f(9.4262982093647, 0.5242886131259);
+        glVertex2f(8.2752293601814, 0.5247100407116);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(rumputlvl1[3],-0.8,0);                             //Fungsi Untuk gerak
+    //Bayangan rumput
+    glPushMatrix();
+    glTranslated(-1.88,2.78,0);
+    glScaled(0.5,0.84,0);
+    glColor3ub(0,0,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.7190552063643, 0.5268542867645);
+        glVertex2f(3.7551366921135, 0.6872164456502);
+        glVertex2f(3.8393268255285, 0.8435695505637);
+        glVertex2f(3.9315350668877, 0.9518140078115);
+        glVertex2f(4.0437885781077, 1.0400131951986);
+        glVertex2f(4.1520330353555, 1.1041580587528);
+        glVertex2f(4.2923499243805, 1.1602848143628);
+        glVertex2f(4.4446939753218, 1.19235724614);
+        glVertex2f(4.564965594486, 1.2003753540842);
+        glVertex2f(4.677219105706, 1.2003753540842);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7493452870858, 1.399897994033);
+        glVertex2f(4.8, 1.6);
+        glVertex2f(4.8398509404064, 1.7809744290672);
+        glVertex2f(4.8922489502236, 1.923878092205);
+        glVertex2f(4.9779911481063, 2.0620182999049);
+        glVertex2f(5.058969890551, 2.1668143195393);
+        glVertex2f(5.1590024547475, 2.2430296065461);
+        glVertex2f(5.2733253852578, 2.3240083489909);
+        glVertex2f(5.4448097810231, 2.381169814246);
+        glVertex2f(5.5638961669713, 2.4240409131873);
+        glVertex2f(5.7306171072987, 2.4383312795011);
+        glVertex2f(5.8735207704366, 2.443094734939);
+        glVertex2f(6.0259513444502, 2.4145140023115);
+        glVertex2f(6.1307473640846, 2.3716429033701);
+        glVertex2f(6.2545972054707, 2.3097179826771);
+        glVertex2f(6.3451028587913, 2.2382661511082);
+        glVertex2f(6.4356085121119, 2.1477604977876);
+        glVertex2f(6.5118237991188, 2.0810721216566);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6075659970015, 0.5189491043303);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6618807259707, 2.0346881340904);
+        glVertex2f(6.7086119328102, 2.0751885133513);
+        glVertex2f(6.7833818637534, 2.1468430305052);
+        glVertex2f(6.8581517946967, 2.2216129614485);
+        glVertex2f(6.9298063118506, 2.2839212372345);
+        glVertex2f(6.9921145876366, 2.3337678578633);
+        glVertex2f(7.0793461737371, 2.3867298922815);
+        glVertex2f(7.1291927943659, 2.4147686163852);
+        glVertex2f(7.1946164839413, 2.4365765129103);
+        glVertex2f(7.2631555873059, 2.4552689956461);
+        glVertex2f(7.3285792768812, 2.4677306508033);
+        glVertex2f(7.3971183802459, 2.4739614783819);
+        glVertex2f(7.4563112422426, 2.4708460645926);
+        glVertex2f(7.543542828343, 2.4583844094354);
+        glVertex2f(7.6370052420221, 2.4365765129103);
+        glVertex2f(7.7211214143332, 2.4147686163852);
+        glVertex2f(7.8052375866444, 2.3742682371243);
+        glVertex2f(7.8862383451662, 2.3244216164954);
+        glVertex2f(7.9578928623202, 2.2745749958666);
+        glVertex2f(8.0357782070527, 2.1904588235555);
+        glVertex2f(8.0887402414708, 2.1188043064015);
+        glVertex2f(8.1354714483104, 2.0378035478797);
+        glVertex2f(8.1759718275713, 1.9443411342006);
+        glVertex2f(8.2164722068322, 1.8384170653644);
+        glVertex2f(8.2382801033573, 1.741839237896);
+        glVertex2f(8.2538571723038, 1.6452614104277);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.2752293601814, 0.5227100407116);
+        glVertex2f(6.5975659970015, 0.5229491043303);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.3511270930914, 1.559140812539);
+        glVertex2f(8.4384847462886, 1.5658606320157);
+        glVertex2f(8.5359221287009, 1.5725804514924);
+        glVertex2f(8.6434392403282, 1.5625007222774);
+        glVertex2f(8.7475964422172, 1.5423412638472);
+        glVertex2f(8.8517536441062, 1.5121020762021);
+        glVertex2f(8.9458311167801, 1.4617034301267);
+        glVertex2f(9.0499883186691, 1.3777056866679);
+        glVertex2f(9.1407058816046, 1.2601088458255);
+        glVertex2f(9.2179838055868, 1.1492318244598);
+        glVertex2f(9.2986216393073, 1.018195344664);
+        glVertex2f(9.3591000145977, 0.8636394966997);
+        glVertex2f(9.4061387509346, 0.7158034682121);
+        glVertex2f(9.4262982093647, 0.5242886131259);
+        glVertex2f(8.2752293601814, 0.5247100407116);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-1.87,2.70,0);
+    glScaled(0.5,0.84,0);
+    glColor3ub(57, 124, 11);
+    glBegin(GL_POLYGON);
+        glColor3ub(88, 189, 66);
+        glVertex2f(3.7190552063643, 0.5268542867645);
+        glVertex2f(3.7551366921135, 0.6872164456502);
+        glVertex2f(3.8393268255285, 0.8435695505637);
+        glVertex2f(3.9315350668877, 0.9518140078115);
+        glVertex2f(4.0437885781077, 1.0400131951986);
+        glVertex2f(4.1520330353555, 1.1041580587528);
+        glVertex2f(4.2923499243805, 1.1602848143628);
+        glVertex2f(4.4446939753218, 1.19235724614);
+        glVertex2f(4.564965594486, 1.2003753540842);
+        glVertex2f(4.677219105706, 1.2003753540842);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7493452870858, 1.399897994033);
+        glVertex2f(4.8, 1.6);
+        glVertex2f(4.8398509404064, 1.7809744290672);
+        glVertex2f(4.8922489502236, 1.923878092205);
+        glVertex2f(4.9779911481063, 2.0620182999049);
+        glVertex2f(5.058969890551, 2.1668143195393);
+        glVertex2f(5.1590024547475, 2.2430296065461);
+        glVertex2f(5.2733253852578, 2.3240083489909);
+        glVertex2f(5.4448097810231, 2.381169814246);
+        glVertex2f(5.5638961669713, 2.4240409131873);
+        glVertex2f(5.7306171072987, 2.4383312795011);
+        glVertex2f(5.8735207704366, 2.443094734939);
+        glVertex2f(6.0259513444502, 2.4145140023115);
+        glVertex2f(6.1307473640846, 2.3716429033701);
+        glVertex2f(6.2545972054707, 2.3097179826771);
+        glVertex2f(6.3451028587913, 2.2382661511082);
+        glVertex2f(6.4356085121119, 2.1477604977876);
+        glVertex2f(6.5118237991188, 2.0810721216566);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6075659970015, 0.5189491043303);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6618807259707, 2.0346881340904);
+        glVertex2f(6.7086119328102, 2.0751885133513);
+        glVertex2f(6.7833818637534, 2.1468430305052);
+        glVertex2f(6.8581517946967, 2.2216129614485);
+        glVertex2f(6.9298063118506, 2.2839212372345);
+        glVertex2f(6.9921145876366, 2.3337678578633);
+        glVertex2f(7.0793461737371, 2.3867298922815);
+        glVertex2f(7.1291927943659, 2.4147686163852);
+        glVertex2f(7.1946164839413, 2.4365765129103);
+        glVertex2f(7.2631555873059, 2.4552689956461);
+        glVertex2f(7.3285792768812, 2.4677306508033);
+        glVertex2f(7.3971183802459, 2.4739614783819);
+        glVertex2f(7.4563112422426, 2.4708460645926);
+        glVertex2f(7.543542828343, 2.4583844094354);
+        glVertex2f(7.6370052420221, 2.4365765129103);
+        glVertex2f(7.7211214143332, 2.4147686163852);
+        glVertex2f(7.8052375866444, 2.3742682371243);
+        glVertex2f(7.8862383451662, 2.3244216164954);
+        glVertex2f(7.9578928623202, 2.2745749958666);
+        glVertex2f(8.0357782070527, 2.1904588235555);
+        glVertex2f(8.0887402414708, 2.1188043064015);
+        glVertex2f(8.1354714483104, 2.0378035478797);
+        glVertex2f(8.1759718275713, 1.9443411342006);
+        glVertex2f(8.2164722068322, 1.8384170653644);
+        glVertex2f(8.2382801033573, 1.741839237896);
+        glVertex2f(8.2538571723038, 1.6452614104277);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.2752293601814, 0.5227100407116);
+        glVertex2f(6.5975659970015, 0.5229491043303);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.3511270930914, 1.559140812539);
+        glVertex2f(8.4384847462886, 1.5658606320157);
+        glVertex2f(8.5359221287009, 1.5725804514924);
+        glVertex2f(8.6434392403282, 1.5625007222774);
+        glVertex2f(8.7475964422172, 1.5423412638472);
+        glVertex2f(8.8517536441062, 1.5121020762021);
+        glVertex2f(8.9458311167801, 1.4617034301267);
+        glVertex2f(9.0499883186691, 1.3777056866679);
+        glVertex2f(9.1407058816046, 1.2601088458255);
+        glVertex2f(9.2179838055868, 1.1492318244598);
+        glVertex2f(9.2986216393073, 1.018195344664);
+        glVertex2f(9.3591000145977, 0.8636394966997);
+        glVertex2f(9.4061387509346, 0.7158034682121);
+        glVertex2f(9.4262982093647, 0.5242886131259);
+        glVertex2f(8.2752293601814, 0.5247100407116);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(rumputlvl1[4],-0.8,0);                             //Fungsi Untuk Gerak
+    //Bayangan rumput
+    glPushMatrix();
+    glTranslated(-1.88,2.78,0);
+    glScaled(0.5,0.84,0);
+    glColor3ub(0,0,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.7190552063643, 0.5268542867645);
+        glVertex2f(3.7551366921135, 0.6872164456502);
+        glVertex2f(3.8393268255285, 0.8435695505637);
+        glVertex2f(3.9315350668877, 0.9518140078115);
+        glVertex2f(4.0437885781077, 1.0400131951986);
+        glVertex2f(4.1520330353555, 1.1041580587528);
+        glVertex2f(4.2923499243805, 1.1602848143628);
+        glVertex2f(4.4446939753218, 1.19235724614);
+        glVertex2f(4.564965594486, 1.2003753540842);
+        glVertex2f(4.677219105706, 1.2003753540842);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7493452870858, 1.399897994033);
+        glVertex2f(4.8, 1.6);
+        glVertex2f(4.8398509404064, 1.7809744290672);
+        glVertex2f(4.8922489502236, 1.923878092205);
+        glVertex2f(4.9779911481063, 2.0620182999049);
+        glVertex2f(5.058969890551, 2.1668143195393);
+        glVertex2f(5.1590024547475, 2.2430296065461);
+        glVertex2f(5.2733253852578, 2.3240083489909);
+        glVertex2f(5.4448097810231, 2.381169814246);
+        glVertex2f(5.5638961669713, 2.4240409131873);
+        glVertex2f(5.7306171072987, 2.4383312795011);
+        glVertex2f(5.8735207704366, 2.443094734939);
+        glVertex2f(6.0259513444502, 2.4145140023115);
+        glVertex2f(6.1307473640846, 2.3716429033701);
+        glVertex2f(6.2545972054707, 2.3097179826771);
+        glVertex2f(6.3451028587913, 2.2382661511082);
+        glVertex2f(6.4356085121119, 2.1477604977876);
+        glVertex2f(6.5118237991188, 2.0810721216566);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6075659970015, 0.5189491043303);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6618807259707, 2.0346881340904);
+        glVertex2f(6.7086119328102, 2.0751885133513);
+        glVertex2f(6.7833818637534, 2.1468430305052);
+        glVertex2f(6.8581517946967, 2.2216129614485);
+        glVertex2f(6.9298063118506, 2.2839212372345);
+        glVertex2f(6.9921145876366, 2.3337678578633);
+        glVertex2f(7.0793461737371, 2.3867298922815);
+        glVertex2f(7.1291927943659, 2.4147686163852);
+        glVertex2f(7.1946164839413, 2.4365765129103);
+        glVertex2f(7.2631555873059, 2.4552689956461);
+        glVertex2f(7.3285792768812, 2.4677306508033);
+        glVertex2f(7.3971183802459, 2.4739614783819);
+        glVertex2f(7.4563112422426, 2.4708460645926);
+        glVertex2f(7.543542828343, 2.4583844094354);
+        glVertex2f(7.6370052420221, 2.4365765129103);
+        glVertex2f(7.7211214143332, 2.4147686163852);
+        glVertex2f(7.8052375866444, 2.3742682371243);
+        glVertex2f(7.8862383451662, 2.3244216164954);
+        glVertex2f(7.9578928623202, 2.2745749958666);
+        glVertex2f(8.0357782070527, 2.1904588235555);
+        glVertex2f(8.0887402414708, 2.1188043064015);
+        glVertex2f(8.1354714483104, 2.0378035478797);
+        glVertex2f(8.1759718275713, 1.9443411342006);
+        glVertex2f(8.2164722068322, 1.8384170653644);
+        glVertex2f(8.2382801033573, 1.741839237896);
+        glVertex2f(8.2538571723038, 1.6452614104277);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.2752293601814, 0.5227100407116);
+        glVertex2f(6.5975659970015, 0.5229491043303);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.3511270930914, 1.559140812539);
+        glVertex2f(8.4384847462886, 1.5658606320157);
+        glVertex2f(8.5359221287009, 1.5725804514924);
+        glVertex2f(8.6434392403282, 1.5625007222774);
+        glVertex2f(8.7475964422172, 1.5423412638472);
+        glVertex2f(8.8517536441062, 1.5121020762021);
+        glVertex2f(8.9458311167801, 1.4617034301267);
+        glVertex2f(9.0499883186691, 1.3777056866679);
+        glVertex2f(9.1407058816046, 1.2601088458255);
+        glVertex2f(9.2179838055868, 1.1492318244598);
+        glVertex2f(9.2986216393073, 1.018195344664);
+        glVertex2f(9.3591000145977, 0.8636394966997);
+        glVertex2f(9.4061387509346, 0.7158034682121);
+        glVertex2f(9.4262982093647, 0.5242886131259);
+        glVertex2f(8.2752293601814, 0.5247100407116);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-1.87,2.70,0);
+    glScaled(0.5,0.84,0);
+    glColor3ub(57, 124, 11);
+    glBegin(GL_POLYGON);
+        glColor3ub(88, 189, 66);
+        glVertex2f(3.7190552063643, 0.5268542867645);
+        glVertex2f(3.7551366921135, 0.6872164456502);
+        glVertex2f(3.8393268255285, 0.8435695505637);
+        glVertex2f(3.9315350668877, 0.9518140078115);
+        glVertex2f(4.0437885781077, 1.0400131951986);
+        glVertex2f(4.1520330353555, 1.1041580587528);
+        glVertex2f(4.2923499243805, 1.1602848143628);
+        glVertex2f(4.4446939753218, 1.19235724614);
+        glVertex2f(4.564965594486, 1.2003753540842);
+        glVertex2f(4.677219105706, 1.2003753540842);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(4.7574001851488, 1.1883481921678);
+        glVertex2f(4.7493452870858, 1.399897994033);
+        glVertex2f(4.8, 1.6);
+        glVertex2f(4.8398509404064, 1.7809744290672);
+        glVertex2f(4.8922489502236, 1.923878092205);
+        glVertex2f(4.9779911481063, 2.0620182999049);
+        glVertex2f(5.058969890551, 2.1668143195393);
+        glVertex2f(5.1590024547475, 2.2430296065461);
+        glVertex2f(5.2733253852578, 2.3240083489909);
+        glVertex2f(5.4448097810231, 2.381169814246);
+        glVertex2f(5.5638961669713, 2.4240409131873);
+        glVertex2f(5.7306171072987, 2.4383312795011);
+        glVertex2f(5.8735207704366, 2.443094734939);
+        glVertex2f(6.0259513444502, 2.4145140023115);
+        glVertex2f(6.1307473640846, 2.3716429033701);
+        glVertex2f(6.2545972054707, 2.3097179826771);
+        glVertex2f(6.3451028587913, 2.2382661511082);
+        glVertex2f(6.4356085121119, 2.1477604977876);
+        glVertex2f(6.5118237991188, 2.0810721216566);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6075659970015, 0.5189491043303);
+        glVertex2f(4.7984136415519, 0.5184801084376);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6070929078773, 2.0286741118394);
+        glVertex2f(6.6618807259707, 2.0346881340904);
+        glVertex2f(6.7086119328102, 2.0751885133513);
+        glVertex2f(6.7833818637534, 2.1468430305052);
+        glVertex2f(6.8581517946967, 2.2216129614485);
+        glVertex2f(6.9298063118506, 2.2839212372345);
+        glVertex2f(6.9921145876366, 2.3337678578633);
+        glVertex2f(7.0793461737371, 2.3867298922815);
+        glVertex2f(7.1291927943659, 2.4147686163852);
+        glVertex2f(7.1946164839413, 2.4365765129103);
+        glVertex2f(7.2631555873059, 2.4552689956461);
+        glVertex2f(7.3285792768812, 2.4677306508033);
+        glVertex2f(7.3971183802459, 2.4739614783819);
+        glVertex2f(7.4563112422426, 2.4708460645926);
+        glVertex2f(7.543542828343, 2.4583844094354);
+        glVertex2f(7.6370052420221, 2.4365765129103);
+        glVertex2f(7.7211214143332, 2.4147686163852);
+        glVertex2f(7.8052375866444, 2.3742682371243);
+        glVertex2f(7.8862383451662, 2.3244216164954);
+        glVertex2f(7.9578928623202, 2.2745749958666);
+        glVertex2f(8.0357782070527, 2.1904588235555);
+        glVertex2f(8.0887402414708, 2.1188043064015);
+        glVertex2f(8.1354714483104, 2.0378035478797);
+        glVertex2f(8.1759718275713, 1.9443411342006);
+        glVertex2f(8.2164722068322, 1.8384170653644);
+        glVertex2f(8.2382801033573, 1.741839237896);
+        glVertex2f(8.2538571723038, 1.6452614104277);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.2752293601814, 0.5227100407116);
+        glVertex2f(6.5975659970015, 0.5229491043303);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2632034136717, 1.5486835829593);
+        glVertex2f(8.3511270930914, 1.559140812539);
+        glVertex2f(8.4384847462886, 1.5658606320157);
+        glVertex2f(8.5359221287009, 1.5725804514924);
+        glVertex2f(8.6434392403282, 1.5625007222774);
+        glVertex2f(8.7475964422172, 1.5423412638472);
+        glVertex2f(8.8517536441062, 1.5121020762021);
+        glVertex2f(8.9458311167801, 1.4617034301267);
+        glVertex2f(9.0499883186691, 1.3777056866679);
+        glVertex2f(9.1407058816046, 1.2601088458255);
+        glVertex2f(9.2179838055868, 1.1492318244598);
+        glVertex2f(9.2986216393073, 1.018195344664);
+        glVertex2f(9.3591000145977, 0.8636394966997);
+        glVertex2f(9.4061387509346, 0.7158034682121);
+        glVertex2f(9.4262982093647, 0.5242886131259);
+        glVertex2f(8.2752293601814, 0.5247100407116);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(rumputlvl1[5],-0.8,0);                             //Fungsi Untuk Gerak
     //Bayangan rumput
     glPushMatrix();
     glTranslated(-1.88,2.78,0);
@@ -1587,7 +2704,7 @@ void rumput (){
 
 void tree() {
     glPushMatrix();
-    glTranslated(-4.3,1.1,0);
+    glTranslated(treelvl1[0],1.1,0);                             //Fungsi untuk gerak
     glPushMatrix();
     glTranslated(0.045,-0.09,0);
     glScaled(1,1.5,0);
@@ -1639,10 +2756,228 @@ void tree() {
     glEnd();
     glPopMatrix();
     glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(treelvl1[1],1.1,0);                             //Fungsi untuk gerak
+    glPushMatrix();
+    glTranslated(0.045,-0.09,0);
+    glScaled(1,1.5,0);
+    glColor3ub(0, 0, 0);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.6154593394793,2.0559120871745);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0559120871745);
+    glEnd();
+
+    glColor3ub(0, 0, 0);
+    glBegin(GL_POLYGON);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0709120871745);
+        glVertex2f(4.46601270721627,2.0709045946805);
+    glEnd();
+
+    glColor3ub(0, 0, 0);
+    glBegin(GL_QUADS);
+        glVertex2f(4.2363497122109,2.0529487015985);
+        glVertex2f(4.2359062416316,1.0131331870454);
+        glVertex2f(4.7647887345752,1.0139533985118);
+        glVertex2f(4.7646089460416,2.0605385958653);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glScaled(1,1.5,0);
+    glColor3ub(57, 124, 11);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.6154593394793,2.0559120871745);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0559120871745);
+    glEnd();
+
+    glColor3ub(88, 189, 66);
+    glBegin(GL_POLYGON);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0709120871745);
+        glVertex2f(4.46601270721627,2.0709045946805);
+    glEnd();
+
+    glColor3ub(92, 58, 10);
+    glBegin(GL_QUADS);
+        glVertex2f(4.2363497122109,2.0529487015985);
+        glVertex2f(4.2359062416316,1.0131331870454);
+        glVertex2f(4.7647887345752,1.0139533985118);
+        glVertex2f(4.7646089460416,2.0605385958653);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(treelvl1[2],1.1,0);                             //Fungsi untuk gerak
+    glPushMatrix();
+    glTranslated(0.045,-0.09,0);
+    glScaled(1,1.5,0);
+    glColor3ub(0, 0, 0);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.6154593394793,2.0559120871745);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0559120871745);
+    glEnd();
+
+    glColor3ub(0, 0, 0);
+    glBegin(GL_POLYGON);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0709120871745);
+        glVertex2f(4.46601270721627,2.0709045946805);
+    glEnd();
+
+    glColor3ub(0, 0, 0);
+    glBegin(GL_QUADS);
+        glVertex2f(4.2363497122109,2.0529487015985);
+        glVertex2f(4.2359062416316,1.0131331870454);
+        glVertex2f(4.7647887345752,1.0139533985118);
+        glVertex2f(4.7646089460416,2.0605385958653);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glScaled(1,1.5,0);
+    glColor3ub(57, 124, 11);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.6154593394793,2.0559120871745);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0559120871745);
+    glEnd();
+
+    glColor3ub(88, 189, 66);
+    glBegin(GL_POLYGON);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0709120871745);
+        glVertex2f(4.46601270721627,2.0709045946805);
+    glEnd();
+
+    glColor3ub(92, 58, 10);
+    glBegin(GL_QUADS);
+        glVertex2f(4.2363497122109,2.0529487015985);
+        glVertex2f(4.2359062416316,1.0131331870454);
+        glVertex2f(4.7647887345752,1.0139533985118);
+        glVertex2f(4.7646089460416,2.0605385958653);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(treelvl1[3],1.1,0);                             //Fungsi untuk gerak
+    glPushMatrix();
+    glTranslated(0.045,-0.09,0);
+    glScaled(1,1.5,0);
+    glColor3ub(0, 0, 0);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.6154593394793,2.0559120871745);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0559120871745);
+    glEnd();
+
+    glColor3ub(0, 0, 0);
+    glBegin(GL_POLYGON);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0709120871745);
+        glVertex2f(4.46601270721627,2.0709045946805);
+    glEnd();
+
+    glColor3ub(0, 0, 0);
+    glBegin(GL_QUADS);
+        glVertex2f(4.2363497122109,2.0529487015985);
+        glVertex2f(4.2359062416316,1.0131331870454);
+        glVertex2f(4.7647887345752,1.0139533985118);
+        glVertex2f(4.7646089460416,2.0605385958653);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glScaled(1,1.5,0);
+    glColor3ub(57, 124, 11);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.6154593394793,2.0559120871745);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0559120871745);
+    glEnd();
+
+    glColor3ub(88, 189, 66);
+    glBegin(GL_POLYGON);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0709120871745);
+        glVertex2f(4.46601270721627,2.0709045946805);
+    glEnd();
+
+    glColor3ub(92, 58, 10);
+    glBegin(GL_QUADS);
+        glVertex2f(4.2363497122109,2.0529487015985);
+        glVertex2f(4.2359062416316,1.0131331870454);
+        glVertex2f(4.7647887345752,1.0139533985118);
+        glVertex2f(4.7646089460416,2.0605385958653);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(treelvl1[4],1.1,0);                             //Fungsi untuk gerak
+    glPushMatrix();
+    glTranslated(0.045,-0.09,0);
+    glScaled(1,1.5,0);
+    glColor3ub(0, 0, 0);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.6154593394793,2.0559120871745);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0559120871745);
+    glEnd();
+
+    glColor3ub(0, 0, 0);
+    glBegin(GL_POLYGON);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0709120871745);
+        glVertex2f(4.46601270721627,2.0709045946805);
+    glEnd();
+
+    glColor3ub(0, 0, 0);
+    glBegin(GL_QUADS);
+        glVertex2f(4.2363497122109,2.0529487015985);
+        glVertex2f(4.2359062416316,1.0131331870454);
+        glVertex2f(4.7647887345752,1.0139533985118);
+        glVertex2f(4.7646089460416,2.0605385958653);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glScaled(1,1.5,0);
+    glColor3ub(57, 124, 11);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.6154593394793,2.0559120871745);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0559120871745);
+    glEnd();
+
+    glColor3ub(88, 189, 66);
+    glBegin(GL_POLYGON);
+        glVertex2f(4.4661808184098,4.928840360284);
+        glVertex2f(5.3726873123521,2.0709120871745);
+        glVertex2f(4.46601270721627,2.0709045946805);
+    glEnd();
+
+    glColor3ub(92, 58, 10);
+    glBegin(GL_QUADS);
+        glVertex2f(4.2363497122109,2.0529487015985);
+        glVertex2f(4.2359062416316,1.0131331870454);
+        glVertex2f(4.7647887345752,1.0139533985118);
+        glVertex2f(4.7646089460416,2.0605385958653);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
 }
 
 void blackBird (){
     glPushMatrix();
+    glTranslated(xx,0,0);
     glScaled(0.6,1,0);
     glPushMatrix();
     glColor3ub(0,0,0);
@@ -1809,6 +3144,7 @@ void blackBird (){
 void stone (){
     //gelombang1
     glPushMatrix(); //awal bayangan batu pertama
+    glTranslated(stonelvl1,0,0);
     glPushMatrix();
     glColor3ub(149, 137, 123);
     glBegin(GL_POLYGON);
@@ -1904,7 +3240,6 @@ void stone (){
         glVertex2f(0.9118423147879, 4.3763532443831);
         glVertex2f(1.7799926078952, 5.261794769256);
     glEnd();
-    glPopMatrix();
     glPopMatrix(); //akhir bayangan batu pertama
 
     //batu paling belakang//
@@ -2062,37 +3397,1812 @@ void stone (){
         glVertex2f(1.8867920012269, 3.2858141462174);
     glEnd();
     glPopMatrix();
+    glPopMatrix();
 
 
+}
+
+void fireball(){
+    glPushMatrix();
+    glTranslated(fireball_all[0],0,0);
+    glScaled(0.4,0.4,0);
+    glBegin(GL_POLYGON);
+    glColor3ub(240, 10, 10);
+        glVertex2f(6.4634376685768, 4.7762096405723);
+        glVertex2f(6.5243717815612, 4.8057534529284);
+        glVertex2f(6.5705339883676, 4.83160428874);
+        glVertex2f(6.6277751248075, 4.8519156597348);
+        glVertex2f(6.6831697729752, 4.8703805424573);
+        glVertex2f(6.7607222804099, 4.8869989369076);
+        glVertex2f(6.8290423464834, 4.8943848899967);
+        glVertex2f(6.8807440181066, 4.8943848899967);
+        glVertex2f(6.9582965255413, 4.8999243548134);
+        glVertex2f(7.021077126798, 4.8906919134521);
+        glVertex2f(7.0801647515102, 4.8925384017244);
+        glVertex2f(7.1540242824004, 4.8888454251799);
+        glVertex2f(7.2094189305681, 4.8869989369076);
+        glVertex2f(7.2574276256467, 4.8777664955464);
+        glVertex2f(7.3146687620867, 4.8722270307296);
+        glVertex2f(7.353445015804, 4.8629945893683);
+        glVertex2f(7.4014537108827, 4.853762148007);
+        glVertex2f(7.4346904997833, 4.8408367301012);
+        glVertex2f(7.4605413355949, 4.8279113121955);
+        glVertex2f(7.4919316362232, 4.8168323825619);
+        glVertex2f(7.5140894954903, 4.7965210115671);
+        glVertex2f(7.5436333078464, 4.7928280350226);
+        glVertex2f(7.5953349794695, 4.7762096405723);
+        glVertex2f(7.656269092454, 4.759591246122);
+        glVertex2f(7.7338215998887, 4.7263544572214);
+        glVertex2f(7.8021416659622, 4.680192250415);
+        glVertex2f(7.8556898258576, 4.680192250415);
+        glVertex2f(7.9480142394704, 4.665420344237);
+        glVertex2f(8.0181807938161, 4.6469554615144);
+        glVertex2f(8.0975797895231, 4.6266440905196);
+        glVertex2f(8.1714393204133, 4.58602134853);
+        glVertex2f(8.2231409920365, 4.5453986065403);
+        glVertex2f(8.2436247702168, 4.5202005881592);
+        glVertex2f(8.2701243898812, 4.5074415120245);
+        glVertex2f(8.2877908029909, 4.4986083054697);
+        glVertex2f(8.325086564, 4.4789789575701);
+        glVertex2f(8.371215531564, 4.4632754792505);
+        glVertex2f(8.4094927599682, 4.4524793379057);
+        glVertex2f(8.4605290645071, 4.437757326981);
+        glVertex2f(8.5007692277012, 4.4269611856363);
+        glVertex2f(8.55573140182, 4.4102762399216);
+        glVertex2f(8.6, 4.4);
+        glVertex2f(8.6457337793313, 4.3877756455438);
+        glVertex2f(8.6919192098964, 4.381854436497);
+        glVertex2f(8.7262622223678, 4.368827776594);
+        glVertex2f(8.779553103789, 4.3581696003098);
+        glVertex2f(8.8233700507353, 4.352248391263);
+        glVertex2f(8.8754766903471, 4.3404059731694);
+        glVertex2f(8.9571893751929, 4.3202738624103);
+        glVertex2f(9.0673238634633, 4.3072472025073);
+        glVertex2f(9.1774583517338, 4.2918520589857);
+        glVertex2f(9.4587305866192, 4.2807297245546);
+        glVertex2f(9.5641646996472, 4.2628595359058);
+        glVertex2f(9.6374324731072, 4.2494568944192);
+        glVertex2f(9.6946170767834, 4.2378412717974);
+        glVertex2f(9.7321444729459, 4.2253321397433);
+        glVertex2f(9.7464406238649, 4.214610026554);
+        glVertex2f(9.75, 4.2);
+        glVertex2f(9.7375055295405, 4.192272290743);
+        glVertex2f(9.7249963974863, 4.1860177247159);
+        glVertex2f(9.6830014541617, 4.1788696492564);
+        glVertex2f(9.6016920958096, 4.1752956115266);
+        glVertex2f(9.5275308129171, 4.169934554932);
+        glVertex2f(9.4515825111597, 4.169934554932);
+        glVertex2f(9.3541899830238, 4.1735085926618);
+        glVertex2f(9.2425013039688, 4.1609994606076);
+        glVertex2f(9.1692335305087, 4.1663605172022);
+        glVertex2f(9.076308549535, 4.1609994606076);
+        glVertex2f(9.0119758703993, 4.1529578757156);
+        glVertex2f(8.95, 4.15);
+        glVertex2f(8.9065417573714, 4.1431292719588);
+        glVertex2f(8.86959969805, 4.1357641505815);
+        glVertex2f(8.8280436711758, 4.1310418748004);
+        glVertex2f(8.7666540860207, 4.1197084129256);
+        glVertex2f(8.7184868730529, 4.1093194062071);
+        glVertex2f(8.649541646648, 4.0904303030824);
+        glVertex2f(8.584374240868, 4.0734301102702);
+        glVertex2f(8.54376266915, 4.0592632829268);
+        glVertex2f(8.4993732768071, 4.0432075452708);
+        glVertex2f(8.47859526337, 4.0328185385523);
+        glVertex2f(8.4389281468083, 4.0148738905839);
+        glVertex2f(8.3983165750903, 3.9903180565219);
+        glVertex2f(8.352038272435, 3.95820658121);
+        glVertex2f(8.3227601625918, 3.9317618368355);
+        glVertex2f(8.2594816671243, 3.9119282785546);
+        glVertex2f(8.1895919855631, 3.8939836305862);
+        glVertex2f(8.1395358622828, 3.8845390790239);
+        glVertex2f(8.0800351874402, 3.864705520743);
+        glVertex2f(8.0101455058791, 3.8495942382433);
+        glVertex2f(7.9544226516614, 3.8316495902749);
+        glVertex2f(7.9080857655849, 3.8159624415127);
+        glVertex2f(7.8583242638705, 3.7946360836351);
+        glVertex2f(7.8192259410949, 3.7816033093766);
+        glVertex2f(7.7884212019384, 3.7496137725602);
+        glVertex2f(7.7528772721425, 3.7211786287234);
+        glVertex2f(7.7, 3.7);
+        glVertex2f(7.6616478523328, 3.6856346989275);
+        glVertex2f(7.6024079693395, 3.6690475316893);
+        glVertex2f(7.5230265261285, 3.6500907691315);
+        glVertex2f(7.4554930595162, 3.6406123878526);
+        glVertex2f(7.3998075695025, 3.6346883995532);
+        glVertex2f(7.3026541613935, 3.6311340065736);
+        glVertex2f(7.1960223720056, 3.627579613594);
+        glVertex2f(7.0988689638967, 3.6263948159342);
+        glVertex2f(6.9946067698285, 3.6477211738118);
+        glVertex2f(6.9081165406583, 3.6571995550907);
+        glVertex2f(6.8571702412841, 3.6785259129683);
+        glVertex2f(6.8, 3.7);
+        glVertex2f(6.7363208799778, 3.7211786287234);
+        glVertex2f(6.6865593782634, 3.7342114029819);
+        glVertex2f(6.6474610554879, 3.7448745819207);
+        glVertex2f(6.6, 3.75);
+        glVertex2f(6.55836383421, 3.7606213355901);
+        glVertex2f(6.5061054650271, 3.7672724007589);
+        glVertex2f(6.4538470958441, 3.7862754440981);
+        glVertex2f(6.3920872049916, 3.8043283352704);
+        glVertex2f(6.3350780749739, 3.8318827481123);
+        glVertex2f(6.3, 3.85);
+        glVertex2f(6.2666671189526, 3.8765398999595);
+        glVertex2f(6.2372124017768, 3.9116955301372);
+        glVertex2f(6.2115582932688, 3.9468511603148);
+        glVertex2f(6.1897047934286, 3.9839070948263);
+        glVertex2f(6.1726020544233, 4.0181125728369);
+        glVertex2f(6.1592999240858, 4.0494675943467);
+        glVertex2f(6.1488482502493, 4.0846232245243);
+        glVertex2f(6.1374464242457, 4.1264299198706);
+        glVertex2f(6.1285481030112, 4.1722211522442);
+        glVertex2f(6.1233559895393, 4.2220654415741);
+        glVertex2f(6.1233559895393, 4.2615255039602);
+        glVertex2f(6.1285481030112, 4.308254525207);
+        glVertex2f(6.1358170618718, 4.3508298556762);
+        glVertex2f(6.1441244434268, 4.3965204542286);
+        glVertex2f(6.166969742703, 4.4619410839741);
+        glVertex2f(6.1960455781454, 4.5159390640814);
+        glVertex2f(6.2271982589766, 4.5605912399394);
+        glVertex2f(6.2521204036415, 4.6031665704087);
+        glVertex2f(6.284311507167, 4.6384729420174);
+        glVertex2f(6.3331173738025, 4.6810482724866);
+        glVertex2f(6.3725774361887, 4.718431489484);
+        glVertex2f(6.4317675297679, 4.7558147064815);
+    glEnd();
+
+    glColor3ub(235, 73, 61);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.2345837659191, 4.3966645362263);
+        glVertex2f(6.2399087231574, 4.4326079975847);
+        glVertex2f(6.2519049619244, 4.4592478687571);
+        glVertex2f(6.2621991249268, 4.4825451850256);
+        glVertex2f(6.2730350859819, 4.5020499149248);
+        glVertex2f(6.286038239248, 4.521554644824);
+        glVertex2f(6.2979577964086, 4.5399757786177);
+        glVertex2f(6.312586343833, 4.5556879221476);
+        glVertex2f(6.3245059009936, 4.5730254598358);
+        glVertex2f(6.3407598425763, 4.5909047955767);
+        glVertex2f(6.3624317646865, 4.6131185157397);
+        glVertex2f(6.3819364945857, 4.6342486397971);
+        glVertex2f(6.4211261010826, 4.6686628765816);
+        glVertex2f(6.4478140223845, 4.6901433986051);
+        glVertex2f(6.4849167422432, 4.720085944456);
+        glVertex2f(6.5233213119216, 4.7435192412089);
+        glVertex2f(6.5643295812391, 4.766301613052);
+        glVertex2f(6.6020832260077, 4.785829360346);
+        glVertex2f(6.65, 4.8);
+        glVertex2f(6.6958164130192, 4.8092626570989);
+        glVertex2f(6.7403890573123, 4.8114280613032);
+        glVertex2f(6.7651384825053, 4.8158910724036);
+        glVertex2f(6.7854248965979, 4.8231941814769);
+        glVertex2f(6.8268091813468, 4.8414519541603);
+        glVertex2f(6.8450669540301, 4.8515951612065);
+        glVertex2f(6.8637304549953, 4.8515951612065);
+        glVertex2f(6.8933486195705, 4.850377976361);
+        glVertex2f(6.9262126104005, 4.8491607915154);
+        glVertex2f(6.9546135901301, 4.8459149652606);
+        glVertex2f(6.9866661243964, 4.8353660299325);
+        glVertex2f(7.0221394394512, 4.8269970969557);
+        glVertex2f(7.0507630213981, 4.8168403420713);
+        glVertex2f(7.0830799687575, 4.8020668804213);
+        glVertex2f(7.13109371912, 4.7891401014775);
+        glVertex2f(7.1791074694826, 4.7872934187713);
+        glVertex2f(7.2154926307847, 4.7840559851689);
+        glVertex2f(7.255065965071, 4.7889016995713);
+        glVertex2f(7.2954469184244, 4.7929397949067);
+        glVertex2f(7.3245212048388, 4.7856712233031);
+        glVertex2f(7.3697478725945, 4.7695188419617);
+        glVertex2f(7.4077059687467, 4.7525588415533);
+        glVertex2f(7.4400107314293, 4.7323683648767);
+        glVertex2f(7.4739307322462, 4.7146007454012);
+        glVertex2f(7.5030050186606, 4.6927950305904);
+        glVertex2f(7.5401554957457, 4.6742197920478);
+        glVertex2f(7.5797288300319, 4.6411074102981);
+        glVertex2f(7.6104183545805, 4.6241474098897);
+        glVertex2f(7.6346469265925, 4.6104178857495);
+        glVertex2f(7.7024869282261, 4.5886121709387);
+        glVertex2f(7.7598628842032, 4.5697902714593);
+        glVertex2f(7.8292530283309, 4.5573991742936);
+        glVertex2f(7.8720023135524, 4.5443885222696);
+        glVertex2f(7.9141320439157, 4.5338560896788);
+        glVertex2f(7.9599791034287, 4.51898677308);
+        glVertex2f(7.9915764012011, 4.5090738953475);
+        glVertex2f(8.0361843509975, 4.4911068044573);
+        glVertex2f(8.0814118556522, 4.4681832747008);
+        glVertex2f(8.1099113791332, 4.4526944032437);
+        glVertex2f(8.137791347756, 4.4260535443375);
+        glVertex2f(8.1658490199979, 4.3884686034595);
+        glVertex2f(8.2084623604124, 4.3575530427666);
+        glVertex2f(8.2385423654108, 4.3433485959618);
+        glVertex2f(8.2936890412413, 4.324966370685);
+        glVertex2f(8.3663823866542, 4.3141041466577);
+        glVertex2f(8.4290490637343, 4.3082552567969);
+        glVertex2f(8.5, 4.3);
+        glVertex2f(8.55, 4.3);
+        glVertex2f(8.6103646494194, 4.2940508099921);
+        glVertex2f(8.6571557683059, 4.2856952530481);
+        glVertex2f(8.7039468871924, 4.2748330290209);
+        glVertex2f(8.7423824491349, 4.256450803744);
+        glVertex2f(8.7674491199669, 4.239739689856);
+        glVertex2f(8.7674491199669, 4.2238641316624);
+        glVertex2f(8.7565868959397, 4.2130019076352);
+        glVertex2f(8.7290135580244, 4.2088241291632);
+        glVertex2f(8.6830579948324, 4.210495240552);
+        glVertex2f(8.6488002113619, 4.2121663519408);
+        glVertex2f(8.5978313140034, 4.2221930202736);
+        glVertex2f(8.5451913052561, 4.218850797496);
+        glVertex2f(8.4984001863697, 4.2096596848576);
+        glVertex2f(8.461635735816, 4.1962907937471);
+        glVertex2f(8.4206935067903, 4.1779085684703);
+        glVertex2f(8.3889423904031, 4.1578552318047);
+        glVertex2f(8.3730668322095, 4.133624116667);
+        glVertex2f(8.3329601588782, 4.1152418913902);
+        glVertex2f(8.2886757070749, 4.0926818876414);
+        glVertex2f(8.2417553680689, 4.0791420173743);
+        glVertex2f(8.1771054853547, 4.0584052625415);
+        glVertex2f(8.1100159844249, 4.0388883168165);
+        glVertex2f(8.0465859108186, 4.0205911801992);
+        glVertex2f(8, 4);
+        glVertex2f(7.9282644273606, 3.982777097857);
+        glVertex2f(7.8562956899996, 3.9559412974851);
+        glVertex2f(7.7916458072854, 3.930325306221);
+        glVertex2f(7.7355345883259, 3.9034895058491);
+        glVertex2f(7.6830827966899, 3.8729942781537);
+        glVertex2f(7.6416092870242, 3.851037714213);
+        glVertex2f(7.617213104868, 3.8242019138411);
+        glVertex2f(7.6, 3.8);
+        glVertex2f(7.5672009314476, 3.7961463043614);
+        glVertex2f(7.5281670399975, 3.7912670679301);
+        glVertex2f(7.4671765846068, 3.7863878314989);
+        glVertex2f(7.4318021204802, 3.7741897404207);
+        glVertex2f(7.4086257474317, 3.746134130941);
+        glVertex2f(7.4049663201083, 3.7180785214613);
+        glVertex2f(7.4, 3.7);
+        glVertex2f(7.3732512833051, 3.7010011939519);
+        glVertex2f(7.3403164373941, 3.6985615757363);
+        glVertex2f(7.2683477000331, 3.6900229119816);
+        glVertex2f(7.1988185808877, 3.6863634846581);
+        glVertex2f(7.1170913706641, 3.6851436755503);
+        glVertex2f(7.0609801517046, 3.6888031028737);
+        glVertex2f(6.9821268954708, 3.6963403985768);
+        glVertex2f(6.9239029382566, 3.7010933746759);
+        glVertex2f(6.8526082967698, 3.7129758149237);
+        glVertex2f(6.7896313634565, 3.727234743221);
+        glVertex2f(6.7230896980689, 3.7486231356671);
+        glVertex2f(6.6791246691521, 3.7605055759149);
+        glVertex2f(6.6351596402352, 3.7747645042122);
+        glVertex2f(6.592839493773, 3.7937924768567);
+        glVertex2f(6.5344461666351, 3.8127086250844);
+        glVertex2f(6.4785201631792, 3.8390267443578);
+        glVertex2f(6.4398654254964, 3.8513633627672);
+        glVertex2f(6.399565805359, 3.8743917171314);
+        glVertex2f(6.35, 3.9);
+        glVertex2f(6.3025177405384, 3.9294952793601);
+        glVertex2f(6.2729098563559, 3.9500563100424);
+        glVertex2f(6.250348218262, 3.9724532780191);
+        glVertex2f(6.2291375756217, 3.9966940124652);
+        glVertex2f(6.2147446395443, 4.0277524534743);
+        glVertex2f(6.2003517034669, 4.0656286010463);
+        glVertex2f(6.1859587673896, 4.1133525469871);
+        glVertex2f(6.1806561067295, 4.164864107685);
+        glVertex2f(6.1768684919723, 4.2201632831402);
+        glVertex2f(6.1852012444381, 4.2762199815468);
+        glVertex2f(6.2003593753743, 4.330698103064);
+        glVertex2f(6.227394257272, 4.3759295400851);
+    glEnd();
+
+    glColor3ub(255, 251, 5);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.3246158517887, 4.2703895203691);
+        glVertex2f(6.3204566391891, 4.2885860754926);
+        glVertex2f(6.3168173281644, 4.3130214495155);
+        glVertex2f(6.3157775250145, 4.3312180046389);
+        glVertex2f(6.3168173281644, 4.3514941660622);
+        glVertex2f(6.3308546706882, 4.3738499337853);
+        glVertex2f(6.3516507336864, 4.389446981034);
+        glVertex2f(6.3589293557358, 4.4071236345824);
+        glVertex2f(6.3511308321114, 4.4258400912808);
+        glVertex2f(6.3401993701067, 4.4391666712231);
+        glVertex2f(6.3408312992751, 4.4549649004313);
+        glVertex2f(6.3490463784633, 4.4770824213228);
+        glVertex2f(6.3661741077888, 4.4845739915898);
+        glVertex2f(6.3781838050211, 4.4910077579642);
+        glVertex2f(6.3773259695045, 4.5047331262296);
+        glVertex2f(6.3713211208884, 4.515456070187);
+        glVertex2f(6.3773259695045, 4.5248922608694);
+        glVertex2f(6.3949115975945, 4.5334706160353);
+        glVertex2f(6.411639390168, 4.5420489712012);
+        glVertex2f(6.4296539360163, 4.5493405730922);
+        glVertex2f(6.4390901266987, 4.5557743394666);
+        glVertex2f(6.4360877023907, 4.5690707899737);
+        glVertex2f(6.44, 4.58);
+        glVertex2f(6.4553890015139, 4.5909455956466);
+        glVertex2f(6.4725457118456, 4.5999528685708);
+        glVertex2f(6.4918470109688, 4.6033842106371);
+        glVertex2f(6.4944205175186, 4.6213987564855);
+        glVertex2f(6.4957072707935, 4.636839795784);
+        glVertex2f(6.5041959424018, 4.6514331472041);
+        glVertex2f(6.5164447151321, 4.6598805766733);
+        glVertex2f(6.5333395740704, 4.6738188352974);
+        glVertex2f(6.552346290376, 4.6784649215054);
+        glVertex2f(6.5692411493142, 4.68268863624);
+        glVertex2f(6.5802228076241, 4.6898689512887);
+        glVertex2f(6.5734648640488, 4.7012729810721);
+        glVertex2f(6.5730424925754, 4.7118322679085);
+        glVertex2f(6.5924715803544, 4.7164783541166);
+        glVertex2f(6.6233046979168, 4.7143664967493);
+        glVertex2f(6.6401995568551, 4.7118322679085);
+        glVertex2f(6.6613181305279, 4.7257705265326);
+        glVertex2f(6.6946854769311, 4.7308389842141);
+        glVertex2f(6.7115803358694, 4.7240810406388);
+        glVertex2f(6.7234067371262, 4.7177454685369);
+        glVertex2f(6.7322765380688, 4.7118322679085);
+        glVertex2f(6.7588859408966, 4.7135217538024);
+        glVertex2f(6.7960546305608, 4.7152112396962);
+        glVertex2f(6.8125271180257, 4.7130993823289);
+        glVertex2f(6.8311114628578, 4.7118322679085);
+        glVertex2f(6.8701785450094, 4.7031810466801);
+        glVertex2f(6.897948166545, 4.6886019953739);
+        glVertex2f(6.9125272178512, 4.68165958999);
+        glVertex2f(6.929883231311, 4.7004040845265);
+        glVertex2f(6.95, 4.7);
+        glVertex2f(6.9632067771537, 4.6969328818346);
+        glVertex2f(6.97778582846, 4.6858250332203);
+        glVertex2f(6.9916706392278, 4.6823538305283);
+        glVertex2f(7.0090266526876, 4.6761056656828);
+        glVertex2f(7.0263826661473, 4.662220854915);
+        glVertex2f(7.05, 4.65);
+        glVertex2f(7.079144947065, 4.6344512333794);
+        glVertex2f(7.1083030496775, 4.6108470550741);
+        glVertex2f(7.1388496333667, 4.5990449659214);
+        glVertex2f(7.1638422927487, 4.5844659146152);
+        glVertex2f(7.1853637494389, 4.5796062308465);
+        glVertex2f(7.2041082439754, 4.5789119903081);
+        glVertex2f(7.2270181817423, 4.5865486362304);
+        glVertex2f(7.25, 4.6);
+        glVertex2f(7.2652014113538, 4.5990449659214);
+        glVertex2f(7.2860286275056, 4.5962680037679);
+        glVertex2f(7.3169201734456, 4.5900327560501);
+        glVertex2f(7.34, 4.58);
+        glVertex2f(7.3664885537148, 4.5700455059416);
+        glVertex2f(7.3712854937408, 4.5624503509003);
+        glVertex2f(7.3696865137321, 4.5544554508569);
+        glVertex2f(7.3564949286605, 4.552456725846);
+        glVertex2f(7.3353084435455, 4.5508577458374);
+        glVertex2f(7.3121232334196, 4.5484592758243);
+        glVertex2f(7.2969329233371, 4.5460608058113);
+        glVertex2f(7.28, 4.54);
+        glVertex2f(7.2665523031721, 4.5316699857332);
+        glVertex2f(7.2501627580831, 4.528871770718);
+        glVertex2f(7.2349724480006, 4.5296712607223);
+        glVertex2f(7.224179332942, 4.531270240731);
+        glVertex2f(7.2157846878964, 4.531270240731);
+        glVertex2f(7.2045918278356, 4.5224758506832);
+        glVertex2f(7.191400242764, 4.5112829906225);
+        glVertex2f(7.18, 4.5);
+        glVertex2f(7.1746109526728, 4.4932944655248);
+        glVertex2f(7.1778089126902, 4.4837005854727);
+        glVertex2f(7.1830055977184, 4.4765051754336);
+        glVertex2f(7.1945982027814, 4.4669112953815);
+        glVertex2f(7.2025931028248, 4.4537197103099);
+        glVertex2f(7.2129864728812, 4.4421271052469);
+        glVertex2f(7.2173836679051, 4.4313339901883);
+        glVertex2f(7.2289762729681, 4.421340365134);
+        glVertex2f(7.2565586781178, 4.4153441901015);
+        glVertex2f(7.2833415932633, 4.4097477600711);
+        glVertex2f(7.2993313933501, 4.4053505650472);
+        glVertex2f(7.3169201734456, 4.3961564299973);
+        glVertex2f(7.3383230244607, 4.3830916415287);
+        glVertex2f(7.3518817578228, 4.3708450436533);
+        glVertex2f(7.3706890331316, 4.3568489317956);
+        glVertex2f(7.3755001965827, 4.347663983389);
+        glVertex2f(7.4008681493247, 4.3454770909112);
+        glVertex2f(7.4244865880846, 4.3459144694068);
+        glVertex2f(7.4502919193222, 4.3371668994957);
+        glVertex2f(7.4717234656043, 4.3275445725936);
+        glVertex2f(7.5080258807351, 4.3122363252492);
+        glVertex2f(7.5255210205573, 4.3043635123293);
+        glVertex2f(7.5543880012637, 4.2934290499404);
+        glVertex2f(7.5631355711748, 4.2838067230383);
+        glVertex2f(7.5561375152459, 4.2728722606495);
+        glVertex2f(7.5307695625039, 4.269373232685);
+        glVertex2f(7.5089006377263, 4.2615004197651);
+        glVertex2f(7.4791589000287, 4.2461921724207);
+        glVertex2f(7.4629758956932, 4.2387567379964);
+        glVertex2f(7.4411069709156, 4.2356950885275);
+        glVertex2f(7.407428826758, 4.2339455745453);
+        glVertex2f(7.3789992245471, 4.231321303572);
+        glVertex2f(7.3483827298584, 4.2326334390586);
+        glVertex2f(7.3142672072053, 4.2317586820675);
+        glVertex2f(7.2915235254366, 4.231321303572);
+        glVertex2f(7.2744612785151, 4.2257932675683);
+        glVertex2f(7.2605520937304, 4.2145589260114);
+        glVertex2f(7.25, 4.2);
+        glVertex2f(7.2354085673889, 4.1851356505053);
+        glVertex2f(7.2380834106167, 4.1771111208219);
+        glVertex2f(7.2589471877937, 4.162131998746);
+        glVertex2f(7.3317029235906, 4.1300338800121);
+        glVertex2f(7.3563114812866, 4.1193345071008);
+        glVertex2f(7.3777102271092, 4.1198694757464);
+        glVertex2f(7.4039236907419, 4.1252191622021);
+        glVertex2f(7.4396547597232, 4.1186912754292);
+        glVertex2f(7.4788220803602, 4.1085367848937);
+        glVertex2f(7.5375730613158, 4.095481011348);
+        glVertex2f(7.5890708347459, 4.0773479925346);
+        glVertex2f(7.6101051365695, 4.0693694642566);
+        glVertex2f(7.6101051365695, 4.0555883699584);
+        glVertex2f(7.6, 4.05);
+        glVertex2f(7.5856993709643, 4.054009775704);
+        glVertex2f(7.5510520267825, 4.0623729277478);
+        glVertex2f(7.5032625865317, 4.0653597677635);
+        glVertex2f(7.4614468263123, 4.0695413437855);
+        glVertex2f(7.4190336980897, 4.0725281838011);
+        glVertex2f(7.3879705619267, 4.0653597677635);
+        glVertex2f(7.376023201864, 4.0581913517259);
+        glVertex2f(7.371244257839, 4.0420624156413);
+        glVertex2f(7.3539205857481, 4.0331018955942);
+        glVertex2f(7.3061311454973, 4.0295176875754);
+        glVertex2f(7.2553548652309, 4.0336992635974);
+        glVertex2f(7.2278759370867, 4.0360887356099);
+        glVertex2f(7.2111496329989, 4.031907159588);
+        glVertex2f(7.2111496329989, 4.0217519035347);
+        glVertex2f(7.2057733209707, 4.0068177034563);
+        glVertex2f(7.1932285929049, 4.0068177034563);
+        glVertex2f(7.1669444007669, 4.0038308634407);
+        glVertex2f(7.15, 4);
+        glVertex2f(7.131699688582, 3.9978571834093);
+        glVertex2f(7.1203496965224, 3.9912861353748);
+        glVertex2f(7.1239339045412, 3.9823256153278);
+        glVertex2f(7.1424523126384, 3.9775466713027);
+        glVertex2f(7.1633601927481, 3.9727677272777);
+        glVertex2f(7.1890470168829, 3.96559931124);
+        glVertex2f(7.2153312090208, 3.9626124712244);
+        glVertex2f(7.25, 3.95);
+        glVertex2f(7.2756653773374, 3.9470809031429);
+        glVertex2f(7.3037416734848, 3.9357309110833);
+        glVertex2f(7.309117985513, 3.9267703910363);
+        glVertex2f(7.3019495694753, 3.9148230309736);
+        glVertex2f(7.2876127374001, 3.9142256629705);
+        glVertex2f(7.2631206492716, 3.9130309269642);
+        glVertex2f(7.220707521049, 3.9136282949673);
+        glVertex2f(7.1651522967575, 3.9136282949673);
+        glVertex2f(7.1251286405475, 3.9142256629705);
+        glVertex2f(7.0935938557144, 3.9119864227739);
+        glVertex2f(7.0684696116599, 3.8973981520326);
+        glVertex2f(7.0465872055479, 3.8892935571763);
+        glVertex2f(7.0058209206595, 3.8732541341467);
+        glVertex2f(6.9839114800356, 3.8690809073612);
+        glVertex2f(6.9620020394117, 3.8774273609322);
+        glVertex2f(6.9233996916459, 3.8857738145032);
+        glVertex2f(6.8837540371836, 3.8878604278959);
+        glVertex2f(6.8461949961141, 3.8857738145032);
+        glVertex2f(6.8190690220083, 3.882643894414);
+        glVertex2f(6.7794233675461, 3.8701242140575);
+        glVertex2f(6.7575139269222, 3.8555179203083);
+        glVertex2f(6.71786827246, 3.8596911470938);
+        glVertex2f(6.680190054244, 3.8656986811799);
+        glVertex2f(6.6325397453533, 3.8820562499036);
+        glVertex2f(6.5834670391823, 3.9026810104682);
+        glVertex2f(6.5215927574884, 3.9297065587943);
+        glVertex2f(6.4789208390789, 3.9503313193589);
+        glVertex2f(6.434826523389, 3.9802016622456);
+        glVertex2f(6.400715360075, 4.0065775598724);
+        glVertex2f(6.3661856674174, 4.0322740753384);
+        glVertex2f(6.342095184168, 4.064394719671);
+        glVertex2f(6.3388831197347, 4.1037425089785);
+        glVertex2f(6.3356710553014, 4.1679837976437);
+        glVertex2f(6.3308529586515, 4.2201798446842);
+        glVertex2f(6.3292469264349, 4.2547095373417);
+    glEnd();
+
+    glColor3ub(255, 209, 125);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.4753201016554, 4.5434306602696);
+        glVertex2f(6.5076025361996, 4.5709305119184);
+        glVertex2f(6.5362980335723, 4.5948434263956);
+        glVertex2f(6.5550175006339, 4.6066503169608);
+        glVertex2f(6.5690282804732, 4.6144963536708);
+        glVertex2f(6.5858412162805, 4.6262654087359);
+        glVertex2f(6.6004124273134, 4.6307488582845);
+        glVertex2f(6.6144232071528, 4.6363531702203);
+        glVertex2f(6.6402030420573, 4.645880500511);
+        glVertex2f(6.668224601736, 4.6520452436404);
+        glVertex2f(6.6923231430597, 4.6554078308018);
+        glVertex2f(6.7153008219963, 4.6559682619954);
+        glVertex2f(6.7309928954164, 4.6559682619954);
+        glVertex2f(6.7517288495787, 4.656528693189);
+        glVertex2f(6.7663000606116, 4.6554078308018);
+        glVertex2f(6.7797504092574, 4.6537265372211);
+        glVertex2f(6.8, 4.65);
+        glVertex2f(6.8184201616141, 4.6470013628982);
+        glVertex2f(6.8346726662278, 4.6447596381239);
+        glVertex2f(6.8498043084543, 4.6402761885753);
+        glVertex2f(6.8666172442616, 4.6363531702203);
+        glVertex2f(6.8828697488752, 4.6301884270909);
+        glVertex2f(6.8985618222953, 4.6217819591873);
+        glVertex2f(6.9176164828769, 4.611694197703);
+        glVertex2f(6.9338689874906, 4.6027272986058);
+        glVertex2f(6.951802785685, 4.58927694996);
+        glVertex2f(6.9652531343308, 4.5814309132499);
+        glVertex2f(6.974220033428, 4.5741453077334);
+        glVertex2f(6.9837473637187, 4.5651784086362);
+        glVertex2f(7, 4.55);
+        glVertex2f(7.0112084922039, 4.5382777113446);
+        glVertex2f(7.0207358224947, 4.5231460691181);
+        glVertex2f(7.0381091894955, 4.5029705461494);
+        glVertex2f(7.0487573821734, 4.4878389039229);
+        glVertex2f(7.0622077308192, 4.4699051057285);
+        glVertex2f(7.0669642419219, 4.458312095008);
+        glVertex2f(7.0728426383963, 4.4461879022794);
+        glVertex2f(7.0772514357522, 4.4377377073474);
+        glVertex2f(7.0801906339894, 4.4252461148391);
+        glVertex2f(7.0849668311249, 4.4120197227716);
+        glVertex2f(7.0897430282604, 4.398793330704);
+        glVertex2f(7.0937844258366, 4.3789537426027);
+        glVertex2f(7.1, 4.36);
+        glVertex2f(7.1033368201076, 4.3381723670611);
+        glVertex2f(7.1040716196669, 4.3142913813836);
+        glVertex2f(7.1037042198873, 4.2992279904178);
+        glVertex2f(7.1033368201076, 4.2790210025368);
+        glVertex2f(7.1033368201076, 4.2595488142151);
+        glVertex2f(7.0999284399254, 4.2313729254375);
+        glVertex2f(7.0948346260788, 4.2124530454358);
+        glVertex2f(7.0919238753093, 4.1906224146647);
+        glVertex2f(7.0824639353084, 4.1709748469706);
+        glVertex2f(7.073731683, 4.1505995915842);
+        glVertex2f(7.0635440553068, 4.1214920838893);
+        glVertex2f(7.05, 4.1);
+        glVertex2f(7.0344365476118, 4.0785585100393);
+        glVertex2f(7.019155106072, 4.0567278792681);
+        glVertex2f(6.9973244753008, 4.0327141854198);
+        glVertex2f(6.9718554060678, 4.0094281792639);
+        glVertex2f(6.94493096145, 3.9934190500317);
+        glVertex2f(6.9121850152932, 3.9730437946452);
+        glVertex2f(6.8816221322136, 3.957034665413);
+        glVertex2f(6.8510592491339, 3.9424809115656);
+        glVertex2f(6.8117641137458, 3.9352040346419);
+        glVertex2f(6.7790181675891, 3.93156559618);
+        glVertex2f(6.7513660352789, 3.9301102207952);
+        glVertex2f(6.7186200891221, 3.9293825331029);
+        glVertex2f(6.6997002091204, 3.93156559618);
+        glVertex2f(6.6660989262452, 3.934148385664);
+        glVertex2f(6.640563287455, 3.9421738721409);
+        glVertex2f(6.6157572383445, 3.9487401792584);
+        glVertex2f(6.5916807789137, 3.9611432038137);
+        glVertex2f(6.5683339091627, 3.97062786965);
+        glVertex2f(6.5427982703725, 3.9866788426039);
+        glVertex2f(6.5172626315823, 4.0041889949171);
+        glVertex2f(6.499752479269, 4.0216991472304);
+        glVertex2f(6.4785943785571, 4.038479709864);
+        glVertex2f(6.4567066881655, 4.0589082208961);
+        glVertex2f(6.4406557152117, 4.0829846803269);
+        glVertex2f(6.426793511297, 4.1041427810388);
+        glVertex2f(6.4180384351404, 4.1274896507898);
+        glVertex2f(6.4070945899446, 4.1493773411814);
+        glVertex2f(6.3939619757096, 4.1792905180499);
+        glVertex2f(6.3881252582719, 4.2048261568401);
+        glVertex2f(6.3822885408341, 4.2296322059506);
+        glVertex2f(6.3793701821152, 4.2595453828191);
+        glVertex2f(6.3779110027558, 4.2872697906485);
+        glVertex2f(6.3771814130761, 4.3106166603995);
+        glVertex2f(6.3793701821152, 4.3361522991897);
+        glVertex2f(6.3807879173079, 4.3583142917039);
+        glVertex2f(6.3870756674499, 4.3787494796655);
+        glVertex2f(6.3912675008779, 4.3970887509131);
+        glVertex2f(6.3959833134844, 4.4169999596962);
+        glVertex2f(6.405938917876, 4.4342912725868);
+        glVertex2f(6.4169424806245, 4.4536785021913);
+        glVertex2f(6.4268980850161, 4.4714937942604);
+        glVertex2f(6.4368536894076, 4.492976940579);
+        glVertex2f(6.4489052105132, 4.5128881493621);
+        glVertex2f(6.4583368357262, 4.5280835455387);
+    glEnd();
+    glPopMatrix();
+
+    //Fire Ball 2
+    glPushMatrix();
+    glTranslated(fireball_all[1],-1.2,0);
+    glScaled(0.4,0.4,0);
+    glBegin(GL_POLYGON);
+    glColor3ub(240, 10, 10);
+        glVertex2f(6.4634376685768, 4.7762096405723);
+        glVertex2f(6.5243717815612, 4.8057534529284);
+        glVertex2f(6.5705339883676, 4.83160428874);
+        glVertex2f(6.6277751248075, 4.8519156597348);
+        glVertex2f(6.6831697729752, 4.8703805424573);
+        glVertex2f(6.7607222804099, 4.8869989369076);
+        glVertex2f(6.8290423464834, 4.8943848899967);
+        glVertex2f(6.8807440181066, 4.8943848899967);
+        glVertex2f(6.9582965255413, 4.8999243548134);
+        glVertex2f(7.021077126798, 4.8906919134521);
+        glVertex2f(7.0801647515102, 4.8925384017244);
+        glVertex2f(7.1540242824004, 4.8888454251799);
+        glVertex2f(7.2094189305681, 4.8869989369076);
+        glVertex2f(7.2574276256467, 4.8777664955464);
+        glVertex2f(7.3146687620867, 4.8722270307296);
+        glVertex2f(7.353445015804, 4.8629945893683);
+        glVertex2f(7.4014537108827, 4.853762148007);
+        glVertex2f(7.4346904997833, 4.8408367301012);
+        glVertex2f(7.4605413355949, 4.8279113121955);
+        glVertex2f(7.4919316362232, 4.8168323825619);
+        glVertex2f(7.5140894954903, 4.7965210115671);
+        glVertex2f(7.5436333078464, 4.7928280350226);
+        glVertex2f(7.5953349794695, 4.7762096405723);
+        glVertex2f(7.656269092454, 4.759591246122);
+        glVertex2f(7.7338215998887, 4.7263544572214);
+        glVertex2f(7.8021416659622, 4.680192250415);
+        glVertex2f(7.8556898258576, 4.680192250415);
+        glVertex2f(7.9480142394704, 4.665420344237);
+        glVertex2f(8.0181807938161, 4.6469554615144);
+        glVertex2f(8.0975797895231, 4.6266440905196);
+        glVertex2f(8.1714393204133, 4.58602134853);
+        glVertex2f(8.2231409920365, 4.5453986065403);
+        glVertex2f(8.2436247702168, 4.5202005881592);
+        glVertex2f(8.2701243898812, 4.5074415120245);
+        glVertex2f(8.2877908029909, 4.4986083054697);
+        glVertex2f(8.325086564, 4.4789789575701);
+        glVertex2f(8.371215531564, 4.4632754792505);
+        glVertex2f(8.4094927599682, 4.4524793379057);
+        glVertex2f(8.4605290645071, 4.437757326981);
+        glVertex2f(8.5007692277012, 4.4269611856363);
+        glVertex2f(8.55573140182, 4.4102762399216);
+        glVertex2f(8.6, 4.4);
+        glVertex2f(8.6457337793313, 4.3877756455438);
+        glVertex2f(8.6919192098964, 4.381854436497);
+        glVertex2f(8.7262622223678, 4.368827776594);
+        glVertex2f(8.779553103789, 4.3581696003098);
+        glVertex2f(8.8233700507353, 4.352248391263);
+        glVertex2f(8.8754766903471, 4.3404059731694);
+        glVertex2f(8.9571893751929, 4.3202738624103);
+        glVertex2f(9.0673238634633, 4.3072472025073);
+        glVertex2f(9.1774583517338, 4.2918520589857);
+        glVertex2f(9.4587305866192, 4.2807297245546);
+        glVertex2f(9.5641646996472, 4.2628595359058);
+        glVertex2f(9.6374324731072, 4.2494568944192);
+        glVertex2f(9.6946170767834, 4.2378412717974);
+        glVertex2f(9.7321444729459, 4.2253321397433);
+        glVertex2f(9.7464406238649, 4.214610026554);
+        glVertex2f(9.75, 4.2);
+        glVertex2f(9.7375055295405, 4.192272290743);
+        glVertex2f(9.7249963974863, 4.1860177247159);
+        glVertex2f(9.6830014541617, 4.1788696492564);
+        glVertex2f(9.6016920958096, 4.1752956115266);
+        glVertex2f(9.5275308129171, 4.169934554932);
+        glVertex2f(9.4515825111597, 4.169934554932);
+        glVertex2f(9.3541899830238, 4.1735085926618);
+        glVertex2f(9.2425013039688, 4.1609994606076);
+        glVertex2f(9.1692335305087, 4.1663605172022);
+        glVertex2f(9.076308549535, 4.1609994606076);
+        glVertex2f(9.0119758703993, 4.1529578757156);
+        glVertex2f(8.95, 4.15);
+        glVertex2f(8.9065417573714, 4.1431292719588);
+        glVertex2f(8.86959969805, 4.1357641505815);
+        glVertex2f(8.8280436711758, 4.1310418748004);
+        glVertex2f(8.7666540860207, 4.1197084129256);
+        glVertex2f(8.7184868730529, 4.1093194062071);
+        glVertex2f(8.649541646648, 4.0904303030824);
+        glVertex2f(8.584374240868, 4.0734301102702);
+        glVertex2f(8.54376266915, 4.0592632829268);
+        glVertex2f(8.4993732768071, 4.0432075452708);
+        glVertex2f(8.47859526337, 4.0328185385523);
+        glVertex2f(8.4389281468083, 4.0148738905839);
+        glVertex2f(8.3983165750903, 3.9903180565219);
+        glVertex2f(8.352038272435, 3.95820658121);
+        glVertex2f(8.3227601625918, 3.9317618368355);
+        glVertex2f(8.2594816671243, 3.9119282785546);
+        glVertex2f(8.1895919855631, 3.8939836305862);
+        glVertex2f(8.1395358622828, 3.8845390790239);
+        glVertex2f(8.0800351874402, 3.864705520743);
+        glVertex2f(8.0101455058791, 3.8495942382433);
+        glVertex2f(7.9544226516614, 3.8316495902749);
+        glVertex2f(7.9080857655849, 3.8159624415127);
+        glVertex2f(7.8583242638705, 3.7946360836351);
+        glVertex2f(7.8192259410949, 3.7816033093766);
+        glVertex2f(7.7884212019384, 3.7496137725602);
+        glVertex2f(7.7528772721425, 3.7211786287234);
+        glVertex2f(7.7, 3.7);
+        glVertex2f(7.6616478523328, 3.6856346989275);
+        glVertex2f(7.6024079693395, 3.6690475316893);
+        glVertex2f(7.5230265261285, 3.6500907691315);
+        glVertex2f(7.4554930595162, 3.6406123878526);
+        glVertex2f(7.3998075695025, 3.6346883995532);
+        glVertex2f(7.3026541613935, 3.6311340065736);
+        glVertex2f(7.1960223720056, 3.627579613594);
+        glVertex2f(7.0988689638967, 3.6263948159342);
+        glVertex2f(6.9946067698285, 3.6477211738118);
+        glVertex2f(6.9081165406583, 3.6571995550907);
+        glVertex2f(6.8571702412841, 3.6785259129683);
+        glVertex2f(6.8, 3.7);
+        glVertex2f(6.7363208799778, 3.7211786287234);
+        glVertex2f(6.6865593782634, 3.7342114029819);
+        glVertex2f(6.6474610554879, 3.7448745819207);
+        glVertex2f(6.6, 3.75);
+        glVertex2f(6.55836383421, 3.7606213355901);
+        glVertex2f(6.5061054650271, 3.7672724007589);
+        glVertex2f(6.4538470958441, 3.7862754440981);
+        glVertex2f(6.3920872049916, 3.8043283352704);
+        glVertex2f(6.3350780749739, 3.8318827481123);
+        glVertex2f(6.3, 3.85);
+        glVertex2f(6.2666671189526, 3.8765398999595);
+        glVertex2f(6.2372124017768, 3.9116955301372);
+        glVertex2f(6.2115582932688, 3.9468511603148);
+        glVertex2f(6.1897047934286, 3.9839070948263);
+        glVertex2f(6.1726020544233, 4.0181125728369);
+        glVertex2f(6.1592999240858, 4.0494675943467);
+        glVertex2f(6.1488482502493, 4.0846232245243);
+        glVertex2f(6.1374464242457, 4.1264299198706);
+        glVertex2f(6.1285481030112, 4.1722211522442);
+        glVertex2f(6.1233559895393, 4.2220654415741);
+        glVertex2f(6.1233559895393, 4.2615255039602);
+        glVertex2f(6.1285481030112, 4.308254525207);
+        glVertex2f(6.1358170618718, 4.3508298556762);
+        glVertex2f(6.1441244434268, 4.3965204542286);
+        glVertex2f(6.166969742703, 4.4619410839741);
+        glVertex2f(6.1960455781454, 4.5159390640814);
+        glVertex2f(6.2271982589766, 4.5605912399394);
+        glVertex2f(6.2521204036415, 4.6031665704087);
+        glVertex2f(6.284311507167, 4.6384729420174);
+        glVertex2f(6.3331173738025, 4.6810482724866);
+        glVertex2f(6.3725774361887, 4.718431489484);
+        glVertex2f(6.4317675297679, 4.7558147064815);
+    glEnd();
+
+    glColor3ub(235, 73, 61);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.2345837659191, 4.3966645362263);
+        glVertex2f(6.2399087231574, 4.4326079975847);
+        glVertex2f(6.2519049619244, 4.4592478687571);
+        glVertex2f(6.2621991249268, 4.4825451850256);
+        glVertex2f(6.2730350859819, 4.5020499149248);
+        glVertex2f(6.286038239248, 4.521554644824);
+        glVertex2f(6.2979577964086, 4.5399757786177);
+        glVertex2f(6.312586343833, 4.5556879221476);
+        glVertex2f(6.3245059009936, 4.5730254598358);
+        glVertex2f(6.3407598425763, 4.5909047955767);
+        glVertex2f(6.3624317646865, 4.6131185157397);
+        glVertex2f(6.3819364945857, 4.6342486397971);
+        glVertex2f(6.4211261010826, 4.6686628765816);
+        glVertex2f(6.4478140223845, 4.6901433986051);
+        glVertex2f(6.4849167422432, 4.720085944456);
+        glVertex2f(6.5233213119216, 4.7435192412089);
+        glVertex2f(6.5643295812391, 4.766301613052);
+        glVertex2f(6.6020832260077, 4.785829360346);
+        glVertex2f(6.65, 4.8);
+        glVertex2f(6.6958164130192, 4.8092626570989);
+        glVertex2f(6.7403890573123, 4.8114280613032);
+        glVertex2f(6.7651384825053, 4.8158910724036);
+        glVertex2f(6.7854248965979, 4.8231941814769);
+        glVertex2f(6.8268091813468, 4.8414519541603);
+        glVertex2f(6.8450669540301, 4.8515951612065);
+        glVertex2f(6.8637304549953, 4.8515951612065);
+        glVertex2f(6.8933486195705, 4.850377976361);
+        glVertex2f(6.9262126104005, 4.8491607915154);
+        glVertex2f(6.9546135901301, 4.8459149652606);
+        glVertex2f(6.9866661243964, 4.8353660299325);
+        glVertex2f(7.0221394394512, 4.8269970969557);
+        glVertex2f(7.0507630213981, 4.8168403420713);
+        glVertex2f(7.0830799687575, 4.8020668804213);
+        glVertex2f(7.13109371912, 4.7891401014775);
+        glVertex2f(7.1791074694826, 4.7872934187713);
+        glVertex2f(7.2154926307847, 4.7840559851689);
+        glVertex2f(7.255065965071, 4.7889016995713);
+        glVertex2f(7.2954469184244, 4.7929397949067);
+        glVertex2f(7.3245212048388, 4.7856712233031);
+        glVertex2f(7.3697478725945, 4.7695188419617);
+        glVertex2f(7.4077059687467, 4.7525588415533);
+        glVertex2f(7.4400107314293, 4.7323683648767);
+        glVertex2f(7.4739307322462, 4.7146007454012);
+        glVertex2f(7.5030050186606, 4.6927950305904);
+        glVertex2f(7.5401554957457, 4.6742197920478);
+        glVertex2f(7.5797288300319, 4.6411074102981);
+        glVertex2f(7.6104183545805, 4.6241474098897);
+        glVertex2f(7.6346469265925, 4.6104178857495);
+        glVertex2f(7.7024869282261, 4.5886121709387);
+        glVertex2f(7.7598628842032, 4.5697902714593);
+        glVertex2f(7.8292530283309, 4.5573991742936);
+        glVertex2f(7.8720023135524, 4.5443885222696);
+        glVertex2f(7.9141320439157, 4.5338560896788);
+        glVertex2f(7.9599791034287, 4.51898677308);
+        glVertex2f(7.9915764012011, 4.5090738953475);
+        glVertex2f(8.0361843509975, 4.4911068044573);
+        glVertex2f(8.0814118556522, 4.4681832747008);
+        glVertex2f(8.1099113791332, 4.4526944032437);
+        glVertex2f(8.137791347756, 4.4260535443375);
+        glVertex2f(8.1658490199979, 4.3884686034595);
+        glVertex2f(8.2084623604124, 4.3575530427666);
+        glVertex2f(8.2385423654108, 4.3433485959618);
+        glVertex2f(8.2936890412413, 4.324966370685);
+        glVertex2f(8.3663823866542, 4.3141041466577);
+        glVertex2f(8.4290490637343, 4.3082552567969);
+        glVertex2f(8.5, 4.3);
+        glVertex2f(8.55, 4.3);
+        glVertex2f(8.6103646494194, 4.2940508099921);
+        glVertex2f(8.6571557683059, 4.2856952530481);
+        glVertex2f(8.7039468871924, 4.2748330290209);
+        glVertex2f(8.7423824491349, 4.256450803744);
+        glVertex2f(8.7674491199669, 4.239739689856);
+        glVertex2f(8.7674491199669, 4.2238641316624);
+        glVertex2f(8.7565868959397, 4.2130019076352);
+        glVertex2f(8.7290135580244, 4.2088241291632);
+        glVertex2f(8.6830579948324, 4.210495240552);
+        glVertex2f(8.6488002113619, 4.2121663519408);
+        glVertex2f(8.5978313140034, 4.2221930202736);
+        glVertex2f(8.5451913052561, 4.218850797496);
+        glVertex2f(8.4984001863697, 4.2096596848576);
+        glVertex2f(8.461635735816, 4.1962907937471);
+        glVertex2f(8.4206935067903, 4.1779085684703);
+        glVertex2f(8.3889423904031, 4.1578552318047);
+        glVertex2f(8.3730668322095, 4.133624116667);
+        glVertex2f(8.3329601588782, 4.1152418913902);
+        glVertex2f(8.2886757070749, 4.0926818876414);
+        glVertex2f(8.2417553680689, 4.0791420173743);
+        glVertex2f(8.1771054853547, 4.0584052625415);
+        glVertex2f(8.1100159844249, 4.0388883168165);
+        glVertex2f(8.0465859108186, 4.0205911801992);
+        glVertex2f(8, 4);
+        glVertex2f(7.9282644273606, 3.982777097857);
+        glVertex2f(7.8562956899996, 3.9559412974851);
+        glVertex2f(7.7916458072854, 3.930325306221);
+        glVertex2f(7.7355345883259, 3.9034895058491);
+        glVertex2f(7.6830827966899, 3.8729942781537);
+        glVertex2f(7.6416092870242, 3.851037714213);
+        glVertex2f(7.617213104868, 3.8242019138411);
+        glVertex2f(7.6, 3.8);
+        glVertex2f(7.5672009314476, 3.7961463043614);
+        glVertex2f(7.5281670399975, 3.7912670679301);
+        glVertex2f(7.4671765846068, 3.7863878314989);
+        glVertex2f(7.4318021204802, 3.7741897404207);
+        glVertex2f(7.4086257474317, 3.746134130941);
+        glVertex2f(7.4049663201083, 3.7180785214613);
+        glVertex2f(7.4, 3.7);
+        glVertex2f(7.3732512833051, 3.7010011939519);
+        glVertex2f(7.3403164373941, 3.6985615757363);
+        glVertex2f(7.2683477000331, 3.6900229119816);
+        glVertex2f(7.1988185808877, 3.6863634846581);
+        glVertex2f(7.1170913706641, 3.6851436755503);
+        glVertex2f(7.0609801517046, 3.6888031028737);
+        glVertex2f(6.9821268954708, 3.6963403985768);
+        glVertex2f(6.9239029382566, 3.7010933746759);
+        glVertex2f(6.8526082967698, 3.7129758149237);
+        glVertex2f(6.7896313634565, 3.727234743221);
+        glVertex2f(6.7230896980689, 3.7486231356671);
+        glVertex2f(6.6791246691521, 3.7605055759149);
+        glVertex2f(6.6351596402352, 3.7747645042122);
+        glVertex2f(6.592839493773, 3.7937924768567);
+        glVertex2f(6.5344461666351, 3.8127086250844);
+        glVertex2f(6.4785201631792, 3.8390267443578);
+        glVertex2f(6.4398654254964, 3.8513633627672);
+        glVertex2f(6.399565805359, 3.8743917171314);
+        glVertex2f(6.35, 3.9);
+        glVertex2f(6.3025177405384, 3.9294952793601);
+        glVertex2f(6.2729098563559, 3.9500563100424);
+        glVertex2f(6.250348218262, 3.9724532780191);
+        glVertex2f(6.2291375756217, 3.9966940124652);
+        glVertex2f(6.2147446395443, 4.0277524534743);
+        glVertex2f(6.2003517034669, 4.0656286010463);
+        glVertex2f(6.1859587673896, 4.1133525469871);
+        glVertex2f(6.1806561067295, 4.164864107685);
+        glVertex2f(6.1768684919723, 4.2201632831402);
+        glVertex2f(6.1852012444381, 4.2762199815468);
+        glVertex2f(6.2003593753743, 4.330698103064);
+        glVertex2f(6.227394257272, 4.3759295400851);
+    glEnd();
+
+    glColor3ub(255, 251, 5);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.3246158517887, 4.2703895203691);
+        glVertex2f(6.3204566391891, 4.2885860754926);
+        glVertex2f(6.3168173281644, 4.3130214495155);
+        glVertex2f(6.3157775250145, 4.3312180046389);
+        glVertex2f(6.3168173281644, 4.3514941660622);
+        glVertex2f(6.3308546706882, 4.3738499337853);
+        glVertex2f(6.3516507336864, 4.389446981034);
+        glVertex2f(6.3589293557358, 4.4071236345824);
+        glVertex2f(6.3511308321114, 4.4258400912808);
+        glVertex2f(6.3401993701067, 4.4391666712231);
+        glVertex2f(6.3408312992751, 4.4549649004313);
+        glVertex2f(6.3490463784633, 4.4770824213228);
+        glVertex2f(6.3661741077888, 4.4845739915898);
+        glVertex2f(6.3781838050211, 4.4910077579642);
+        glVertex2f(6.3773259695045, 4.5047331262296);
+        glVertex2f(6.3713211208884, 4.515456070187);
+        glVertex2f(6.3773259695045, 4.5248922608694);
+        glVertex2f(6.3949115975945, 4.5334706160353);
+        glVertex2f(6.411639390168, 4.5420489712012);
+        glVertex2f(6.4296539360163, 4.5493405730922);
+        glVertex2f(6.4390901266987, 4.5557743394666);
+        glVertex2f(6.4360877023907, 4.5690707899737);
+        glVertex2f(6.44, 4.58);
+        glVertex2f(6.4553890015139, 4.5909455956466);
+        glVertex2f(6.4725457118456, 4.5999528685708);
+        glVertex2f(6.4918470109688, 4.6033842106371);
+        glVertex2f(6.4944205175186, 4.6213987564855);
+        glVertex2f(6.4957072707935, 4.636839795784);
+        glVertex2f(6.5041959424018, 4.6514331472041);
+        glVertex2f(6.5164447151321, 4.6598805766733);
+        glVertex2f(6.5333395740704, 4.6738188352974);
+        glVertex2f(6.552346290376, 4.6784649215054);
+        glVertex2f(6.5692411493142, 4.68268863624);
+        glVertex2f(6.5802228076241, 4.6898689512887);
+        glVertex2f(6.5734648640488, 4.7012729810721);
+        glVertex2f(6.5730424925754, 4.7118322679085);
+        glVertex2f(6.5924715803544, 4.7164783541166);
+        glVertex2f(6.6233046979168, 4.7143664967493);
+        glVertex2f(6.6401995568551, 4.7118322679085);
+        glVertex2f(6.6613181305279, 4.7257705265326);
+        glVertex2f(6.6946854769311, 4.7308389842141);
+        glVertex2f(6.7115803358694, 4.7240810406388);
+        glVertex2f(6.7234067371262, 4.7177454685369);
+        glVertex2f(6.7322765380688, 4.7118322679085);
+        glVertex2f(6.7588859408966, 4.7135217538024);
+        glVertex2f(6.7960546305608, 4.7152112396962);
+        glVertex2f(6.8125271180257, 4.7130993823289);
+        glVertex2f(6.8311114628578, 4.7118322679085);
+        glVertex2f(6.8701785450094, 4.7031810466801);
+        glVertex2f(6.897948166545, 4.6886019953739);
+        glVertex2f(6.9125272178512, 4.68165958999);
+        glVertex2f(6.929883231311, 4.7004040845265);
+        glVertex2f(6.95, 4.7);
+        glVertex2f(6.9632067771537, 4.6969328818346);
+        glVertex2f(6.97778582846, 4.6858250332203);
+        glVertex2f(6.9916706392278, 4.6823538305283);
+        glVertex2f(7.0090266526876, 4.6761056656828);
+        glVertex2f(7.0263826661473, 4.662220854915);
+        glVertex2f(7.05, 4.65);
+        glVertex2f(7.079144947065, 4.6344512333794);
+        glVertex2f(7.1083030496775, 4.6108470550741);
+        glVertex2f(7.1388496333667, 4.5990449659214);
+        glVertex2f(7.1638422927487, 4.5844659146152);
+        glVertex2f(7.1853637494389, 4.5796062308465);
+        glVertex2f(7.2041082439754, 4.5789119903081);
+        glVertex2f(7.2270181817423, 4.5865486362304);
+        glVertex2f(7.25, 4.6);
+        glVertex2f(7.2652014113538, 4.5990449659214);
+        glVertex2f(7.2860286275056, 4.5962680037679);
+        glVertex2f(7.3169201734456, 4.5900327560501);
+        glVertex2f(7.34, 4.58);
+        glVertex2f(7.3664885537148, 4.5700455059416);
+        glVertex2f(7.3712854937408, 4.5624503509003);
+        glVertex2f(7.3696865137321, 4.5544554508569);
+        glVertex2f(7.3564949286605, 4.552456725846);
+        glVertex2f(7.3353084435455, 4.5508577458374);
+        glVertex2f(7.3121232334196, 4.5484592758243);
+        glVertex2f(7.2969329233371, 4.5460608058113);
+        glVertex2f(7.28, 4.54);
+        glVertex2f(7.2665523031721, 4.5316699857332);
+        glVertex2f(7.2501627580831, 4.528871770718);
+        glVertex2f(7.2349724480006, 4.5296712607223);
+        glVertex2f(7.224179332942, 4.531270240731);
+        glVertex2f(7.2157846878964, 4.531270240731);
+        glVertex2f(7.2045918278356, 4.5224758506832);
+        glVertex2f(7.191400242764, 4.5112829906225);
+        glVertex2f(7.18, 4.5);
+        glVertex2f(7.1746109526728, 4.4932944655248);
+        glVertex2f(7.1778089126902, 4.4837005854727);
+        glVertex2f(7.1830055977184, 4.4765051754336);
+        glVertex2f(7.1945982027814, 4.4669112953815);
+        glVertex2f(7.2025931028248, 4.4537197103099);
+        glVertex2f(7.2129864728812, 4.4421271052469);
+        glVertex2f(7.2173836679051, 4.4313339901883);
+        glVertex2f(7.2289762729681, 4.421340365134);
+        glVertex2f(7.2565586781178, 4.4153441901015);
+        glVertex2f(7.2833415932633, 4.4097477600711);
+        glVertex2f(7.2993313933501, 4.4053505650472);
+        glVertex2f(7.3169201734456, 4.3961564299973);
+        glVertex2f(7.3383230244607, 4.3830916415287);
+        glVertex2f(7.3518817578228, 4.3708450436533);
+        glVertex2f(7.3706890331316, 4.3568489317956);
+        glVertex2f(7.3755001965827, 4.347663983389);
+        glVertex2f(7.4008681493247, 4.3454770909112);
+        glVertex2f(7.4244865880846, 4.3459144694068);
+        glVertex2f(7.4502919193222, 4.3371668994957);
+        glVertex2f(7.4717234656043, 4.3275445725936);
+        glVertex2f(7.5080258807351, 4.3122363252492);
+        glVertex2f(7.5255210205573, 4.3043635123293);
+        glVertex2f(7.5543880012637, 4.2934290499404);
+        glVertex2f(7.5631355711748, 4.2838067230383);
+        glVertex2f(7.5561375152459, 4.2728722606495);
+        glVertex2f(7.5307695625039, 4.269373232685);
+        glVertex2f(7.5089006377263, 4.2615004197651);
+        glVertex2f(7.4791589000287, 4.2461921724207);
+        glVertex2f(7.4629758956932, 4.2387567379964);
+        glVertex2f(7.4411069709156, 4.2356950885275);
+        glVertex2f(7.407428826758, 4.2339455745453);
+        glVertex2f(7.3789992245471, 4.231321303572);
+        glVertex2f(7.3483827298584, 4.2326334390586);
+        glVertex2f(7.3142672072053, 4.2317586820675);
+        glVertex2f(7.2915235254366, 4.231321303572);
+        glVertex2f(7.2744612785151, 4.2257932675683);
+        glVertex2f(7.2605520937304, 4.2145589260114);
+        glVertex2f(7.25, 4.2);
+        glVertex2f(7.2354085673889, 4.1851356505053);
+        glVertex2f(7.2380834106167, 4.1771111208219);
+        glVertex2f(7.2589471877937, 4.162131998746);
+        glVertex2f(7.3317029235906, 4.1300338800121);
+        glVertex2f(7.3563114812866, 4.1193345071008);
+        glVertex2f(7.3777102271092, 4.1198694757464);
+        glVertex2f(7.4039236907419, 4.1252191622021);
+        glVertex2f(7.4396547597232, 4.1186912754292);
+        glVertex2f(7.4788220803602, 4.1085367848937);
+        glVertex2f(7.5375730613158, 4.095481011348);
+        glVertex2f(7.5890708347459, 4.0773479925346);
+        glVertex2f(7.6101051365695, 4.0693694642566);
+        glVertex2f(7.6101051365695, 4.0555883699584);
+        glVertex2f(7.6, 4.05);
+        glVertex2f(7.5856993709643, 4.054009775704);
+        glVertex2f(7.5510520267825, 4.0623729277478);
+        glVertex2f(7.5032625865317, 4.0653597677635);
+        glVertex2f(7.4614468263123, 4.0695413437855);
+        glVertex2f(7.4190336980897, 4.0725281838011);
+        glVertex2f(7.3879705619267, 4.0653597677635);
+        glVertex2f(7.376023201864, 4.0581913517259);
+        glVertex2f(7.371244257839, 4.0420624156413);
+        glVertex2f(7.3539205857481, 4.0331018955942);
+        glVertex2f(7.3061311454973, 4.0295176875754);
+        glVertex2f(7.2553548652309, 4.0336992635974);
+        glVertex2f(7.2278759370867, 4.0360887356099);
+        glVertex2f(7.2111496329989, 4.031907159588);
+        glVertex2f(7.2111496329989, 4.0217519035347);
+        glVertex2f(7.2057733209707, 4.0068177034563);
+        glVertex2f(7.1932285929049, 4.0068177034563);
+        glVertex2f(7.1669444007669, 4.0038308634407);
+        glVertex2f(7.15, 4);
+        glVertex2f(7.131699688582, 3.9978571834093);
+        glVertex2f(7.1203496965224, 3.9912861353748);
+        glVertex2f(7.1239339045412, 3.9823256153278);
+        glVertex2f(7.1424523126384, 3.9775466713027);
+        glVertex2f(7.1633601927481, 3.9727677272777);
+        glVertex2f(7.1890470168829, 3.96559931124);
+        glVertex2f(7.2153312090208, 3.9626124712244);
+        glVertex2f(7.25, 3.95);
+        glVertex2f(7.2756653773374, 3.9470809031429);
+        glVertex2f(7.3037416734848, 3.9357309110833);
+        glVertex2f(7.309117985513, 3.9267703910363);
+        glVertex2f(7.3019495694753, 3.9148230309736);
+        glVertex2f(7.2876127374001, 3.9142256629705);
+        glVertex2f(7.2631206492716, 3.9130309269642);
+        glVertex2f(7.220707521049, 3.9136282949673);
+        glVertex2f(7.1651522967575, 3.9136282949673);
+        glVertex2f(7.1251286405475, 3.9142256629705);
+        glVertex2f(7.0935938557144, 3.9119864227739);
+        glVertex2f(7.0684696116599, 3.8973981520326);
+        glVertex2f(7.0465872055479, 3.8892935571763);
+        glVertex2f(7.0058209206595, 3.8732541341467);
+        glVertex2f(6.9839114800356, 3.8690809073612);
+        glVertex2f(6.9620020394117, 3.8774273609322);
+        glVertex2f(6.9233996916459, 3.8857738145032);
+        glVertex2f(6.8837540371836, 3.8878604278959);
+        glVertex2f(6.8461949961141, 3.8857738145032);
+        glVertex2f(6.8190690220083, 3.882643894414);
+        glVertex2f(6.7794233675461, 3.8701242140575);
+        glVertex2f(6.7575139269222, 3.8555179203083);
+        glVertex2f(6.71786827246, 3.8596911470938);
+        glVertex2f(6.680190054244, 3.8656986811799);
+        glVertex2f(6.6325397453533, 3.8820562499036);
+        glVertex2f(6.5834670391823, 3.9026810104682);
+        glVertex2f(6.5215927574884, 3.9297065587943);
+        glVertex2f(6.4789208390789, 3.9503313193589);
+        glVertex2f(6.434826523389, 3.9802016622456);
+        glVertex2f(6.400715360075, 4.0065775598724);
+        glVertex2f(6.3661856674174, 4.0322740753384);
+        glVertex2f(6.342095184168, 4.064394719671);
+        glVertex2f(6.3388831197347, 4.1037425089785);
+        glVertex2f(6.3356710553014, 4.1679837976437);
+        glVertex2f(6.3308529586515, 4.2201798446842);
+        glVertex2f(6.3292469264349, 4.2547095373417);
+    glEnd();
+
+    glColor3ub(255, 209, 125);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.4753201016554, 4.5434306602696);
+        glVertex2f(6.5076025361996, 4.5709305119184);
+        glVertex2f(6.5362980335723, 4.5948434263956);
+        glVertex2f(6.5550175006339, 4.6066503169608);
+        glVertex2f(6.5690282804732, 4.6144963536708);
+        glVertex2f(6.5858412162805, 4.6262654087359);
+        glVertex2f(6.6004124273134, 4.6307488582845);
+        glVertex2f(6.6144232071528, 4.6363531702203);
+        glVertex2f(6.6402030420573, 4.645880500511);
+        glVertex2f(6.668224601736, 4.6520452436404);
+        glVertex2f(6.6923231430597, 4.6554078308018);
+        glVertex2f(6.7153008219963, 4.6559682619954);
+        glVertex2f(6.7309928954164, 4.6559682619954);
+        glVertex2f(6.7517288495787, 4.656528693189);
+        glVertex2f(6.7663000606116, 4.6554078308018);
+        glVertex2f(6.7797504092574, 4.6537265372211);
+        glVertex2f(6.8, 4.65);
+        glVertex2f(6.8184201616141, 4.6470013628982);
+        glVertex2f(6.8346726662278, 4.6447596381239);
+        glVertex2f(6.8498043084543, 4.6402761885753);
+        glVertex2f(6.8666172442616, 4.6363531702203);
+        glVertex2f(6.8828697488752, 4.6301884270909);
+        glVertex2f(6.8985618222953, 4.6217819591873);
+        glVertex2f(6.9176164828769, 4.611694197703);
+        glVertex2f(6.9338689874906, 4.6027272986058);
+        glVertex2f(6.951802785685, 4.58927694996);
+        glVertex2f(6.9652531343308, 4.5814309132499);
+        glVertex2f(6.974220033428, 4.5741453077334);
+        glVertex2f(6.9837473637187, 4.5651784086362);
+        glVertex2f(7, 4.55);
+        glVertex2f(7.0112084922039, 4.5382777113446);
+        glVertex2f(7.0207358224947, 4.5231460691181);
+        glVertex2f(7.0381091894955, 4.5029705461494);
+        glVertex2f(7.0487573821734, 4.4878389039229);
+        glVertex2f(7.0622077308192, 4.4699051057285);
+        glVertex2f(7.0669642419219, 4.458312095008);
+        glVertex2f(7.0728426383963, 4.4461879022794);
+        glVertex2f(7.0772514357522, 4.4377377073474);
+        glVertex2f(7.0801906339894, 4.4252461148391);
+        glVertex2f(7.0849668311249, 4.4120197227716);
+        glVertex2f(7.0897430282604, 4.398793330704);
+        glVertex2f(7.0937844258366, 4.3789537426027);
+        glVertex2f(7.1, 4.36);
+        glVertex2f(7.1033368201076, 4.3381723670611);
+        glVertex2f(7.1040716196669, 4.3142913813836);
+        glVertex2f(7.1037042198873, 4.2992279904178);
+        glVertex2f(7.1033368201076, 4.2790210025368);
+        glVertex2f(7.1033368201076, 4.2595488142151);
+        glVertex2f(7.0999284399254, 4.2313729254375);
+        glVertex2f(7.0948346260788, 4.2124530454358);
+        glVertex2f(7.0919238753093, 4.1906224146647);
+        glVertex2f(7.0824639353084, 4.1709748469706);
+        glVertex2f(7.073731683, 4.1505995915842);
+        glVertex2f(7.0635440553068, 4.1214920838893);
+        glVertex2f(7.05, 4.1);
+        glVertex2f(7.0344365476118, 4.0785585100393);
+        glVertex2f(7.019155106072, 4.0567278792681);
+        glVertex2f(6.9973244753008, 4.0327141854198);
+        glVertex2f(6.9718554060678, 4.0094281792639);
+        glVertex2f(6.94493096145, 3.9934190500317);
+        glVertex2f(6.9121850152932, 3.9730437946452);
+        glVertex2f(6.8816221322136, 3.957034665413);
+        glVertex2f(6.8510592491339, 3.9424809115656);
+        glVertex2f(6.8117641137458, 3.9352040346419);
+        glVertex2f(6.7790181675891, 3.93156559618);
+        glVertex2f(6.7513660352789, 3.9301102207952);
+        glVertex2f(6.7186200891221, 3.9293825331029);
+        glVertex2f(6.6997002091204, 3.93156559618);
+        glVertex2f(6.6660989262452, 3.934148385664);
+        glVertex2f(6.640563287455, 3.9421738721409);
+        glVertex2f(6.6157572383445, 3.9487401792584);
+        glVertex2f(6.5916807789137, 3.9611432038137);
+        glVertex2f(6.5683339091627, 3.97062786965);
+        glVertex2f(6.5427982703725, 3.9866788426039);
+        glVertex2f(6.5172626315823, 4.0041889949171);
+        glVertex2f(6.499752479269, 4.0216991472304);
+        glVertex2f(6.4785943785571, 4.038479709864);
+        glVertex2f(6.4567066881655, 4.0589082208961);
+        glVertex2f(6.4406557152117, 4.0829846803269);
+        glVertex2f(6.426793511297, 4.1041427810388);
+        glVertex2f(6.4180384351404, 4.1274896507898);
+        glVertex2f(6.4070945899446, 4.1493773411814);
+        glVertex2f(6.3939619757096, 4.1792905180499);
+        glVertex2f(6.3881252582719, 4.2048261568401);
+        glVertex2f(6.3822885408341, 4.2296322059506);
+        glVertex2f(6.3793701821152, 4.2595453828191);
+        glVertex2f(6.3779110027558, 4.2872697906485);
+        glVertex2f(6.3771814130761, 4.3106166603995);
+        glVertex2f(6.3793701821152, 4.3361522991897);
+        glVertex2f(6.3807879173079, 4.3583142917039);
+        glVertex2f(6.3870756674499, 4.3787494796655);
+        glVertex2f(6.3912675008779, 4.3970887509131);
+        glVertex2f(6.3959833134844, 4.4169999596962);
+        glVertex2f(6.405938917876, 4.4342912725868);
+        glVertex2f(6.4169424806245, 4.4536785021913);
+        glVertex2f(6.4268980850161, 4.4714937942604);
+        glVertex2f(6.4368536894076, 4.492976940579);
+        glVertex2f(6.4489052105132, 4.5128881493621);
+        glVertex2f(6.4583368357262, 4.5280835455387);
+    glEnd();
+    glPopMatrix();
+}
+
+void fireball_status(){
+    glPushMatrix();
+    glTranslated(9.5,8,0);
+    glScaled(0.2,0.2,0);
+    glRotated(90,0,0,1);
+    glBegin(GL_POLYGON);
+    glColor3ub(240, 10, 10);
+        glVertex2f(6.4634376685768, 4.7762096405723);
+        glVertex2f(6.5243717815612, 4.8057534529284);
+        glVertex2f(6.5705339883676, 4.83160428874);
+        glVertex2f(6.6277751248075, 4.8519156597348);
+        glVertex2f(6.6831697729752, 4.8703805424573);
+        glVertex2f(6.7607222804099, 4.8869989369076);
+        glVertex2f(6.8290423464834, 4.8943848899967);
+        glVertex2f(6.8807440181066, 4.8943848899967);
+        glVertex2f(6.9582965255413, 4.8999243548134);
+        glVertex2f(7.021077126798, 4.8906919134521);
+        glVertex2f(7.0801647515102, 4.8925384017244);
+        glVertex2f(7.1540242824004, 4.8888454251799);
+        glVertex2f(7.2094189305681, 4.8869989369076);
+        glVertex2f(7.2574276256467, 4.8777664955464);
+        glVertex2f(7.3146687620867, 4.8722270307296);
+        glVertex2f(7.353445015804, 4.8629945893683);
+        glVertex2f(7.4014537108827, 4.853762148007);
+        glVertex2f(7.4346904997833, 4.8408367301012);
+        glVertex2f(7.4605413355949, 4.8279113121955);
+        glVertex2f(7.4919316362232, 4.8168323825619);
+        glVertex2f(7.5140894954903, 4.7965210115671);
+        glVertex2f(7.5436333078464, 4.7928280350226);
+        glVertex2f(7.5953349794695, 4.7762096405723);
+        glVertex2f(7.656269092454, 4.759591246122);
+        glVertex2f(7.7338215998887, 4.7263544572214);
+        glVertex2f(7.8021416659622, 4.680192250415);
+        glVertex2f(7.8556898258576, 4.680192250415);
+        glVertex2f(7.9480142394704, 4.665420344237);
+        glVertex2f(8.0181807938161, 4.6469554615144);
+        glVertex2f(8.0975797895231, 4.6266440905196);
+        glVertex2f(8.1714393204133, 4.58602134853);
+        glVertex2f(8.2231409920365, 4.5453986065403);
+        glVertex2f(8.2436247702168, 4.5202005881592);
+        glVertex2f(8.2701243898812, 4.5074415120245);
+        glVertex2f(8.2877908029909, 4.4986083054697);
+        glVertex2f(8.325086564, 4.4789789575701);
+        glVertex2f(8.371215531564, 4.4632754792505);
+        glVertex2f(8.4094927599682, 4.4524793379057);
+        glVertex2f(8.4605290645071, 4.437757326981);
+        glVertex2f(8.5007692277012, 4.4269611856363);
+        glVertex2f(8.55573140182, 4.4102762399216);
+        glVertex2f(8.6, 4.4);
+        glVertex2f(8.6457337793313, 4.3877756455438);
+        glVertex2f(8.6919192098964, 4.381854436497);
+        glVertex2f(8.7262622223678, 4.368827776594);
+        glVertex2f(8.779553103789, 4.3581696003098);
+        glVertex2f(8.8233700507353, 4.352248391263);
+        glVertex2f(8.8754766903471, 4.3404059731694);
+        glVertex2f(8.9571893751929, 4.3202738624103);
+        glVertex2f(9.0673238634633, 4.3072472025073);
+        glVertex2f(9.1774583517338, 4.2918520589857);
+        glVertex2f(9.4587305866192, 4.2807297245546);
+        glVertex2f(9.5641646996472, 4.2628595359058);
+        glVertex2f(9.6374324731072, 4.2494568944192);
+        glVertex2f(9.6946170767834, 4.2378412717974);
+        glVertex2f(9.7321444729459, 4.2253321397433);
+        glVertex2f(9.7464406238649, 4.214610026554);
+        glVertex2f(9.75, 4.2);
+        glVertex2f(9.7375055295405, 4.192272290743);
+        glVertex2f(9.7249963974863, 4.1860177247159);
+        glVertex2f(9.6830014541617, 4.1788696492564);
+        glVertex2f(9.6016920958096, 4.1752956115266);
+        glVertex2f(9.5275308129171, 4.169934554932);
+        glVertex2f(9.4515825111597, 4.169934554932);
+        glVertex2f(9.3541899830238, 4.1735085926618);
+        glVertex2f(9.2425013039688, 4.1609994606076);
+        glVertex2f(9.1692335305087, 4.1663605172022);
+        glVertex2f(9.076308549535, 4.1609994606076);
+        glVertex2f(9.0119758703993, 4.1529578757156);
+        glVertex2f(8.95, 4.15);
+        glVertex2f(8.9065417573714, 4.1431292719588);
+        glVertex2f(8.86959969805, 4.1357641505815);
+        glVertex2f(8.8280436711758, 4.1310418748004);
+        glVertex2f(8.7666540860207, 4.1197084129256);
+        glVertex2f(8.7184868730529, 4.1093194062071);
+        glVertex2f(8.649541646648, 4.0904303030824);
+        glVertex2f(8.584374240868, 4.0734301102702);
+        glVertex2f(8.54376266915, 4.0592632829268);
+        glVertex2f(8.4993732768071, 4.0432075452708);
+        glVertex2f(8.47859526337, 4.0328185385523);
+        glVertex2f(8.4389281468083, 4.0148738905839);
+        glVertex2f(8.3983165750903, 3.9903180565219);
+        glVertex2f(8.352038272435, 3.95820658121);
+        glVertex2f(8.3227601625918, 3.9317618368355);
+        glVertex2f(8.2594816671243, 3.9119282785546);
+        glVertex2f(8.1895919855631, 3.8939836305862);
+        glVertex2f(8.1395358622828, 3.8845390790239);
+        glVertex2f(8.0800351874402, 3.864705520743);
+        glVertex2f(8.0101455058791, 3.8495942382433);
+        glVertex2f(7.9544226516614, 3.8316495902749);
+        glVertex2f(7.9080857655849, 3.8159624415127);
+        glVertex2f(7.8583242638705, 3.7946360836351);
+        glVertex2f(7.8192259410949, 3.7816033093766);
+        glVertex2f(7.7884212019384, 3.7496137725602);
+        glVertex2f(7.7528772721425, 3.7211786287234);
+        glVertex2f(7.7, 3.7);
+        glVertex2f(7.6616478523328, 3.6856346989275);
+        glVertex2f(7.6024079693395, 3.6690475316893);
+        glVertex2f(7.5230265261285, 3.6500907691315);
+        glVertex2f(7.4554930595162, 3.6406123878526);
+        glVertex2f(7.3998075695025, 3.6346883995532);
+        glVertex2f(7.3026541613935, 3.6311340065736);
+        glVertex2f(7.1960223720056, 3.627579613594);
+        glVertex2f(7.0988689638967, 3.6263948159342);
+        glVertex2f(6.9946067698285, 3.6477211738118);
+        glVertex2f(6.9081165406583, 3.6571995550907);
+        glVertex2f(6.8571702412841, 3.6785259129683);
+        glVertex2f(6.8, 3.7);
+        glVertex2f(6.7363208799778, 3.7211786287234);
+        glVertex2f(6.6865593782634, 3.7342114029819);
+        glVertex2f(6.6474610554879, 3.7448745819207);
+        glVertex2f(6.6, 3.75);
+        glVertex2f(6.55836383421, 3.7606213355901);
+        glVertex2f(6.5061054650271, 3.7672724007589);
+        glVertex2f(6.4538470958441, 3.7862754440981);
+        glVertex2f(6.3920872049916, 3.8043283352704);
+        glVertex2f(6.3350780749739, 3.8318827481123);
+        glVertex2f(6.3, 3.85);
+        glVertex2f(6.2666671189526, 3.8765398999595);
+        glVertex2f(6.2372124017768, 3.9116955301372);
+        glVertex2f(6.2115582932688, 3.9468511603148);
+        glVertex2f(6.1897047934286, 3.9839070948263);
+        glVertex2f(6.1726020544233, 4.0181125728369);
+        glVertex2f(6.1592999240858, 4.0494675943467);
+        glVertex2f(6.1488482502493, 4.0846232245243);
+        glVertex2f(6.1374464242457, 4.1264299198706);
+        glVertex2f(6.1285481030112, 4.1722211522442);
+        glVertex2f(6.1233559895393, 4.2220654415741);
+        glVertex2f(6.1233559895393, 4.2615255039602);
+        glVertex2f(6.1285481030112, 4.308254525207);
+        glVertex2f(6.1358170618718, 4.3508298556762);
+        glVertex2f(6.1441244434268, 4.3965204542286);
+        glVertex2f(6.166969742703, 4.4619410839741);
+        glVertex2f(6.1960455781454, 4.5159390640814);
+        glVertex2f(6.2271982589766, 4.5605912399394);
+        glVertex2f(6.2521204036415, 4.6031665704087);
+        glVertex2f(6.284311507167, 4.6384729420174);
+        glVertex2f(6.3331173738025, 4.6810482724866);
+        glVertex2f(6.3725774361887, 4.718431489484);
+        glVertex2f(6.4317675297679, 4.7558147064815);
+    glEnd();
+
+    glColor3ub(235, 73, 61);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.2345837659191, 4.3966645362263);
+        glVertex2f(6.2399087231574, 4.4326079975847);
+        glVertex2f(6.2519049619244, 4.4592478687571);
+        glVertex2f(6.2621991249268, 4.4825451850256);
+        glVertex2f(6.2730350859819, 4.5020499149248);
+        glVertex2f(6.286038239248, 4.521554644824);
+        glVertex2f(6.2979577964086, 4.5399757786177);
+        glVertex2f(6.312586343833, 4.5556879221476);
+        glVertex2f(6.3245059009936, 4.5730254598358);
+        glVertex2f(6.3407598425763, 4.5909047955767);
+        glVertex2f(6.3624317646865, 4.6131185157397);
+        glVertex2f(6.3819364945857, 4.6342486397971);
+        glVertex2f(6.4211261010826, 4.6686628765816);
+        glVertex2f(6.4478140223845, 4.6901433986051);
+        glVertex2f(6.4849167422432, 4.720085944456);
+        glVertex2f(6.5233213119216, 4.7435192412089);
+        glVertex2f(6.5643295812391, 4.766301613052);
+        glVertex2f(6.6020832260077, 4.785829360346);
+        glVertex2f(6.65, 4.8);
+        glVertex2f(6.6958164130192, 4.8092626570989);
+        glVertex2f(6.7403890573123, 4.8114280613032);
+        glVertex2f(6.7651384825053, 4.8158910724036);
+        glVertex2f(6.7854248965979, 4.8231941814769);
+        glVertex2f(6.8268091813468, 4.8414519541603);
+        glVertex2f(6.8450669540301, 4.8515951612065);
+        glVertex2f(6.8637304549953, 4.8515951612065);
+        glVertex2f(6.8933486195705, 4.850377976361);
+        glVertex2f(6.9262126104005, 4.8491607915154);
+        glVertex2f(6.9546135901301, 4.8459149652606);
+        glVertex2f(6.9866661243964, 4.8353660299325);
+        glVertex2f(7.0221394394512, 4.8269970969557);
+        glVertex2f(7.0507630213981, 4.8168403420713);
+        glVertex2f(7.0830799687575, 4.8020668804213);
+        glVertex2f(7.13109371912, 4.7891401014775);
+        glVertex2f(7.1791074694826, 4.7872934187713);
+        glVertex2f(7.2154926307847, 4.7840559851689);
+        glVertex2f(7.255065965071, 4.7889016995713);
+        glVertex2f(7.2954469184244, 4.7929397949067);
+        glVertex2f(7.3245212048388, 4.7856712233031);
+        glVertex2f(7.3697478725945, 4.7695188419617);
+        glVertex2f(7.4077059687467, 4.7525588415533);
+        glVertex2f(7.4400107314293, 4.7323683648767);
+        glVertex2f(7.4739307322462, 4.7146007454012);
+        glVertex2f(7.5030050186606, 4.6927950305904);
+        glVertex2f(7.5401554957457, 4.6742197920478);
+        glVertex2f(7.5797288300319, 4.6411074102981);
+        glVertex2f(7.6104183545805, 4.6241474098897);
+        glVertex2f(7.6346469265925, 4.6104178857495);
+        glVertex2f(7.7024869282261, 4.5886121709387);
+        glVertex2f(7.7598628842032, 4.5697902714593);
+        glVertex2f(7.8292530283309, 4.5573991742936);
+        glVertex2f(7.8720023135524, 4.5443885222696);
+        glVertex2f(7.9141320439157, 4.5338560896788);
+        glVertex2f(7.9599791034287, 4.51898677308);
+        glVertex2f(7.9915764012011, 4.5090738953475);
+        glVertex2f(8.0361843509975, 4.4911068044573);
+        glVertex2f(8.0814118556522, 4.4681832747008);
+        glVertex2f(8.1099113791332, 4.4526944032437);
+        glVertex2f(8.137791347756, 4.4260535443375);
+        glVertex2f(8.1658490199979, 4.3884686034595);
+        glVertex2f(8.2084623604124, 4.3575530427666);
+        glVertex2f(8.2385423654108, 4.3433485959618);
+        glVertex2f(8.2936890412413, 4.324966370685);
+        glVertex2f(8.3663823866542, 4.3141041466577);
+        glVertex2f(8.4290490637343, 4.3082552567969);
+        glVertex2f(8.5, 4.3);
+        glVertex2f(8.55, 4.3);
+        glVertex2f(8.6103646494194, 4.2940508099921);
+        glVertex2f(8.6571557683059, 4.2856952530481);
+        glVertex2f(8.7039468871924, 4.2748330290209);
+        glVertex2f(8.7423824491349, 4.256450803744);
+        glVertex2f(8.7674491199669, 4.239739689856);
+        glVertex2f(8.7674491199669, 4.2238641316624);
+        glVertex2f(8.7565868959397, 4.2130019076352);
+        glVertex2f(8.7290135580244, 4.2088241291632);
+        glVertex2f(8.6830579948324, 4.210495240552);
+        glVertex2f(8.6488002113619, 4.2121663519408);
+        glVertex2f(8.5978313140034, 4.2221930202736);
+        glVertex2f(8.5451913052561, 4.218850797496);
+        glVertex2f(8.4984001863697, 4.2096596848576);
+        glVertex2f(8.461635735816, 4.1962907937471);
+        glVertex2f(8.4206935067903, 4.1779085684703);
+        glVertex2f(8.3889423904031, 4.1578552318047);
+        glVertex2f(8.3730668322095, 4.133624116667);
+        glVertex2f(8.3329601588782, 4.1152418913902);
+        glVertex2f(8.2886757070749, 4.0926818876414);
+        glVertex2f(8.2417553680689, 4.0791420173743);
+        glVertex2f(8.1771054853547, 4.0584052625415);
+        glVertex2f(8.1100159844249, 4.0388883168165);
+        glVertex2f(8.0465859108186, 4.0205911801992);
+        glVertex2f(8, 4);
+        glVertex2f(7.9282644273606, 3.982777097857);
+        glVertex2f(7.8562956899996, 3.9559412974851);
+        glVertex2f(7.7916458072854, 3.930325306221);
+        glVertex2f(7.7355345883259, 3.9034895058491);
+        glVertex2f(7.6830827966899, 3.8729942781537);
+        glVertex2f(7.6416092870242, 3.851037714213);
+        glVertex2f(7.617213104868, 3.8242019138411);
+        glVertex2f(7.6, 3.8);
+        glVertex2f(7.5672009314476, 3.7961463043614);
+        glVertex2f(7.5281670399975, 3.7912670679301);
+        glVertex2f(7.4671765846068, 3.7863878314989);
+        glVertex2f(7.4318021204802, 3.7741897404207);
+        glVertex2f(7.4086257474317, 3.746134130941);
+        glVertex2f(7.4049663201083, 3.7180785214613);
+        glVertex2f(7.4, 3.7);
+        glVertex2f(7.3732512833051, 3.7010011939519);
+        glVertex2f(7.3403164373941, 3.6985615757363);
+        glVertex2f(7.2683477000331, 3.6900229119816);
+        glVertex2f(7.1988185808877, 3.6863634846581);
+        glVertex2f(7.1170913706641, 3.6851436755503);
+        glVertex2f(7.0609801517046, 3.6888031028737);
+        glVertex2f(6.9821268954708, 3.6963403985768);
+        glVertex2f(6.9239029382566, 3.7010933746759);
+        glVertex2f(6.8526082967698, 3.7129758149237);
+        glVertex2f(6.7896313634565, 3.727234743221);
+        glVertex2f(6.7230896980689, 3.7486231356671);
+        glVertex2f(6.6791246691521, 3.7605055759149);
+        glVertex2f(6.6351596402352, 3.7747645042122);
+        glVertex2f(6.592839493773, 3.7937924768567);
+        glVertex2f(6.5344461666351, 3.8127086250844);
+        glVertex2f(6.4785201631792, 3.8390267443578);
+        glVertex2f(6.4398654254964, 3.8513633627672);
+        glVertex2f(6.399565805359, 3.8743917171314);
+        glVertex2f(6.35, 3.9);
+        glVertex2f(6.3025177405384, 3.9294952793601);
+        glVertex2f(6.2729098563559, 3.9500563100424);
+        glVertex2f(6.250348218262, 3.9724532780191);
+        glVertex2f(6.2291375756217, 3.9966940124652);
+        glVertex2f(6.2147446395443, 4.0277524534743);
+        glVertex2f(6.2003517034669, 4.0656286010463);
+        glVertex2f(6.1859587673896, 4.1133525469871);
+        glVertex2f(6.1806561067295, 4.164864107685);
+        glVertex2f(6.1768684919723, 4.2201632831402);
+        glVertex2f(6.1852012444381, 4.2762199815468);
+        glVertex2f(6.2003593753743, 4.330698103064);
+        glVertex2f(6.227394257272, 4.3759295400851);
+    glEnd();
+
+    glColor3ub(255, 251, 5);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.3246158517887, 4.2703895203691);
+        glVertex2f(6.3204566391891, 4.2885860754926);
+        glVertex2f(6.3168173281644, 4.3130214495155);
+        glVertex2f(6.3157775250145, 4.3312180046389);
+        glVertex2f(6.3168173281644, 4.3514941660622);
+        glVertex2f(6.3308546706882, 4.3738499337853);
+        glVertex2f(6.3516507336864, 4.389446981034);
+        glVertex2f(6.3589293557358, 4.4071236345824);
+        glVertex2f(6.3511308321114, 4.4258400912808);
+        glVertex2f(6.3401993701067, 4.4391666712231);
+        glVertex2f(6.3408312992751, 4.4549649004313);
+        glVertex2f(6.3490463784633, 4.4770824213228);
+        glVertex2f(6.3661741077888, 4.4845739915898);
+        glVertex2f(6.3781838050211, 4.4910077579642);
+        glVertex2f(6.3773259695045, 4.5047331262296);
+        glVertex2f(6.3713211208884, 4.515456070187);
+        glVertex2f(6.3773259695045, 4.5248922608694);
+        glVertex2f(6.3949115975945, 4.5334706160353);
+        glVertex2f(6.411639390168, 4.5420489712012);
+        glVertex2f(6.4296539360163, 4.5493405730922);
+        glVertex2f(6.4390901266987, 4.5557743394666);
+        glVertex2f(6.4360877023907, 4.5690707899737);
+        glVertex2f(6.44, 4.58);
+        glVertex2f(6.4553890015139, 4.5909455956466);
+        glVertex2f(6.4725457118456, 4.5999528685708);
+        glVertex2f(6.4918470109688, 4.6033842106371);
+        glVertex2f(6.4944205175186, 4.6213987564855);
+        glVertex2f(6.4957072707935, 4.636839795784);
+        glVertex2f(6.5041959424018, 4.6514331472041);
+        glVertex2f(6.5164447151321, 4.6598805766733);
+        glVertex2f(6.5333395740704, 4.6738188352974);
+        glVertex2f(6.552346290376, 4.6784649215054);
+        glVertex2f(6.5692411493142, 4.68268863624);
+        glVertex2f(6.5802228076241, 4.6898689512887);
+        glVertex2f(6.5734648640488, 4.7012729810721);
+        glVertex2f(6.5730424925754, 4.7118322679085);
+        glVertex2f(6.5924715803544, 4.7164783541166);
+        glVertex2f(6.6233046979168, 4.7143664967493);
+        glVertex2f(6.6401995568551, 4.7118322679085);
+        glVertex2f(6.6613181305279, 4.7257705265326);
+        glVertex2f(6.6946854769311, 4.7308389842141);
+        glVertex2f(6.7115803358694, 4.7240810406388);
+        glVertex2f(6.7234067371262, 4.7177454685369);
+        glVertex2f(6.7322765380688, 4.7118322679085);
+        glVertex2f(6.7588859408966, 4.7135217538024);
+        glVertex2f(6.7960546305608, 4.7152112396962);
+        glVertex2f(6.8125271180257, 4.7130993823289);
+        glVertex2f(6.8311114628578, 4.7118322679085);
+        glVertex2f(6.8701785450094, 4.7031810466801);
+        glVertex2f(6.897948166545, 4.6886019953739);
+        glVertex2f(6.9125272178512, 4.68165958999);
+        glVertex2f(6.929883231311, 4.7004040845265);
+        glVertex2f(6.95, 4.7);
+        glVertex2f(6.9632067771537, 4.6969328818346);
+        glVertex2f(6.97778582846, 4.6858250332203);
+        glVertex2f(6.9916706392278, 4.6823538305283);
+        glVertex2f(7.0090266526876, 4.6761056656828);
+        glVertex2f(7.0263826661473, 4.662220854915);
+        glVertex2f(7.05, 4.65);
+        glVertex2f(7.079144947065, 4.6344512333794);
+        glVertex2f(7.1083030496775, 4.6108470550741);
+        glVertex2f(7.1388496333667, 4.5990449659214);
+        glVertex2f(7.1638422927487, 4.5844659146152);
+        glVertex2f(7.1853637494389, 4.5796062308465);
+        glVertex2f(7.2041082439754, 4.5789119903081);
+        glVertex2f(7.2270181817423, 4.5865486362304);
+        glVertex2f(7.25, 4.6);
+        glVertex2f(7.2652014113538, 4.5990449659214);
+        glVertex2f(7.2860286275056, 4.5962680037679);
+        glVertex2f(7.3169201734456, 4.5900327560501);
+        glVertex2f(7.34, 4.58);
+        glVertex2f(7.3664885537148, 4.5700455059416);
+        glVertex2f(7.3712854937408, 4.5624503509003);
+        glVertex2f(7.3696865137321, 4.5544554508569);
+        glVertex2f(7.3564949286605, 4.552456725846);
+        glVertex2f(7.3353084435455, 4.5508577458374);
+        glVertex2f(7.3121232334196, 4.5484592758243);
+        glVertex2f(7.2969329233371, 4.5460608058113);
+        glVertex2f(7.28, 4.54);
+        glVertex2f(7.2665523031721, 4.5316699857332);
+        glVertex2f(7.2501627580831, 4.528871770718);
+        glVertex2f(7.2349724480006, 4.5296712607223);
+        glVertex2f(7.224179332942, 4.531270240731);
+        glVertex2f(7.2157846878964, 4.531270240731);
+        glVertex2f(7.2045918278356, 4.5224758506832);
+        glVertex2f(7.191400242764, 4.5112829906225);
+        glVertex2f(7.18, 4.5);
+        glVertex2f(7.1746109526728, 4.4932944655248);
+        glVertex2f(7.1778089126902, 4.4837005854727);
+        glVertex2f(7.1830055977184, 4.4765051754336);
+        glVertex2f(7.1945982027814, 4.4669112953815);
+        glVertex2f(7.2025931028248, 4.4537197103099);
+        glVertex2f(7.2129864728812, 4.4421271052469);
+        glVertex2f(7.2173836679051, 4.4313339901883);
+        glVertex2f(7.2289762729681, 4.421340365134);
+        glVertex2f(7.2565586781178, 4.4153441901015);
+        glVertex2f(7.2833415932633, 4.4097477600711);
+        glVertex2f(7.2993313933501, 4.4053505650472);
+        glVertex2f(7.3169201734456, 4.3961564299973);
+        glVertex2f(7.3383230244607, 4.3830916415287);
+        glVertex2f(7.3518817578228, 4.3708450436533);
+        glVertex2f(7.3706890331316, 4.3568489317956);
+        glVertex2f(7.3755001965827, 4.347663983389);
+        glVertex2f(7.4008681493247, 4.3454770909112);
+        glVertex2f(7.4244865880846, 4.3459144694068);
+        glVertex2f(7.4502919193222, 4.3371668994957);
+        glVertex2f(7.4717234656043, 4.3275445725936);
+        glVertex2f(7.5080258807351, 4.3122363252492);
+        glVertex2f(7.5255210205573, 4.3043635123293);
+        glVertex2f(7.5543880012637, 4.2934290499404);
+        glVertex2f(7.5631355711748, 4.2838067230383);
+        glVertex2f(7.5561375152459, 4.2728722606495);
+        glVertex2f(7.5307695625039, 4.269373232685);
+        glVertex2f(7.5089006377263, 4.2615004197651);
+        glVertex2f(7.4791589000287, 4.2461921724207);
+        glVertex2f(7.4629758956932, 4.2387567379964);
+        glVertex2f(7.4411069709156, 4.2356950885275);
+        glVertex2f(7.407428826758, 4.2339455745453);
+        glVertex2f(7.3789992245471, 4.231321303572);
+        glVertex2f(7.3483827298584, 4.2326334390586);
+        glVertex2f(7.3142672072053, 4.2317586820675);
+        glVertex2f(7.2915235254366, 4.231321303572);
+        glVertex2f(7.2744612785151, 4.2257932675683);
+        glVertex2f(7.2605520937304, 4.2145589260114);
+        glVertex2f(7.25, 4.2);
+        glVertex2f(7.2354085673889, 4.1851356505053);
+        glVertex2f(7.2380834106167, 4.1771111208219);
+        glVertex2f(7.2589471877937, 4.162131998746);
+        glVertex2f(7.3317029235906, 4.1300338800121);
+        glVertex2f(7.3563114812866, 4.1193345071008);
+        glVertex2f(7.3777102271092, 4.1198694757464);
+        glVertex2f(7.4039236907419, 4.1252191622021);
+        glVertex2f(7.4396547597232, 4.1186912754292);
+        glVertex2f(7.4788220803602, 4.1085367848937);
+        glVertex2f(7.5375730613158, 4.095481011348);
+        glVertex2f(7.5890708347459, 4.0773479925346);
+        glVertex2f(7.6101051365695, 4.0693694642566);
+        glVertex2f(7.6101051365695, 4.0555883699584);
+        glVertex2f(7.6, 4.05);
+        glVertex2f(7.5856993709643, 4.054009775704);
+        glVertex2f(7.5510520267825, 4.0623729277478);
+        glVertex2f(7.5032625865317, 4.0653597677635);
+        glVertex2f(7.4614468263123, 4.0695413437855);
+        glVertex2f(7.4190336980897, 4.0725281838011);
+        glVertex2f(7.3879705619267, 4.0653597677635);
+        glVertex2f(7.376023201864, 4.0581913517259);
+        glVertex2f(7.371244257839, 4.0420624156413);
+        glVertex2f(7.3539205857481, 4.0331018955942);
+        glVertex2f(7.3061311454973, 4.0295176875754);
+        glVertex2f(7.2553548652309, 4.0336992635974);
+        glVertex2f(7.2278759370867, 4.0360887356099);
+        glVertex2f(7.2111496329989, 4.031907159588);
+        glVertex2f(7.2111496329989, 4.0217519035347);
+        glVertex2f(7.2057733209707, 4.0068177034563);
+        glVertex2f(7.1932285929049, 4.0068177034563);
+        glVertex2f(7.1669444007669, 4.0038308634407);
+        glVertex2f(7.15, 4);
+        glVertex2f(7.131699688582, 3.9978571834093);
+        glVertex2f(7.1203496965224, 3.9912861353748);
+        glVertex2f(7.1239339045412, 3.9823256153278);
+        glVertex2f(7.1424523126384, 3.9775466713027);
+        glVertex2f(7.1633601927481, 3.9727677272777);
+        glVertex2f(7.1890470168829, 3.96559931124);
+        glVertex2f(7.2153312090208, 3.9626124712244);
+        glVertex2f(7.25, 3.95);
+        glVertex2f(7.2756653773374, 3.9470809031429);
+        glVertex2f(7.3037416734848, 3.9357309110833);
+        glVertex2f(7.309117985513, 3.9267703910363);
+        glVertex2f(7.3019495694753, 3.9148230309736);
+        glVertex2f(7.2876127374001, 3.9142256629705);
+        glVertex2f(7.2631206492716, 3.9130309269642);
+        glVertex2f(7.220707521049, 3.9136282949673);
+        glVertex2f(7.1651522967575, 3.9136282949673);
+        glVertex2f(7.1251286405475, 3.9142256629705);
+        glVertex2f(7.0935938557144, 3.9119864227739);
+        glVertex2f(7.0684696116599, 3.8973981520326);
+        glVertex2f(7.0465872055479, 3.8892935571763);
+        glVertex2f(7.0058209206595, 3.8732541341467);
+        glVertex2f(6.9839114800356, 3.8690809073612);
+        glVertex2f(6.9620020394117, 3.8774273609322);
+        glVertex2f(6.9233996916459, 3.8857738145032);
+        glVertex2f(6.8837540371836, 3.8878604278959);
+        glVertex2f(6.8461949961141, 3.8857738145032);
+        glVertex2f(6.8190690220083, 3.882643894414);
+        glVertex2f(6.7794233675461, 3.8701242140575);
+        glVertex2f(6.7575139269222, 3.8555179203083);
+        glVertex2f(6.71786827246, 3.8596911470938);
+        glVertex2f(6.680190054244, 3.8656986811799);
+        glVertex2f(6.6325397453533, 3.8820562499036);
+        glVertex2f(6.5834670391823, 3.9026810104682);
+        glVertex2f(6.5215927574884, 3.9297065587943);
+        glVertex2f(6.4789208390789, 3.9503313193589);
+        glVertex2f(6.434826523389, 3.9802016622456);
+        glVertex2f(6.400715360075, 4.0065775598724);
+        glVertex2f(6.3661856674174, 4.0322740753384);
+        glVertex2f(6.342095184168, 4.064394719671);
+        glVertex2f(6.3388831197347, 4.1037425089785);
+        glVertex2f(6.3356710553014, 4.1679837976437);
+        glVertex2f(6.3308529586515, 4.2201798446842);
+        glVertex2f(6.3292469264349, 4.2547095373417);
+    glEnd();
+
+    glColor3ub(255, 209, 125);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.4753201016554, 4.5434306602696);
+        glVertex2f(6.5076025361996, 4.5709305119184);
+        glVertex2f(6.5362980335723, 4.5948434263956);
+        glVertex2f(6.5550175006339, 4.6066503169608);
+        glVertex2f(6.5690282804732, 4.6144963536708);
+        glVertex2f(6.5858412162805, 4.6262654087359);
+        glVertex2f(6.6004124273134, 4.6307488582845);
+        glVertex2f(6.6144232071528, 4.6363531702203);
+        glVertex2f(6.6402030420573, 4.645880500511);
+        glVertex2f(6.668224601736, 4.6520452436404);
+        glVertex2f(6.6923231430597, 4.6554078308018);
+        glVertex2f(6.7153008219963, 4.6559682619954);
+        glVertex2f(6.7309928954164, 4.6559682619954);
+        glVertex2f(6.7517288495787, 4.656528693189);
+        glVertex2f(6.7663000606116, 4.6554078308018);
+        glVertex2f(6.7797504092574, 4.6537265372211);
+        glVertex2f(6.8, 4.65);
+        glVertex2f(6.8184201616141, 4.6470013628982);
+        glVertex2f(6.8346726662278, 4.6447596381239);
+        glVertex2f(6.8498043084543, 4.6402761885753);
+        glVertex2f(6.8666172442616, 4.6363531702203);
+        glVertex2f(6.8828697488752, 4.6301884270909);
+        glVertex2f(6.8985618222953, 4.6217819591873);
+        glVertex2f(6.9176164828769, 4.611694197703);
+        glVertex2f(6.9338689874906, 4.6027272986058);
+        glVertex2f(6.951802785685, 4.58927694996);
+        glVertex2f(6.9652531343308, 4.5814309132499);
+        glVertex2f(6.974220033428, 4.5741453077334);
+        glVertex2f(6.9837473637187, 4.5651784086362);
+        glVertex2f(7, 4.55);
+        glVertex2f(7.0112084922039, 4.5382777113446);
+        glVertex2f(7.0207358224947, 4.5231460691181);
+        glVertex2f(7.0381091894955, 4.5029705461494);
+        glVertex2f(7.0487573821734, 4.4878389039229);
+        glVertex2f(7.0622077308192, 4.4699051057285);
+        glVertex2f(7.0669642419219, 4.458312095008);
+        glVertex2f(7.0728426383963, 4.4461879022794);
+        glVertex2f(7.0772514357522, 4.4377377073474);
+        glVertex2f(7.0801906339894, 4.4252461148391);
+        glVertex2f(7.0849668311249, 4.4120197227716);
+        glVertex2f(7.0897430282604, 4.398793330704);
+        glVertex2f(7.0937844258366, 4.3789537426027);
+        glVertex2f(7.1, 4.36);
+        glVertex2f(7.1033368201076, 4.3381723670611);
+        glVertex2f(7.1040716196669, 4.3142913813836);
+        glVertex2f(7.1037042198873, 4.2992279904178);
+        glVertex2f(7.1033368201076, 4.2790210025368);
+        glVertex2f(7.1033368201076, 4.2595488142151);
+        glVertex2f(7.0999284399254, 4.2313729254375);
+        glVertex2f(7.0948346260788, 4.2124530454358);
+        glVertex2f(7.0919238753093, 4.1906224146647);
+        glVertex2f(7.0824639353084, 4.1709748469706);
+        glVertex2f(7.073731683, 4.1505995915842);
+        glVertex2f(7.0635440553068, 4.1214920838893);
+        glVertex2f(7.05, 4.1);
+        glVertex2f(7.0344365476118, 4.0785585100393);
+        glVertex2f(7.019155106072, 4.0567278792681);
+        glVertex2f(6.9973244753008, 4.0327141854198);
+        glVertex2f(6.9718554060678, 4.0094281792639);
+        glVertex2f(6.94493096145, 3.9934190500317);
+        glVertex2f(6.9121850152932, 3.9730437946452);
+        glVertex2f(6.8816221322136, 3.957034665413);
+        glVertex2f(6.8510592491339, 3.9424809115656);
+        glVertex2f(6.8117641137458, 3.9352040346419);
+        glVertex2f(6.7790181675891, 3.93156559618);
+        glVertex2f(6.7513660352789, 3.9301102207952);
+        glVertex2f(6.7186200891221, 3.9293825331029);
+        glVertex2f(6.6997002091204, 3.93156559618);
+        glVertex2f(6.6660989262452, 3.934148385664);
+        glVertex2f(6.640563287455, 3.9421738721409);
+        glVertex2f(6.6157572383445, 3.9487401792584);
+        glVertex2f(6.5916807789137, 3.9611432038137);
+        glVertex2f(6.5683339091627, 3.97062786965);
+        glVertex2f(6.5427982703725, 3.9866788426039);
+        glVertex2f(6.5172626315823, 4.0041889949171);
+        glVertex2f(6.499752479269, 4.0216991472304);
+        glVertex2f(6.4785943785571, 4.038479709864);
+        glVertex2f(6.4567066881655, 4.0589082208961);
+        glVertex2f(6.4406557152117, 4.0829846803269);
+        glVertex2f(6.426793511297, 4.1041427810388);
+        glVertex2f(6.4180384351404, 4.1274896507898);
+        glVertex2f(6.4070945899446, 4.1493773411814);
+        glVertex2f(6.3939619757096, 4.1792905180499);
+        glVertex2f(6.3881252582719, 4.2048261568401);
+        glVertex2f(6.3822885408341, 4.2296322059506);
+        glVertex2f(6.3793701821152, 4.2595453828191);
+        glVertex2f(6.3779110027558, 4.2872697906485);
+        glVertex2f(6.3771814130761, 4.3106166603995);
+        glVertex2f(6.3793701821152, 4.3361522991897);
+        glVertex2f(6.3807879173079, 4.3583142917039);
+        glVertex2f(6.3870756674499, 4.3787494796655);
+        glVertex2f(6.3912675008779, 4.3970887509131);
+        glVertex2f(6.3959833134844, 4.4169999596962);
+        glVertex2f(6.405938917876, 4.4342912725868);
+        glVertex2f(6.4169424806245, 4.4536785021913);
+        glVertex2f(6.4268980850161, 4.4714937942604);
+        glVertex2f(6.4368536894076, 4.492976940579);
+        glVertex2f(6.4489052105132, 4.5128881493621);
+        glVertex2f(6.4583368357262, 4.5280835455387);
+    glEnd();
+    glPopMatrix();
 }
 
 //Void untuk di DisplayFunc
 void level1 (){
     backgroundlevel1();
 
-    glPushMatrix();
     tree();
-    glTranslated(2.2,0,0);
-    tree();
-    glTranslated(2.2,0,0);
-    tree();
-    glTranslated(2.2,0,0);
-    tree();
-    glTranslated(2.2,0,0);
-    tree();
-    glPopMatrix();
 
-    glPushMatrix();
     rumput();
-    glTranslated(2.2,0,0);
-    rumput();
-    glTranslated(2.2,0,0);
-    rumput();
-    glTranslated(2.2,0,0);
-    rumput();
-    glTranslated(2.2,0,0);
-    rumput();
-    glPopMatrix();
 
     glPushMatrix();
     glTranslated(0,-0.8,0);
@@ -2113,6 +5223,20 @@ void level1 (){
     stone();
     glPopMatrix();
 
+    fireball();
+
+    glPushMatrix();
+    glTranslated(0,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
+    glPopMatrix();
 }
 
 
@@ -2227,9 +5351,76 @@ void road2 (){
 }
 
 void roadline(){
+    //roadline 1 yang di pinggir jalan
     glPushMatrix();
     glLineWidth(4);
-    glTranslated(-1.5,1.55,0);
+    glTranslated(roadlinelvl2[0],1.55,0);
+    glColor3ub(99, 99, 99);
+    glBegin(GL_LINES);
+        glVertex2f(2,1);
+        glVertex2f(3,2);
+    glEnd();
+    glPopMatrix();
+
+    //roadline 2 yang di pinggir jalan
+    glPushMatrix();
+    glLineWidth(4);
+    glTranslated(roadlinelvl2[1],1.55,0);
+    glColor3ub(99, 99, 99);
+    glBegin(GL_LINES);
+        glVertex2f(2,1);
+        glVertex2f(3,2);
+    glEnd();
+    glPopMatrix();
+
+    //roadline 3 yang di pinggir jalan
+    glPushMatrix();
+    glLineWidth(4);
+    glTranslated(roadlinelvl2[2],1.55,0);
+    glColor3ub(99, 99, 99);
+    glBegin(GL_LINES);
+        glVertex2f(2,1);
+        glVertex2f(3,2);
+    glEnd();
+    glPopMatrix();
+
+    //roadline 4 yang di pinggir jalan
+    glPushMatrix();
+    glLineWidth(4);
+    glTranslated(roadlinelvl2[3],1.55,0);
+    glColor3ub(99, 99, 99);
+    glBegin(GL_LINES);
+        glVertex2f(2,1);
+        glVertex2f(3,2);
+    glEnd();
+    glPopMatrix();
+
+    //roadline 5 yang di pinggir jalan
+    glPushMatrix();
+    glLineWidth(4);
+    glTranslated(roadlinelvl2[4],1.55,0);
+    glColor3ub(99, 99, 99);
+    glBegin(GL_LINES);
+        glVertex2f(2,1);
+        glVertex2f(3,2);
+    glEnd();
+    glPopMatrix();
+
+    //roadline 6 yang di pinggir jalan
+    glPushMatrix();
+    glLineWidth(4);
+    glTranslated(roadlinelvl2[5],1.55,0);
+    glColor3ub(99, 99, 99);
+    glBegin(GL_LINES);
+        glVertex2f(2,1);
+        glVertex2f(3,2);
+    glEnd();
+    glPopMatrix();
+
+    //roadline 7 yang di pinggir jalan
+    glPushMatrix();
+    glLineWidth(4);
+    glTranslated(roadlinelvl2[6],1.55,0);
     glColor3ub(99, 99, 99);
     glBegin(GL_LINES);
         glVertex2f(2,1);
@@ -2238,30 +5429,12 @@ void roadline(){
     glPopMatrix();
 }
 
-void roadlines(){
-    glPushMatrix();
-    roadline();
-    glTranslated(1,0,0);
-    roadline();
-    glTranslated(1,0,0);
-    roadline();
-    glTranslated(1,0,0);
-    roadline();
-    glTranslated(1,0,0);
-    roadline();
-    glTranslated(1,0,0);
-    roadline();
-    glTranslated(1,0,0);
-    roadline();
-    glTranslated(1,0,0);
-    roadline();
-    glTranslated(1,0,0);
-    roadline();
-    glPopMatrix();
-}
 
 void lamp(){
-
+    //Lampu 1
+    glPushMatrix();
+    glTranslated(lamplvl2[2],2,0);
+    glScaled(0.4,0.4,0);
     glPushMatrix();                                     //Bagian bawah tiang
     glColor3ub(112, 76, 52);
     glBegin(GL_QUADS);
@@ -2300,7 +5473,6 @@ void lamp(){
         glVertex2f(3.0397832903166, 6.9095286433506);
     glEnd();
     glPopMatrix();
-
 
     glPushMatrix();                                     //objek lampu
     glColor3ub(239, 172, 21);
@@ -2362,39 +5534,426 @@ void lamp(){
         glVertex2f(3.0585944000908, 6.6952473057902);
     glEnd();
     glPopMatrix();
-
-}
-
-void lamps(){
-
-    glPushMatrix();
-    glTranslated(-0.8,2,0);
-    glScaled(0.4,0.4,0);
-    lamp();
     glPopMatrix();
 
+    //Lampu 2
     glPushMatrix();
-    glTranslated(0.8,2,0);
+    glTranslated(lamplvl2[3],2,0);
     glScaled(0.4,0.4,0);
-    lamp();
+    glPushMatrix();                                     //Bagian bawah tiang
+    glColor3ub(112, 76, 52);
+    glBegin(GL_QUADS);
+        glVertex2f(2.5500573391679, 2.444603574832);
+        glVertex2f(2.8189440783599, 2.4433031537679);
+        glVertex2f(3.1389820874064, 1.3556678955842);
+        glVertex2f(2.2068069454137, 1.3494948414238);
+    glEnd();
     glPopMatrix();
 
-    glPushMatrix();
-    glTranslated(5.6,2,0);
-    glScaled(0.4,0.4,0);
-    lamp();
+    glPushMatrix();                                     //Tiang
+    glLineWidth(10);
+    glBegin(GL_LINES);
+        glVertex2f(2.6843234615626,2.4833156986779);
+        glVertex2f(2.6843173416322,5.9471450826595);
+    glEnd();
     glPopMatrix();
 
-    glPushMatrix();
-    glTranslated(7.2,2,0);
-    glScaled(0.4,0.4,0);
-    lamp();
+    glPushMatrix();                                     //wadah lampu
+    glColor3ub(83, 49, 21);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.3185247708212, 6.9092669253057);
+        glVertex2f(2.392021640114, 5.9798329698799);
+        glVertex2f(2.4260321685875, 5.9516528177161);
+        glVertex2f(2.4668448027557, 5.9225009361674);
+        glVertex2f(2.506, 5.9);
+        glVertex2f(2.5611308237116, 5.8739144669195);
+        glVertex2f(2.6155193986542, 5.8603102555301);
+        glVertex2f(2.666049326672, 5.8564233379903);
+        glVertex2f(2.7165792546898, 5.8535081498354);
+        glVertex2f(2.7729395590173, 5.863225443685);
+        glVertex2f(2.8234694870351, 5.8846034901541);
+        glVertex2f(2.8817732501326, 5.9137553717028);
+        glVertex2f(2.9274445312256, 5.9448507120214);
+        glVertex2f(2.9595116009292, 5.9817764286498);
+        glVertex2f(3.0397832903166, 6.9095286433506);
+    glEnd();
     glPopMatrix();
 
+    glPushMatrix();                                     //objek lampu
+    glColor3ub(239, 172, 21);
+    glTranslated(0.006,0,0);
+    glBegin(GL_QUADS);
+        glVertex2f(2.4428276813169, 6.0511150529822);   //kiri
+        glVertex2f(2.3791945456307, 6.8049307737665);
+        glVertex2f(2.640874003513, 6.8014240958057);
+        glVertex2f(2.640874003513, 6.0511150529822);
+
+        glVertex2f(2.7136013877242, 6.052172598303);    //kanan
+        glVertex2f(2.9142668746947, 6.0511967634231);
+        glVertex2f(2.9702847412456, 6.8006932745462);
+        glVertex2f(2.7136666950167, 6.8021585985759);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //Garis bawah tiang
+    glLineWidth(4);
+    glColor3ub(83, 49, 21);
+    glBegin(GL_LINES);
+        glVertex2f(2.1477215158338, 1.3021233538741);
+        glVertex2f(3.2017807536256, 1.3028979528192);
+
+        glVertex2f(2.5552056695422, 2.4779478633133);
+        glVertex2f(2.8150567058827, 2.4779478633133);
+
+        glVertex2f(2.2978374929653,6.8503477828281);
+        glVertex2f(3.0614974005328,6.8503477828281);
+
+        glVertex2f(2.6938011759811,7.4893286517007);
+        glVertex2f(2.6938011759811,7.0393171985038);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //tutup wadah lampu
+    glColor3ub(112, 76, 52);
+    glTranslated(0.01,0.2,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.2699710987605, 6.686215568036);
+        glVertex2f(2.3025279888684, 6.7129587277674);
+        glVertex2f(2.3315966407504, 6.7513293482517);
+        glVertex2f(2.362990784783, 6.7943509530371);
+        glVertex2f(2.3978731670415, 6.8478372725001);
+        glVertex2f(2.4339182953752, 6.901323591963);
+        glVertex2f(2.4711261697842, 6.9489961810495);
+        glVertex2f(2.5048458059674, 6.9862040554585);
+        glVertex2f(2.5420536803764, 7.0222491837923);
+        glVertex2f(2.5723175081348, 7.0410119263117);
+        glVertex2f(2.7787756454743, 7.0434504082488);
+        glVertex2f(2.8075680976481, 7.0269606340181);
+        glVertex2f(2.838448317393, 6.9990688226356);
+        glVertex2f(2.8683324010171, 6.9671924667698);
+        glVertex2f(2.8982164846413, 6.9233624774544);
+        glVertex2f(2.9330812488694, 6.8725595352934);
+        glVertex2f(2.9669498769768, 6.8197643208907);
+        glVertex2f(2.9938455522385, 6.7759343315753);
+        glVertex2f(3.0237296358627, 6.737085022864);
+        glVertex2f(3.0585944000908, 6.6952473057902);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    //Lampu 3
     glPushMatrix();
-    glTranslated(8.8,2,0);
+    glTranslated(lamplvl2[4],2,0);
     glScaled(0.4,0.4,0);
-    lamp();
+    glPushMatrix();                                     //Bagian bawah tiang
+    glColor3ub(112, 76, 52);
+    glBegin(GL_QUADS);
+        glVertex2f(2.5500573391679, 2.444603574832);
+        glVertex2f(2.8189440783599, 2.4433031537679);
+        glVertex2f(3.1389820874064, 1.3556678955842);
+        glVertex2f(2.2068069454137, 1.3494948414238);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //Tiang
+    glLineWidth(10);
+    glBegin(GL_LINES);
+        glVertex2f(2.6843234615626,2.4833156986779);
+        glVertex2f(2.6843173416322,5.9471450826595);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //wadah lampu
+    glColor3ub(83, 49, 21);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.3185247708212, 6.9092669253057);
+        glVertex2f(2.392021640114, 5.9798329698799);
+        glVertex2f(2.4260321685875, 5.9516528177161);
+        glVertex2f(2.4668448027557, 5.9225009361674);
+        glVertex2f(2.506, 5.9);
+        glVertex2f(2.5611308237116, 5.8739144669195);
+        glVertex2f(2.6155193986542, 5.8603102555301);
+        glVertex2f(2.666049326672, 5.8564233379903);
+        glVertex2f(2.7165792546898, 5.8535081498354);
+        glVertex2f(2.7729395590173, 5.863225443685);
+        glVertex2f(2.8234694870351, 5.8846034901541);
+        glVertex2f(2.8817732501326, 5.9137553717028);
+        glVertex2f(2.9274445312256, 5.9448507120214);
+        glVertex2f(2.9595116009292, 5.9817764286498);
+        glVertex2f(3.0397832903166, 6.9095286433506);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //objek lampu
+    glColor3ub(239, 172, 21);
+    glTranslated(0.006,0,0);
+    glBegin(GL_QUADS);
+        glVertex2f(2.4428276813169, 6.0511150529822);   //kiri
+        glVertex2f(2.3791945456307, 6.8049307737665);
+        glVertex2f(2.640874003513, 6.8014240958057);
+        glVertex2f(2.640874003513, 6.0511150529822);
+
+        glVertex2f(2.7136013877242, 6.052172598303);    //kanan
+        glVertex2f(2.9142668746947, 6.0511967634231);
+        glVertex2f(2.9702847412456, 6.8006932745462);
+        glVertex2f(2.7136666950167, 6.8021585985759);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //Garis bawah tiang
+    glLineWidth(4);
+    glColor3ub(83, 49, 21);
+    glBegin(GL_LINES);
+        glVertex2f(2.1477215158338, 1.3021233538741);
+        glVertex2f(3.2017807536256, 1.3028979528192);
+
+        glVertex2f(2.5552056695422, 2.4779478633133);
+        glVertex2f(2.8150567058827, 2.4779478633133);
+
+        glVertex2f(2.2978374929653,6.8503477828281);
+        glVertex2f(3.0614974005328,6.8503477828281);
+
+        glVertex2f(2.6938011759811,7.4893286517007);
+        glVertex2f(2.6938011759811,7.0393171985038);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //tutup wadah lampu
+    glColor3ub(112, 76, 52);
+    glTranslated(0.01,0.2,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.2699710987605, 6.686215568036);
+        glVertex2f(2.3025279888684, 6.7129587277674);
+        glVertex2f(2.3315966407504, 6.7513293482517);
+        glVertex2f(2.362990784783, 6.7943509530371);
+        glVertex2f(2.3978731670415, 6.8478372725001);
+        glVertex2f(2.4339182953752, 6.901323591963);
+        glVertex2f(2.4711261697842, 6.9489961810495);
+        glVertex2f(2.5048458059674, 6.9862040554585);
+        glVertex2f(2.5420536803764, 7.0222491837923);
+        glVertex2f(2.5723175081348, 7.0410119263117);
+        glVertex2f(2.7787756454743, 7.0434504082488);
+        glVertex2f(2.8075680976481, 7.0269606340181);
+        glVertex2f(2.838448317393, 6.9990688226356);
+        glVertex2f(2.8683324010171, 6.9671924667698);
+        glVertex2f(2.8982164846413, 6.9233624774544);
+        glVertex2f(2.9330812488694, 6.8725595352934);
+        glVertex2f(2.9669498769768, 6.8197643208907);
+        glVertex2f(2.9938455522385, 6.7759343315753);
+        glVertex2f(3.0237296358627, 6.737085022864);
+        glVertex2f(3.0585944000908, 6.6952473057902);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    //Lampu 4
+    glPushMatrix();
+    glTranslated(lamplvl2[5],2,0);
+    glScaled(0.4,0.4,0);
+    glPushMatrix();                                     //Bagian bawah tiang
+    glColor3ub(112, 76, 52);
+    glBegin(GL_QUADS);
+        glVertex2f(2.5500573391679, 2.444603574832);
+        glVertex2f(2.8189440783599, 2.4433031537679);
+        glVertex2f(3.1389820874064, 1.3556678955842);
+        glVertex2f(2.2068069454137, 1.3494948414238);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //Tiang
+    glLineWidth(10);
+    glBegin(GL_LINES);
+        glVertex2f(2.6843234615626,2.4833156986779);
+        glVertex2f(2.6843173416322,5.9471450826595);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //wadah lampu
+    glColor3ub(83, 49, 21);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.3185247708212, 6.9092669253057);
+        glVertex2f(2.392021640114, 5.9798329698799);
+        glVertex2f(2.4260321685875, 5.9516528177161);
+        glVertex2f(2.4668448027557, 5.9225009361674);
+        glVertex2f(2.506, 5.9);
+        glVertex2f(2.5611308237116, 5.8739144669195);
+        glVertex2f(2.6155193986542, 5.8603102555301);
+        glVertex2f(2.666049326672, 5.8564233379903);
+        glVertex2f(2.7165792546898, 5.8535081498354);
+        glVertex2f(2.7729395590173, 5.863225443685);
+        glVertex2f(2.8234694870351, 5.8846034901541);
+        glVertex2f(2.8817732501326, 5.9137553717028);
+        glVertex2f(2.9274445312256, 5.9448507120214);
+        glVertex2f(2.9595116009292, 5.9817764286498);
+        glVertex2f(3.0397832903166, 6.9095286433506);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //objek lampu
+    glColor3ub(239, 172, 21);
+    glTranslated(0.006,0,0);
+    glBegin(GL_QUADS);
+        glVertex2f(2.4428276813169, 6.0511150529822);   //kiri
+        glVertex2f(2.3791945456307, 6.8049307737665);
+        glVertex2f(2.640874003513, 6.8014240958057);
+        glVertex2f(2.640874003513, 6.0511150529822);
+
+        glVertex2f(2.7136013877242, 6.052172598303);    //kanan
+        glVertex2f(2.9142668746947, 6.0511967634231);
+        glVertex2f(2.9702847412456, 6.8006932745462);
+        glVertex2f(2.7136666950167, 6.8021585985759);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //Garis bawah tiang
+    glLineWidth(4);
+    glColor3ub(83, 49, 21);
+    glBegin(GL_LINES);
+        glVertex2f(2.1477215158338, 1.3021233538741);
+        glVertex2f(3.2017807536256, 1.3028979528192);
+
+        glVertex2f(2.5552056695422, 2.4779478633133);
+        glVertex2f(2.8150567058827, 2.4779478633133);
+
+        glVertex2f(2.2978374929653,6.8503477828281);
+        glVertex2f(3.0614974005328,6.8503477828281);
+
+        glVertex2f(2.6938011759811,7.4893286517007);
+        glVertex2f(2.6938011759811,7.0393171985038);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //tutup wadah lampu
+    glColor3ub(112, 76, 52);
+    glTranslated(0.01,0.2,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.2699710987605, 6.686215568036);
+        glVertex2f(2.3025279888684, 6.7129587277674);
+        glVertex2f(2.3315966407504, 6.7513293482517);
+        glVertex2f(2.362990784783, 6.7943509530371);
+        glVertex2f(2.3978731670415, 6.8478372725001);
+        glVertex2f(2.4339182953752, 6.901323591963);
+        glVertex2f(2.4711261697842, 6.9489961810495);
+        glVertex2f(2.5048458059674, 6.9862040554585);
+        glVertex2f(2.5420536803764, 7.0222491837923);
+        glVertex2f(2.5723175081348, 7.0410119263117);
+        glVertex2f(2.7787756454743, 7.0434504082488);
+        glVertex2f(2.8075680976481, 7.0269606340181);
+        glVertex2f(2.838448317393, 6.9990688226356);
+        glVertex2f(2.8683324010171, 6.9671924667698);
+        glVertex2f(2.8982164846413, 6.9233624774544);
+        glVertex2f(2.9330812488694, 6.8725595352934);
+        glVertex2f(2.9669498769768, 6.8197643208907);
+        glVertex2f(2.9938455522385, 6.7759343315753);
+        glVertex2f(3.0237296358627, 6.737085022864);
+        glVertex2f(3.0585944000908, 6.6952473057902);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    //Lampu 5
+    glPushMatrix();
+    glTranslated(lamplvl2[6],2,0);
+    glScaled(0.4,0.4,0);
+    glPushMatrix();                                     //Bagian bawah tiang
+    glColor3ub(112, 76, 52);
+    glBegin(GL_QUADS);
+        glVertex2f(2.5500573391679, 2.444603574832);
+        glVertex2f(2.8189440783599, 2.4433031537679);
+        glVertex2f(3.1389820874064, 1.3556678955842);
+        glVertex2f(2.2068069454137, 1.3494948414238);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //Tiang
+    glLineWidth(10);
+    glBegin(GL_LINES);
+        glVertex2f(2.6843234615626,2.4833156986779);
+        glVertex2f(2.6843173416322,5.9471450826595);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //wadah lampu
+    glColor3ub(83, 49, 21);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.3185247708212, 6.9092669253057);
+        glVertex2f(2.392021640114, 5.9798329698799);
+        glVertex2f(2.4260321685875, 5.9516528177161);
+        glVertex2f(2.4668448027557, 5.9225009361674);
+        glVertex2f(2.506, 5.9);
+        glVertex2f(2.5611308237116, 5.8739144669195);
+        glVertex2f(2.6155193986542, 5.8603102555301);
+        glVertex2f(2.666049326672, 5.8564233379903);
+        glVertex2f(2.7165792546898, 5.8535081498354);
+        glVertex2f(2.7729395590173, 5.863225443685);
+        glVertex2f(2.8234694870351, 5.8846034901541);
+        glVertex2f(2.8817732501326, 5.9137553717028);
+        glVertex2f(2.9274445312256, 5.9448507120214);
+        glVertex2f(2.9595116009292, 5.9817764286498);
+        glVertex2f(3.0397832903166, 6.9095286433506);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //objek lampu
+    glColor3ub(239, 172, 21);
+    glTranslated(0.006,0,0);
+    glBegin(GL_QUADS);
+        glVertex2f(2.4428276813169, 6.0511150529822);   //kiri
+        glVertex2f(2.3791945456307, 6.8049307737665);
+        glVertex2f(2.640874003513, 6.8014240958057);
+        glVertex2f(2.640874003513, 6.0511150529822);
+
+        glVertex2f(2.7136013877242, 6.052172598303);    //kanan
+        glVertex2f(2.9142668746947, 6.0511967634231);
+        glVertex2f(2.9702847412456, 6.8006932745462);
+        glVertex2f(2.7136666950167, 6.8021585985759);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //Garis bawah tiang
+    glLineWidth(4);
+    glColor3ub(83, 49, 21);
+    glBegin(GL_LINES);
+        glVertex2f(2.1477215158338, 1.3021233538741);
+        glVertex2f(3.2017807536256, 1.3028979528192);
+
+        glVertex2f(2.5552056695422, 2.4779478633133);
+        glVertex2f(2.8150567058827, 2.4779478633133);
+
+        glVertex2f(2.2978374929653,6.8503477828281);
+        glVertex2f(3.0614974005328,6.8503477828281);
+
+        glVertex2f(2.6938011759811,7.4893286517007);
+        glVertex2f(2.6938011759811,7.0393171985038);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                                     //tutup wadah lampu
+    glColor3ub(112, 76, 52);
+    glTranslated(0.01,0.2,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.2699710987605, 6.686215568036);
+        glVertex2f(2.3025279888684, 6.7129587277674);
+        glVertex2f(2.3315966407504, 6.7513293482517);
+        glVertex2f(2.362990784783, 6.7943509530371);
+        glVertex2f(2.3978731670415, 6.8478372725001);
+        glVertex2f(2.4339182953752, 6.901323591963);
+        glVertex2f(2.4711261697842, 6.9489961810495);
+        glVertex2f(2.5048458059674, 6.9862040554585);
+        glVertex2f(2.5420536803764, 7.0222491837923);
+        glVertex2f(2.5723175081348, 7.0410119263117);
+        glVertex2f(2.7787756454743, 7.0434504082488);
+        glVertex2f(2.8075680976481, 7.0269606340181);
+        glVertex2f(2.838448317393, 6.9990688226356);
+        glVertex2f(2.8683324010171, 6.9671924667698);
+        glVertex2f(2.8982164846413, 6.9233624774544);
+        glVertex2f(2.9330812488694, 6.8725595352934);
+        glVertex2f(2.9669498769768, 6.8197643208907);
+        glVertex2f(2.9938455522385, 6.7759343315753);
+        glVertex2f(3.0237296358627, 6.737085022864);
+        glVertex2f(3.0585944000908, 6.6952473057902);
+    glEnd();
+    glPopMatrix();
     glPopMatrix();
 
 }
@@ -2735,7 +6294,7 @@ void got() {
 void build (){
     glPushMatrix();
     glScaled(1.4,1.4,0);
-    glTranslated(-2,3,0);
+    glTranslated(buildlvl2,3,0);
     glPushMatrix();                                     //gedung 1
     glColor3ub(69, 125, 237);
     glBegin(GL_QUADS);
@@ -3272,12 +6831,16 @@ void level2(){
     road();
     glPopMatrix();
 
-    roadlines();
-
-    lamps();
+    roadline();
 
     glPushMatrix();
-    glTranslated(7,0.75,0);
+    glTranslated(gotlvl2[0],0.75,0);
+    glScaled(0.2,0.4,0);
+    got();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(gotlvl2[1],-0.25,0);
     glScaled(0.2,0.4,0);
     got();
     glPopMatrix();
@@ -3292,6 +6855,25 @@ void level2(){
     glScaled(1,1.4,0);
     glTranslated(-2,-3.05,0);
     build();
+    glPopMatrix();
+
+    glPushMatrix();
+    lamp();
+    glPopMatrix();
+
+    fireball();
+
+    glPushMatrix();
+    glTranslated(0,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
     glPopMatrix();
 }
 
@@ -3331,7 +6913,7 @@ void roadlevel3 (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(0,1.2,0);
+    glTranslated(marka[0],1.2,0);
     glColor3ub(185, 125, 72);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -3342,7 +6924,7 @@ void roadlevel3 (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(2,1.2,0);
+    glTranslated(marka[1],1.2,0);
     glColor3ub(185, 125, 72);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -3353,7 +6935,7 @@ void roadlevel3 (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(4,1.2,0);
+    glTranslated(marka[2],1.2,0);
     glColor3ub(185, 125, 72);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -3364,7 +6946,18 @@ void roadlevel3 (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(6,1.2,0);
+    glTranslated(marka[3],1.2,0);
+    glColor3ub(185, 125, 72);
+    glBegin(GL_POLYGON);
+        glVertex2f(0.111809588206, 0.5969561258988);
+        glVertex2f(1.1095346664577, 0.5969561258988);
+        glVertex2f(1.1095346664577, 0.7078144679268);
+        glVertex2f(0.111809588206, 0.7078144679268);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();                   //Garis tengah jalan warna putih
+    glTranslated(marka[4],1.2,0);
     glColor3ub(185, 125, 72);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -3375,7 +6968,7 @@ void roadlevel3 (){
     glPopMatrix();
 
     glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(8,1.2,0);
+    glTranslated(marka[5],1.2,0);
     glColor3ub(185, 125, 72);
     glBegin(GL_POLYGON);
         glVertex2f(0.111809588206, 0.5969561258988);
@@ -3385,27 +6978,6 @@ void roadlevel3 (){
     glEnd();
     glPopMatrix();
 
-    glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(10,1.2,0);
-    glColor3ub(185, 125, 72);
-    glBegin(GL_POLYGON);
-        glVertex2f(0.111809588206, 0.5969561258988);
-        glVertex2f(1.1095346664577, 0.5969561258988);
-        glVertex2f(1.1095346664577, 0.7078144679268);
-        glVertex2f(0.111809588206, 0.7078144679268);
-    glEnd();
-    glPopMatrix();
-
-    glPushMatrix();                         //Garis tengah jalan warna putih
-    glTranslated(12,1.2,0);
-    glColor3ub(185, 125, 72);
-    glBegin(GL_POLYGON);
-        glVertex2f(0.111809588206, 0.5969561258988);
-        glVertex2f(1.1095346664577, 0.5969561258988);
-        glVertex2f(1.1095346664577, 0.7078144679268);
-        glVertex2f(0.111809588206, 0.7078144679268);
-    glEnd();
-    glPopMatrix();
 }
 
 void kaktus() {
@@ -3507,6 +7079,14 @@ void kaktus() {
     glPopMatrix();
 }
 
+void kaktusposition(){
+
+
+    glPushMatrix();
+    glTranslated(7,20,0);
+    kaktus();
+    glPopMatrix();
+}
 void sandMountain() {
 
     /////////////////////////bentuk kanan pojok bawah//////
@@ -4091,7 +7671,7 @@ void sandMountain() {
 void piramid (){
     glPushMatrix();
     glScaled(1,1,0);
-    glTranslated(0.2,2,0);
+    glTranslated(piramidlvl3,2,0);
     ////////////piramida paling kanan depan
     glPushMatrix();
     glColor3ub(222, 127, 44); //warna atas
@@ -4162,1095 +7742,7 @@ void piramid (){
     glPopMatrix();
 }
 
-void unta(){
-    glPushMatrix();
-    glScaled(1,1,0);
-    glTranslated(0.2,2,0);
-    ///////telinga kiri
-    glPushMatrix();
-    glTranslated(0, -0.1, 0);
-    glColor3ub(255, 173, 71);
-    glBegin(GL_POLYGON);
-    glVertex2f(1.9204669478874, 7.4225463562676);
-    glVertex2f(1.8788867581813, 7.45453111758);
-    glVertex2f(1.7733370458505, 7.4641265459737);
-    glVertex2f(1.5270543837452, 7.6816229228978);
-    glVertex2f(1.4787805093335, 7.7484557919928);
-    glVertex2f(1.4093650800013, 7.7630695665891);
-    glVertex2f(1.251049188542, 7.7740298975362);
-    glVertex2f(1.1639530849168, 7.7341576526953);
-    glVertex2f(1.0975361909224, 7.6852188886994);
-    glVertex2f(1.0695711829247, 7.5139332147138);
-    glVertex2f(1.0625799309253, 7.6083151167059);
-    glVertex2f(1.1324924509195, 7.4580031987185);
-    glVertex2f(1.3975736468953, 7.2273919044268);
-    glVertex2f(1.3951854087354, 7.1629094741084);
-    glEnd();
-    glPopMatrix();
-
-//Line telinga
-    glPushMatrix();
-    glColor3ub(0,0,0);
-    glLineWidth(2);
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(1.498035074659, 7.6818825820913);
-    glVertex2f(1.4905337643874, 7.5881162036957);
-    glVertex2f(1.520539005474, 7.5056017907076);
-    glVertex2f(1.561796211968, 7.4268380328554);
-    glVertex2f(1.6293080044128, 7.3818301712255);
-    glVertex2f(1.7043211071293, 7.3555755852747);
-    glVertex2f(1.794336830389, 7.3255703441882);
-    glEnd();
-    glPopMatrix();
-
-//kepala atas
-glPushMatrix();
-    glPushMatrix();
-    glColor3ub(255, 173, 71);
-    glBegin(GL_POLYGON);
-    glVertex2f(2.8, 6.2);
-    glVertex2f(2.8290277695314, 6.2675344582036);
-    glVertex2f(2.8860231655962, 6.368284036156);
-    glVertex2f(2.9256287187729, 6.4838002329216);
-    glVertex2f(2.948731958126, 6.6191192062755);
-    glVertex2f(2.9784361230086, 6.9260622433952);
-    glVertex2f(2.9685347347144, 6.9722687221015);
-    glVertex2f(2.9650770463101, 7.0190190986539);
-    glVertex2f(2.9439314188978, 7.0743230472708);
-    glVertex2f(2.9081465109692, 7.1280004091637);
-    glVertex2f(2.8642286694204, 7.1816777710566);
-    glVertex2f(2.8219374145957, 7.2158360922612);
-    glVertex2f(2.7773512883033, 7.259771216741);
-    glVertex2f(2.7187443025828, 7.3183782024616);
-    glVertex2f(2.6497949076175, 7.3804326579303);
-    glVertex2f(2.5532657546661, 7.4252497646578);
-    glVertex2f(2.4498416622182, 7.4597244621404);
-    glVertex2f(2.3360751605254, 7.4631719318887);
-    glVertex2f(2.239546007574, 7.4597244621404);
-    glVertex2f(2.1188845663847, 7.4355921739026);
-    glVertex2f(2, 7.4);
-    glVertex2f(1.8430869865235, 7.3321680814546);
-    glVertex2f(1.7179359022815, 7.2825915560737);
-    glVertex2f(1.6209884027303, 7.2254617795524);
-    glVertex2f(1.5326969299247, 7.1839128511733);
-    glVertex2f(1.456523894563, 7.1596759762855);
-    glVertex2f(1.3855444752488, 7.1371703067468);
-    glVertex2f(1.2799409489519, 7.1302454853503);
-    glVertex2f(1.1818740740203, 7.1160247960673);
-    glVertex2f(1.0646499566607, 7.0940452740623);
-    glVertex2f(0.9327728246311, 7.0867187667273);
-    glVertex2f(0.7935691852664, 7.0574127373874);
-    glVertex2f(0.6433757848994, 7.046422976385);
-    glVertex2f(0.5554576968796, 7.0207802007125);
-    glVertex2f(0.4821926235298, 6.9804844103701);
-    glVertex2f(0.40892755018, 6.9145458443553);
-    glVertex2f(0.3759582671726, 6.844944024673);
-    glVertex2f(0.3869480281751, 6.665444594966);
-    glVertex2f(0.4188085652887, 6.6079685707691);
-    glVertex2f(0.4557110329098, 6.5517362391559);
-    glVertex2f(0.4855844590794, 6.509561990446);
-    glVertex2f(0.5295159681522, 6.4621159606474);
-    glVertex2f(0.5699329564991, 6.4164271912116);
-    glVertex2f(0.6085926844832, 6.3777674632276);
-
-    glVertex2f(0.5705157145287, 6.3465268202397);
-    glVertex2f(0.580936666882, 6.2892115822962);
-    glVertex2f(0.6069890477654, 6.2292911062644);
-    glVertex2f(0.6486728571788, 6.1589496778793);
-    glVertex2f(0.6825409523272, 6.0964239637592);
-    glVertex2f(0.7242247617406, 6.0365034877274);
-    glVertex2f(0.7691392579087, 5.9882934780696);
-    glVertex2f(0.8217993502225, 5.9436121876215);
-    glVertex2f(0.8648848802974, 5.9037181782928);
-    glVertex2f(0.9223322537307, 5.8749944915762);
-    glVertex2f(0.9973329912685, 5.8382920029939);
-    glVertex2f(1.0723337288064, 5.8063767955309);
-    glVertex2f(1.1409514248516, 5.7824403899338);
-    glVertex2f(1.2127606416432, 5.7664827862023);
-    glVertex2f(1.2781868169422, 5.7537167032171);
-    glVertex2f(1.3515917941069, 5.7569082239634);
-    glVertex2f(1.418613729779, 5.7696743069486);
-    glVertex2f(1.4824441447049, 5.7808446295606);
-    glVertex2f(1.549466080377, 5.8111640766504);
-    glVertex2f(1.6132964953028, 5.8351004822476);
-    glVertex2f(1.6771269102286, 5.8670156897105);
-    glVertex2f(1.7393615647813, 5.9005266575465);
-    glVertex2f(1.7856386156026, 5.9308461046363);
-    glVertex2f(1.8478732701553, 5.9787189158307);
-    glEnd();
-glPopMatrix();
-
-//senyum
-glPushMatrix();
-    glColor3ub(0,0,0);
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(0.6085926844832, 6.3777674632276);
-    glVertex2f(0.6577959746447, 6.3355932145177);
-    glVertex2f(0.7140283062579, 6.3004480072594);
-    glVertex2f(0.7685033775082, 6.2653028000012);
-    glVertex2f(0.8194639280327, 6.2371866341946);
-    glVertex2f(0.8756962596459, 6.2073132080251);
-    glVertex2f(0.9495011948882, 6.2002841665734);
-    glVertex2f(1.0654803788404, 6.1985269062105);
-    glVertex2f(1.134013532994, 6.2037986872993);
-    glVertex2f(1.2007894267846, 6.2143422494767);
-    glVertex2f(1.2699632035311, 6.230421225245);
-    glVertex2f(1.3376381732846, 6.2698982909345);
-    glVertex2f(1.4084403095367, 6.3133348083355);
-glEnd();
-glPopMatrix();
-glPopMatrix();
-
-//telinga kanan
-glPushMatrix();
-glColor3ub(255, 173, 71);
-glBegin(GL_POLYGON);
-    glVertex2f(2.9247630418886, 7.0636756845027);
-glVertex2f(2.945772085186, 7.0111530762592);
-glVertex2f(2.9807871573483, 6.9656334824482);
-glVertex2f(3.0298082583755, 6.9341199175021);
-glVertex2f(3.082330866619, 6.9061078597722);
-glVertex2f(3.1453579965112, 6.8850988164748);
-glVertex2f(3.2293941697008, 6.8780958020424);
-glVertex2f(3.3099288356741, 6.8640897731774);
-glVertex2f(3.383460487215, 6.8500837443125);
-glVertex2f(3.4674966604046, 6.8465822370963);
-glVertex2f(3.520019268648, 6.8080656577177);
-glVertex2f(3.5620373552428, 6.7625460639067);
-glVertex2f(3.5760433841077, 6.6960174267983);
-glVertex2f(3.5585358480266, 6.6294887896899);
-glVertex2f(3.534025297513, 6.5734646742302);
-glVertex2f(3.4955087181344, 6.5279450804192);
-glVertex2f(3.4499891243234, 6.4964315154731);
-glVertex2f(3.4079710377286, 6.4579149360945);
-glVertex2f(3.3589499367014, 6.4369058927971);
-glVertex2f(3.2889197923767, 6.4334043855809);
-glVertex2f(3.2118866336196, 6.4474104144458);
-glVertex2f(3.1453579965112, 6.4789239793919);
-glVertex2f(3.0788293594028, 6.5069360371218);
-glVertex2f(3.0228052439431, 6.5419511092841);
-glVertex2f(2.9702826356996, 6.5804676886626);
-glVertex2f(2.9247630418886, 6.6329902969061);
-glVertex2f(2.8722404336451, 6.6960174267983);
-glEnd();
-glPopMatrix();
-
-//telinga kanan line
-glPushMatrix();
-glColor3ub(0,0,0);
-glBegin(GL_LINE_STRIP);
-    glVertex2f(2.9247630418886, 7.0636756845027);
-glVertex2f(2.945772085186, 7.0111530762592);
-glVertex2f(2.9807871573483, 6.9656334824482);
-glVertex2f(3.0298082583755, 6.9341199175021);
-glVertex2f(3.082330866619, 6.9061078597722);
-glVertex2f(3.1453579965112, 6.8850988164748);
-glVertex2f(3.2293941697008, 6.8780958020424);
-glVertex2f(3.3099288356741, 6.8640897731774);
-glVertex2f(3.383460487215, 6.8500837443125);
-glVertex2f(3.4674966604046, 6.8465822370963);
-glVertex2f(3.520019268648, 6.8080656577177);
-glVertex2f(3.5620373552428, 6.7625460639067);
-glVertex2f(3.5760433841077, 6.6960174267983);
-glVertex2f(3.5585358480266, 6.6294887896899);
-glVertex2f(3.534025297513, 6.5734646742302);
-glVertex2f(3.4955087181344, 6.5279450804192);
-glVertex2f(3.4499891243234, 6.4964315154731);
-glVertex2f(3.4079710377286, 6.4579149360945);
-glVertex2f(3.3589499367014, 6.4369058927971);
-glVertex2f(3.2889197923767, 6.4334043855809);
-glVertex2f(3.2118866336196, 6.4474104144458);
-glVertex2f(3.1453579965112, 6.4789239793919);
-glVertex2f(3.0788293594028, 6.5069360371218);
-glVertex2f(3.0228052439431, 6.5419511092841);
-glVertex2f(2.9702826356996, 6.5804676886626);
-glVertex2f(2.9247630418886, 6.6329902969061);
-glVertex2f(2.8722404336451, 6.6960174267983);
-glEnd();
-glPopMatrix();
-
-//leher
-glPushMatrix();
-glColor3ub(255, 173, 71);
-glBegin(GL_POLYGON);
-    glVertex2f(2.8, 6.2);
-    glVertex2f(2.7932120750907, 6.1490383381328);
-    glVertex2f(2.7868782214438, 6.1046620883421);
-    glVertex2f(2.7911582479097, 6.037251671503);
-    glVertex2f(2.8033224666481, 5.9638368499243);
-    glVertex2f(2.8173141888038, 5.8985421465312);
-    glVertex2f(2.8390790899348, 5.8177010851874);
-    glVertex2f(2.8577347194757, 5.7508517459992);
-    glVertex2f(2.8787444670799, 5.6670902233815);
-    glVertex2f(2.9, 5.6);
-    glVertex2f(2.9284844763651, 5.5222273637237);
-    glVertex2f(2.9451487609529, 5.4694571291957);
-    glVertex2f(2.9701451878346, 5.4166868946677);
-    glVertex2f(2.9993076858632, 5.3569732082282);
-    glVertex2f(3.0223051652681, 5.2817488331889);
-    glVertex2f(3.0534924140225, 5.2095257308103);
-    glVertex2f(3.083947547839, 5.1563771088791);
-    glVertex2f(3.1191497798212, 5.1044739455323);
-    glVertex2f(3.1503370285756, 5.0617966577631);
-    glVertex2f(3.1899620328022, 5.0223327043635);
-    glVertex2f(3.240762084977, 4.9847030360859);
-    glVertex2f(3.3009695542213, 4.9602437517054);
-    glVertex2f(3.35365108981, 4.9451918843943);
-    glVertex2f(3.4232659761236, 4.9433104009804);
-    glVertex2f(3.2727618973083, 3.1170338566764);
-    glVertex2f(3.2029206852955, 3.1214667722174);
-    glVertex2f(3.1294935923264, 3.1451529312397);
-    glVertex2f(3.0560664993573, 3.1854194015776);
-    glVertex2f(2.981967768247, 3.2101865163084);
-    glVertex2f(2.9193880349897, 3.2428923091863);
-    glVertex2f(2.8667255619305, 3.2823891639807);
-    glVertex2f(2.8166962125243, 3.329785389734);
-    glVertex2f(2.766666863118, 3.3561166262636);
-    glVertex2f(2.7271700083236, 3.392980357405);
-    glVertex2f(2.6728909077896, 3.4288376956057);
-    glVertex2f(2.6261778308179, 3.4618116322916);
-    glVertex2f(2.576716925789, 3.5016551391204);
-    glVertex2f(2.5382473329888, 3.5428725599778);
-    glVertex2f(2.5038994822743, 3.5730986686066);
-    glVertex2f(2.4750472876741, 3.6074465193211);
-    glVertex2f(2.4447484322534, 3.6400614754644);
-    glVertex2f(2.4094695194853, 3.6753403882326);
-    glVertex2f(2.3741906067171, 3.7070914097239);
-    glVertex2f(2.3483194040204, 3.7341385761795);
-    glVertex2f(2.3212722375648, 3.7717694164656);
-    glVertex2f(2.3, 3.8);
-    glVertex2f(2.2730577234483, 3.8329195319304);
-    glVertex2f(2.2448345932338, 3.8752542272522);
-    glVertex2f(2.2048518254299, 3.9269966326455);
-    glVertex2f(2.1683969489028, 3.9787390380389);
-    glVertex2f(2.1228949485295, 4.0475881806552);
-    glVertex2f(2.076628375189, 4.1302070616202);
-    glVertex2f(2.0468855780416, 4.1996069216308);
-    glVertex2f(2.0072285151784, 4.2756162921187);
-    glVertex2f(1.9675714523152, 4.3681494387995);
-    glVertex2f(1.927914389452, 4.4507683197645);
-    glVertex2f(1.9014763475432, 4.5267776902523);
-    glVertex2f(1.8742699461224, 4.6245918258855);
-    glVertex2f(1.8206900870222, 4.7237145652208);
-    glVertex2f(1.8, 4.8);
-    glVertex2f(1.7752589304849, 4.888175370054);
-    glVertex2f(1.7533336263552, 5.0017315786859);
-    glVertex2f(1.7440933012751, 5.0964449107568);
-    glVertex2f(1.7391847176788, 5.1798616418268);
-    glVertex2f(1.7389697963432, 5.2847637646027);
-    glVertex2f(1.739473138735, 5.3967554758596);
-    glVertex2f(1.7436372627941, 5.5044877271771);
-    glVertex2f(1.7413080895804, 5.6139588682214);
-    glVertex2f(1.7482956092215, 5.697809103915);
-    glVertex2f(1.7599414752901, 5.7723426467537);
-    glVertex2f(1.7622025393025,5.8343905908464);
-    glVertex2f(1.7847004788208,5.9131333791605);
-glEnd();
-glPopMatrix();
-
-//leher punuk
-glPushMatrix();
-glTranslated(-0.1,0,0);
-glColor3ub(255, 173, 71);
-glBegin(GL_POLYGON);
-    glVertex2f(4.0750459060485, 5.6013060957275);
-    glVertex2f(4.09247168592, 5.6815628974906);
-    glVertex2f(4.09247168592, 5.7730151523563);
-    glVertex2f(4.09247168592, 5.8461769562488);
-    glVertex2f(4.1003104506228, 5.9350162895469);
-    glVertex2f(4.1133750584607, 6.023855622845);
-    glVertex2f(4.1395042741366, 6.1231466424135);
-    glVertex2f(4.1630093058297, 6.180224908207);
-    glVertex2f(4.1858058195466, 6.2433537154233);
-    glVertex2f(4.2208773791112, 6.2889467428572);
-    glVertex2f(4.2664704065452, 6.3257718804001);
-    glVertex2f(4.3120634339792, 6.3643505959211);
-    glVertex2f(4.3559028834349, 6.3906542655946);
-    glVertex2f(4.4120173787382, 6.4204650912245);
-    glVertex2f(4.4804069198892, 6.4380008710068);
-    glVertex2f(4.5470428830619, 6.4450151829197);
-    glVertex2f(4.6224467361258, 6.4537830728108);
-    glVertex2f(4.7013577451461, 6.4537830728108);
-    glVertex2f(4.7785151761882, 6.4467687608979);
-    glVertex2f(4.8556726072303, 6.4257258251591);
-    glVertex2f(4.922308570403, 6.3976685775075);
-    glVertex2f(4.9714087537935, 6.3661041738993);
-    glVertex2f(5.0187553592057, 6.3205111464654);
-    glVertex2f(5.052073340792, 6.2679038071185);
-    glVertex2f(5.0818841664219, 6.2012678439458);
-    glVertex2f(5.1152021480083, 6.1135889450343);
-    glVertex2f(5.1502737075729, 6.0329243580357);
-    glVertex2f(5.1888524230939, 5.9750562847542);
-    glVertex2f(5.2344454505279, 5.9259561013637);
-    glVertex2f(5.2695170100925, 5.8961452757338);
-    glVertex2f(5.3221243494394, 5.8873773858427);
-    glVertex2f(4.014154920534, 3.0551224863706);
-    glVertex2f(3.9430421258008, 3.0379573290212);
-    glVertex2f(3.8596685043894, 3.025696502343);
-    glVertex2f(3.7846213415038, 3.0155799871391);
-    glVertex2f(3.7263361318234, 3.0139146954339);
-    glVertex2f(3.6564067851956, 3.0158412326955);
-    glVertex2f(3.593678442095, 3.0255989749556);
-    glVertex2f(3.5323440621744, 3.0409325699358);
-    glVertex2f(3.4710096822538, 3.0562661649159);
-    glVertex2f(3.4040994496132, 3.0771756126161);
-    glVertex2f(3.3482326411529, 3.0943995212778);
-    glVertex2f(3.273506779378, 3.1167473851175);
-glEnd();
-glPopMatrix();
-
-glPushMatrix();
-glColor3ub(255, 173, 71);
-glBegin(GL_POLYGON);
-glVertex2f(3.4232659761236, 4.9433104009804);
-    glVertex2f(3.5389488369822, 5.0017153574682);
-    glVertex2f(3.6155678847601, 5.0442814951225);
-    glVertex2f(3.6893491900276, 5.0953608603078);
-    glVertex2f(3.7546172677643, 5.1492779680033);
-    glVertex2f(3.8, 5.2);
-    glVertex2f(3.8550631495742, 5.241334312406);
-    glVertex2f(3.9, 5.3);
-    glVertex2f(3.9517222395402, 5.3496591546092);
-    glVertex2f(3.9917191043537, 5.4129875238973);
-    glVertex2f(4.0300494331333, 5.4729828211175);
-    glVertex2f(4.0583805457095, 5.5329781183378);
-    glVertex2f(4.014154920534, 3.0551224863706);
-    glVertex2f(3.9430421258008, 3.0379573290212);
-    glVertex2f(3.8596685043894, 3.025696502343);
-    glVertex2f(3.7846213415038, 3.0155799871391);
-    glVertex2f(3.7263361318234, 3.0139146954339);
-    glVertex2f(3.6564067851956, 3.0158412326955);
-    glVertex2f(3.593678442095, 3.0255989749556);
-    glVertex2f(3.5323440621744, 3.0409325699358);
-    glVertex2f(3.4710096822538, 3.0562661649159);
-    glVertex2f(3.4040994496132, 3.0771756126161);
-    glVertex2f(3.3482326411529, 3.0943995212778);
-    glVertex2f(3.273506779378, 3.1167473851175);
-glEnd();
-glPopMatrix();
-
-//kakikanan depan
-glPushMatrix();
-glColor3ub(255, 173, 71);
-glBegin(GL_POLYGON);
-    glVertex2f(5.2217746332163, 3.3337896291401);
-    glVertex2f(5.2309125391517, 3.1332726638502);
-    glVertex2f(5.2217746332163, 3.0327556985603);
-    glVertex2f(5.2151539865362, 2.949740377668);
-    glVertex2f(5.1994993800003, 2.8636400417204);
-    glVertex2f(5.181235672375, 2.7749306046835);
-    glVertex2f(5.1603628636605, 2.6862211676466);
-    glVertex2f(5.1368809538566, 2.592293528431);
-    glVertex2f(5.108180841874, 2.5140204957514);
-    glVertex2f(5.0794807298915, 2.4305292608931);
-    glVertex2f(5.0481715168197, 2.3548653293028);
-    glVertex2f(5.0220805059264, 2.2765922966232);
-    glVertex2f(4.9979187718365, 2.2140867305282);
-    glVertex2f(4.9725075852293, 2.1541889335255);
-    glVertex2f(4.9398360595915, 2.0997363907958);
-    glVertex2f(4.3630081904596,2.0969387639845);
-    glVertex2f(4.5321181184347,3.1697298695762);
-    glEnd();
-    glBegin(GL_POLYGON);
-    glVertex2f(4.9398360595915, 2.0997363907958);
-    glVertex2f(4.9443062948311, 0.8890158820682);
-    glVertex2f(4.8462286078526, 0.6922848328041);
-    glVertex2f(4.7723406268628, 0.6868116490271);
-    glVertex2f(4.7148721972042, 0.6895482409156);
-    glVertex2f(4.654667175657, 0.7114409760237);
-    glVertex2f(4.6026719297753, 0.7278605273547);
-    glVertex2f(4.5506766838936, 0.7552264462398);
-    glVertex2f(4.498681438012, 0.7880655489019);
-    glVertex2f(4.4603691515729, 0.826377835341);
-    glVertex2f(4.4193202732452, 0.8701633055572);
-    glVertex2f(4.3810079868061, 0.9248951433273);
-    glVertex2f(4.3392660352228, 1.8431543727977);
-    glVertex2f(4.322451435269,3.1956105793716);
-    glVertex2f(4.7131887744843,3.1962025320279);
-glEnd();
-glPopMatrix();
-
-//kaki kanan telapak
-glPushMatrix();
-glPushMatrix();
-glColor3ub(255, 173, 71);
-
-glBegin(GL_POLYGON);
-glVertex2f(4.7827069136907, 0.641007103173);
-glVertex2f(4.7209826510892, 0.5792828405715);
-glVertex2f(4.6255906088869, 0.5287811711702);
-glVertex2f(4.5, 0.5);
-glVertex2f(4.4123613380817, 0.51755857797);
-glVertex2f(4.3899161516811, 0.6073393235721);
-glVertex2f(4.3786935584809, 0.8766815603787);
-glEnd();
-glPopMatrix();
-
-//line
-glPushMatrix();
-glColor3ub(0,0,0);
-glLineWidth(2);
-glBegin(GL_LINE_LOOP);
-glVertex2f(4.7827069136907, 0.641007103173);
-glVertex2f(4.7209826510892, 0.5792828405715);
-glVertex2f(4.6255906088869, 0.5287811711702);
-glVertex2f(4.5, 0.5);
-glVertex2f(4.4123613380817, 0.51755857797);
-glVertex2f(4.3899161516811, 0.6073393235721);
-glVertex2f(4.3786935584809, 0.8766815603787);
-glEnd();
-glPopMatrix();
-glPopMatrix();
-
-//punuk2
-glPushMatrix();
-glTranslated(-0.1,0,0);
-glColor3ub(255, 173, 71);
-glBegin(GL_POLYGON);
-    glVertex2f(5.3009760132194, 5.9161075504178);
-    glVertex2f(5.3529074742891, 5.9257113161543);
-    glVertex2f(5.3886134510839, 5.9598648591754);
-    glVertex2f(5.427424295426, 6.0002281372912);
-    glVertex2f(5.4583132350054, 6.055290106933);
-    glVertex2f(5.4786543173204, 6.103600177431);
-    glVertex2f(5.5040806702141, 6.1620807890866);
-    glVertex2f(5.5345922936866, 6.2205614007422);
-    glVertex2f(5.565103917159, 6.2764993771084);
-    glVertex2f(5.6108713523677, 6.3324373534745);
-    glVertex2f(5.6693519640233, 6.3756621533939);
-    glVertex2f(5.7303752109682, 6.4112590474451);
-    glVertex2f(5.7990263637813, 6.4443133062069);
-    glVertex2f(5.8778480577518, 6.4493985767857);
-    glVertex2f(5.9642976575905, 6.4544838473644);
-    glVertex2f(6.0710883397441, 6.4366854003388);
-    glVertex2f(6.1448247631359, 6.3985458709982);
-    glVertex2f(6.2217538953806, 6.3633604342211);
-    glVertex2f(6.2828031944785, 6.3219341241189);
-    glVertex2f(6.3351311651339, 6.2826881461274);
-    glVertex2f(6.4, 6.2);
-    glVertex2f(6.4397871064445, 6.1496878873784);
-    glVertex2f(6.4604418529617, 5.7806022002837);
-    glVertex2f(6.4883098149173, 5.7227225869914);
-    glVertex2f(6.550476806972, 5.6541245267931);
-    glVertex2f(6.433462538858, 5.835167773999);
-    glVertex2f(6.8202249679849, 5.4385853996381);
-    glVertex2f(6.6406887279981, 5.575032942028);
-    glVertex2f(6.9130419695934, 5.3869752648738);
-    glVertex2f(6.9813153766451, 5.3284552016866);
-    glVertex2f(7.0290821480345, 5.2767521045143);
-    glVertex2f(7.0793413523831, 5.2193130138302);
-    glVertex2f(7.1260106135639, 5.1762336958171);
-    glVertex2f(7.1583201020737, 5.1223845483008);
-    glVertex2f(7.1978094769189, 5.0721253439523);
-    glVertex2f(7.2247340506771, 5.018276196436);
-    glVertex2f(7.2642234255224, 4.9608371057519);
-    glVertex2f(7.3019178287838, 4.8854482992291);
-    glVertex2f(7.3360222888775, 4.8298041801289);
-    glVertex2f(7.3665368058034, 4.784929890532);
-    glVertex2f(7.3844865216421, 4.7418505725189);
-    glVertex2f(7.4372912744339, 4.5888833935037);
-    glVertex2f(7.4707034742631, 4.5125126510369);
-    glVertex2f(7.494569331284, 4.4027297087409);
-    glVertex2f(7.5088888454965, 4.3120394520616);
-    glVertex2f(7.5279815311132, 4.1927101669572);
-    glVertex2f(7.5279815311132, 3.9254125683234);
-    glVertex2f(6.158081338115, 3.5626515416061);
-    glVertex2f(6.0921360991314, 3.5165357063473);
-    glVertex2f(6.0180041395496, 3.4816500783088);
-    glVertex2f(5.9746736028582, 3.4619808745639);
-    glVertex2f(5.9151110517109, 3.4399206704353);
-    glVertex2f(5.8577545209764, 3.4134484254809);
-    glVertex2f(5.8, 3.4);
-    glVertex2f(5.7408354390946, 3.3781520988751);
-    glVertex2f(5.6746548267087, 3.3560918947465);
-    glVertex2f(5.6239163572129, 3.3384437314436);
-    glVertex2f(5.5621477856527, 3.3163835273149);
-    glVertex2f(5.5136153365697, 3.3053534252506);
-    glVertex2f(5.4452287037709, 3.2810872007091);
-    glVertex2f(5.3944902342751, 3.2678510782319);
-    glVertex2f(5.3084554381734, 3.250202914929);
-    glVertex2f(5.2356567645489, 3.2391728128647);
-    glVertex2f(5.1617184537376, 3.2271460438166);
-    glVertex2f(5.0878597227173, 3.2153658704471);
-    glVertex2f(5, 3.2);
-    glVertex2f(4.9186689642573, 3.1916475398219);
-    glVertex2f(4.8380266401316, 3.1900663177802);
-    glVertex2f(4.7652904262142, 3.1869038736968);
-    glVertex2f(4.6830668800468, 3.201134872072);
-    glVertex2f(3.6087214351146, 3.5663012517224);
-glEnd();
-glPopMatrix();
-
-//telapak kiri depan
-glPushMatrix();
-glColor3ub(255, 173, 71);
-glBegin(GL_POLYGON);
-    glVertex2f(4.258811263631, 0.5341972983642);
-glVertex2f(4.2011916081411, 0.4813792808318);
-glVertex2f(4.1339686767363, 0.433362901257);
-glVertex2f(4.0667457453314, 0.3901481596396);
-glVertex2f(3.9995228139266, 0.3565366939372);
-glVertex2f(3.9567690511558, 0.3385476068929);
-glVertex2f(3.9101594100467, 0.3245647145602);
-glVertex2f(3.8332535022165, 0.3268951966156);
-glVertex2f(3.7516866302755, 0.333886642782);
-glVertex2f(3.6910940968335, 0.3665133915584);
-glVertex2f(3.6771112045008, 0.4084620685567);
-glVertex2f(3.719059881499, 0.4597326737768);
-glVertex2f(3.74935614822, 0.5110032789969);
-glVertex2f(3.6910940968335, 0.4970203866641);
-glVertex2f(3.6165186710588, 0.5016813507751);
-glVertex2f(3.5489346914505, 0.5226556892742);
-glVertex2f(3.5133402578531, 0.5484144204936);
-glVertex2f(3.5119305863702, 0.5850658790504);
-glVertex2f(3.5471723734441, 0.6203076661243);
-glVertex2f(3.5993302183135, 0.6527301102323);
-glVertex2f(3.6486687202169, 0.664007482096);
-glVertex2f(3.7135136084329, 0.6696461680278);
-glVertex2f(3.7699004677511, 0.6668268250619);
-glVertex2f(3.858746883755, 0.6665361521108);
-glEnd();
-
-//line
-glColor3ub(0,0,0);
-glBegin(GL_LINE_STRIP);
-    glVertex2f(4.258811263631, 0.5341972983642);
-glVertex2f(4.2011916081411, 0.4813792808318);
-glVertex2f(4.1339686767363, 0.433362901257);
-glVertex2f(4.0667457453314, 0.3901481596396);
-glVertex2f(3.9995228139266, 0.3565366939372);
-glVertex2f(3.9567690511558, 0.3385476068929);
-glVertex2f(3.9101594100467, 0.3245647145602);
-glVertex2f(3.8332535022165, 0.3268951966156);
-glVertex2f(3.7516866302755, 0.333886642782);
-glVertex2f(3.6910940968335, 0.3665133915584);
-glVertex2f(3.6771112045008, 0.4084620685567);
-glVertex2f(3.719059881499, 0.4597326737768);
-glVertex2f(3.74935614822, 0.5110032789969);
-glVertex2f(3.6910940968335, 0.4970203866641);
-glVertex2f(3.6165186710588, 0.5016813507751);
-glVertex2f(3.5489346914505, 0.5226556892742);
-glVertex2f(3.5133402578531, 0.5484144204936);
-glVertex2f(3.5119305863702, 0.5850658790504);
-glVertex2f(3.5471723734441, 0.6203076661243);
-glVertex2f(3.5993302183135, 0.6527301102323);
-glVertex2f(3.6486687202169, 0.664007482096);
-glVertex2f(3.7135136084329, 0.6696461680278);
-glVertex2f(3.7699004677511, 0.6668268250619);
-glVertex2f(3.858746883755, 0.6665361521108);
-glEnd();
-
-glPopMatrix();
-
-//kaki kiri depan
-glPushMatrix();
-glColor3ub(255, 173, 71);
-glBegin(GL_POLYGON);
-
-glVertex2f(4.7125654606906, 3.8230795910307);
-glVertex2f(4.6914130447868, 3.1744055033127);
-glVertex2f(4.6823494479671, 3.081434194799);
-glVertex2f(4.6648006499317, 2.9796511661937);
-glVertex2f(4.6472518518963, 2.8743583779814);
-glVertex2f(4.6261932942538, 2.7515167917336);
-glVertex2f(4.5981152173972, 2.6321849650929);
-glVertex2f(4.5630176213264, 2.5198726576664);
-glVertex2f(4.5314297848627, 2.4215993886682);
-glVertex2f(4.5068614676131, 2.3338553984912);
-glVertex2f(4.4717638715423, 2.2320723698859);
-glVertex2f(4.4345689265549, 2.1560932085451);
-glVertex2f(4.3998076685197, 2.0840877454722);
-glVertex2f(4.3650464104845, 2.0195311234068);
-glVertex2f(4.3402169404594, 1.9549745013414);
-glVertex2f(4.3203533644392, 1.8953837732811);
-glVertex2f(4.314473438133, 1.8150022725809);
-glVertex2f(4.3696153452464, 0.654782358287);
-glVertex2f(4.2804229368287, 0.5331563468082);
-glVertex2f(4.2236641314719, 0.5088311445125);
-glVertex2f(4.1669053261152, 0.5655899498692);
-glVertex2f(3.9682495073666, 0.557481549104);
-glVertex2f(3.8952739004793, 0.5777525510171);
-glVertex2f(3.8466234958878, 0.6061319536955);
-glVertex2f(3.8101356924442, 0.6426197571391);
-glVertex2f(3.8060886937237, 0.6858623126986);
-glVertex2f(3.8287775106836, 0.7260040657815);
-glVertex2f(3.8497635686685, 0.7554329045145);
-glVertex2f(3.8627559224578, 0.8851581734317);
-glVertex2f(3.8798313220198, 0.9466296118549);
-glVertex2f(3.8900765617569, 1.5032876375758);
-glVertex2f(3.8593408425454, 1.5545138362618);
-glVertex2f(3.8354352831586, 1.6501360738089);
-glVertex2f(3.8172807357083, 1.7197826760041);
-glVertex2f(3.8, 1.8);
-glVertex2f(3.7956879601084, 1.8673333092705);
-glVertex2f(3.813681939775, 1.950105615737);
-glVertex2f(3.8496698991083, 2.0220815344035);
-glVertex2f(3.8608049275374, 2.1150414062699);
-glVertex2f(3.879144359877, 2.2214101138397);
-glVertex2f(3.8938159057487, 3.0026699315071);
-glVertex2f(3.8837545964315,3.4693606411993);
-glEnd();
-
-
-//kaki kiri depan line
-glColor3ub(0,0,0);
-glBegin(GL_LINE_STRIP);
-
-glVertex2f(4.7125654606906, 3.8230795910307);
-glVertex2f(4.6914130447868, 3.1744055033127);
-glVertex2f(4.6823494479671, 3.081434194799);
-glVertex2f(4.6648006499317, 2.9796511661937);
-glVertex2f(4.6472518518963, 2.8743583779814);
-glVertex2f(4.6261932942538, 2.7515167917336);
-glVertex2f(4.5981152173972, 2.6321849650929);
-glVertex2f(4.5630176213264, 2.5198726576664);
-glVertex2f(4.5314297848627, 2.4215993886682);
-glVertex2f(4.5068614676131, 2.3338553984912);
-glVertex2f(4.4717638715423, 2.2320723698859);
-glVertex2f(4.4345689265549, 2.1560932085451);
-glVertex2f(4.3998076685197, 2.0840877454722);
-glVertex2f(4.3650464104845, 2.0195311234068);
-glVertex2f(4.3402169404594, 1.9549745013414);
-glVertex2f(4.3203533644392, 1.8953837732811);
-glVertex2f(4.314473438133, 1.8150022725809);
-glVertex2f(4.3696153452464, 0.654782358287);
-glVertex2f(4.2804229368287, 0.5331563468082);
-glVertex2f(4.2236641314719, 0.5088311445125);
-glVertex2f(4.1669053261152, 0.5655899498692);
-glVertex2f(3.9682495073666, 0.557481549104);
-glVertex2f(3.8952739004793, 0.5777525510171);
-glVertex2f(3.8466234958878, 0.6061319536955);
-glVertex2f(3.8101356924442, 0.6426197571391);
-glVertex2f(3.8060886937237, 0.6858623126986);
-glVertex2f(3.8287775106836, 0.7260040657815);
-glVertex2f(3.8497635686685, 0.7554329045145);
-glVertex2f(3.8627559224578, 0.8851581734317);
-glVertex2f(3.8798313220198, 0.9466296118549);
-glVertex2f(3.8900765617569, 1.5032876375758);
-glVertex2f(3.8593408425454, 1.5545138362618);
-glVertex2f(3.8354352831586, 1.6501360738089);
-glVertex2f(3.8172807357083, 1.7197826760041);
-glVertex2f(3.8, 1.8);
-glVertex2f(3.7956879601084, 1.8673333092705);
-glVertex2f(3.813681939775, 1.950105615737);
-glVertex2f(3.8496698991083, 2.0220815344035);
-glVertex2f(3.8608049275374, 2.1150414062699);
-glVertex2f(3.879144359877, 2.2214101138397);
-glVertex2f(3.8938159057487, 3.0026699315071);
-glEnd();
-glPopMatrix();
-
-//kaki kanan belakang
-glPushMatrix();
-glColor3ub(255, 173, 71);
-glTranslated(-0.1,0,0);
-glBegin(GL_POLYGON);
-glVertex2f(7.515508621004, 4.2458807259684);
-glVertex2f(7.5280469402752, 3.7777834731766);
-glVertex2f(7.5447646993035, 3.1759441481586);
-glVertex2f(7.558487091565, 3.0915896261996);
-glVertex2f(7.5704242344599, 3.01996676883);
-glVertex2f(7.5853456630786, 2.9364067685656);
-glVertex2f(7.6062356631447, 2.8767210540909);
-glVertex2f(7.6301099489345, 2.8110667681688);
-glVertex2f(7.6480156632769, 2.7454124822468);
-glVertex2f(7.6599528061718, 2.6618524819823);
-glVertex2f(7.636078520382, 2.5753081959941);
-glVertex2f(7.6002670916972, 2.4947324814533);
-glVertex2f(7.587545146179, 2.4389646981616);
-glVertex2f(7.565826198699, 2.3900970663315);
-glVertex2f(7.551346900379, 2.3357996976315);
-glVertex2f(7.553156812669, 2.2290148725214);
-glVertex2f(7.5229016279324, 2.1612482339181);
-glVertex2f(7.5164896106794, 1.2274631996743);
-glVertex2f(7.5023542498095, 1.1709217561947);
-glVertex2f(7.4787953150264, 1.1238038866285);
-glVertex2f(7.4481686998083, 1.0813978040188);
-glVertex2f(7.4175420845902, 1.0484152953224);
-glVertex2f(7.3704242150239, 1.0248563605393);
-glVertex2f(7.3303740258926, 1.0107209996694);
-glVertex2f(7.2761884758914, 1.0036533192345);
-glVertex2f(7.2267147128468, 1.0060092127128);
-glVertex2f(7.1748850563239, 1.0177886801044);
-glVertex2f(7.1206995063227, 1.0413476148875);
-glVertex2f(7.0735816367564, 1.0837536974971);
-glVertex2f(7.0325367609897, 4.2263995868542);
-glEnd();
-glPopMatrix();
-
-
-//kaki kanan belakang telapak
-glPushMatrix();
-glScaled(1.5,1.5,0);
-glColor3ub(255, 173, 71);
-glTranslated(-2.44,-0.346,0);
-glBegin(GL_POLYGON);
-glVertex2f(7.4071546677603, 1.1294619207434);
-glVertex2f(7.3541525805786, 0.9192175794056);
-glVertex2f(7.2990304099097, 0.906497078482);
-glVertex2f(7.214227070419, 0.8980167445329);
-glVertex2f(7.0806618107213, 0.9276979133547);
-glVertex2f(7.078541727234, 1.133702087718);
-glEnd();
-
-//line
-glColor3ub(0,0,0);
-glLineWidth(3);
-glBegin(GL_LINE_LOOP);
-glVertex2f(7.4071546677603, 1.1294619207434);
-glVertex2f(7.3541525805786, 0.9192175794056);
-glVertex2f(7.2990304099097, 0.906497078482);
-glVertex2f(7.214227070419, 0.8980167445329);
-glVertex2f(7.0806618107213, 0.9276979133547);
-glVertex2f(7.078541727234, 1.033702087718);
-glEnd();
-glPopMatrix();
-
-
-
-//telapak kiri belakang
-glPushMatrix();
-glColor3ub(255, 173, 71);
-glTranslated(-0.1,0,0);
-glBegin(GL_POLYGON);
-glVertex2f(6.9448749310753, 0.7189027565329);
-glVertex2f(6.9146340952912, 0.6546409804916);
-glVertex2f(6.8915187166172, 0.6297716826217);
-glVertex2f(6.8647582536497, 0.6103095277363);
-glVertex2f(6.8323894242734, 0.5896109372163);
-glVertex2f(6.7988622837272, 0.5738950900853);
-glVertex2f(6.7674305894651, 0.5613224123804);
-glVertex2f(6.7349511720609, 0.5529406272439);
-glVertex2f(6.6951376926623, 0.5487497346756);
-glVertex2f(6.6542764901216, 0.5477020115335);
-glVertex2f(6.6102721181547, 0.5477020115335);
-glVertex2f(6.5788404238926, 0.5497974578177);
-glVertex2f(6.5442655602043, 0.555036073528);
-glVertex2f(6.5191202047946, 0.5623701355225);
-glVertex2f(6.495022572527, 0.5717996438011);
-glVertex2f(6.4740681096856, 0.585420044648);
-glVertex2f(6.4531136468442, 0.6063745074894);
-glVertex2f(6.4384455228552, 0.6325675860412);
-glVertex2f(6.4363500765711, 0.660856110877);
-glVertex2f(6.4384455228552, 0.6839060200026);
-glVertex2f(6.4520659237021, 0.7100990985543);
-glVertex2f(6.4656863245491, 0.7341967308219);
-glVertex2f(6.4363500765711, 0.7174331605488);
-glVertex2f(6.4133001674456, 0.7111468216964);
-glVertex2f(6.3905256937579, 0.7061212720199);
-glVertex2f(6.3645685452226, 0.7009298423128);
-glVertex2f(6.3353667531203, 0.7022276997396);
-glVertex2f(6.3015750257952, 0.7082894838364);
-glVertex2f(6.2805909851064, 0.7166831001119);
-glVertex2f(6.2654824758105, 0.7334703326629);
-glVertex2f(6.2629643909278, 0.7569724582344);
-glVertex2f(6.2688399223207, 0.7787958605508);
-glVertex2f(6.2822697083615, 0.8014586244947);
-glVertex2f(6.2990569409126, 0.8207639419284);
-glVertex2f(6.4593750117751, 0.9752064813981);
-glEnd();
-
-//telapak kiri belakang line
-glColor3ub(0,0,0);
-
-glBegin(GL_LINE_STRIP);
-glVertex2f(6.9448749310753, 0.7189027565329);
-glVertex2f(6.9146340952912, 0.6546409804916);
-glVertex2f(6.8915187166172, 0.6297716826217);
-glVertex2f(6.8647582536497, 0.6103095277363);
-glVertex2f(6.8323894242734, 0.5896109372163);
-glVertex2f(6.7988622837272, 0.5738950900853);
-glVertex2f(6.7674305894651, 0.5613224123804);
-glVertex2f(6.7349511720609, 0.5529406272439);
-glVertex2f(6.6951376926623, 0.5487497346756);
-glVertex2f(6.6542764901216, 0.5477020115335);
-glVertex2f(6.6102721181547, 0.5477020115335);
-glVertex2f(6.5788404238926, 0.5497974578177);
-glVertex2f(6.5442655602043, 0.555036073528);
-glVertex2f(6.5191202047946, 0.5623701355225);
-glVertex2f(6.495022572527, 0.5717996438011);
-glVertex2f(6.4740681096856, 0.585420044648);
-glVertex2f(6.4531136468442, 0.6063745074894);
-glVertex2f(6.4384455228552, 0.6325675860412);
-glVertex2f(6.4363500765711, 0.660856110877);
-glVertex2f(6.4384455228552, 0.6839060200026);
-glVertex2f(6.4520659237021, 0.7100990985543);
-glVertex2f(6.4656863245491, 0.7341967308219);
-glVertex2f(6.4363500765711, 0.7174331605488);
-glVertex2f(6.4133001674456, 0.7111468216964);
-glVertex2f(6.3905256937579, 0.7061212720199);
-glVertex2f(6.3645685452226, 0.7009298423128);
-glVertex2f(6.3353667531203, 0.7022276997396);
-glVertex2f(6.3015750257952, 0.7082894838364);
-glVertex2f(6.2805909851064, 0.7166831001119);
-glVertex2f(6.2654824758105, 0.7334703326629);
-glVertex2f(6.2629643909278, 0.7569724582344);
-glVertex2f(6.2688399223207, 0.7787958605508);
-glVertex2f(6.2822697083615, 0.8014586244947);
-glVertex2f(6.2990569409126, 0.8207639419284);
-glVertex2f(6.4593750117751, 0.9752064813981);
-glEnd();
-
-glPopMatrix();
-
-
-//kaki kiri belakang
-glPushMatrix();
-glColor3ub(255, 173, 71);
-glTranslated(-0.1,0,0);
-glBegin(GL_POLYGON);
-    glVertex2f(7.4287370102672, 4.5957314852433);
-glVertex2f(7.4667540656347, 4.5365938435606);
-glVertex2f(7.5005470037392, 4.4690079673516);
-glVertex2f(7.5216675900545, 4.3887497393536);
-glVertex2f(7.5343399418437, 4.2915950423033);
-glVertex2f(7.5132193555284, 3.8227180261039);
-glVertex2f(7.1723033784556, 2.8752502145975);
-glVertex2f(7.1459176369403, 2.8092858608092);
-glVertex2f(7.1492158546297, 2.7565143777785);
-glVertex2f(7.1723033784556, 2.7037428947479);
-glVertex2f(7.2019873376603, 2.6476731940278);
-glVertex2f(7.2316712968651, 2.5784106225501);
-glVertex2f(7.2679516914486, 2.5091480510724);
-glVertex2f(7.2877409975851, 2.4431836972841);
-glVertex2f(7.2844427798957, 2.3739211258064);
-glVertex2f(7.2481623853121, 2.3112549897076);
-glVertex2f(7.1327247661826, 2.0704850983803);
-glVertex2f(7.1008429922529, 1.9995407064384);
-glVertex2f(7.0799179637589, 0.9867693273289);
-glVertex2f(7.0506229238673, 0.9156242304493);
-glVertex2f(7.0422529124697, 0.8319241164733);
-glVertex2f(6.9543677927949, 0.7147439569069);
-glVertex2f(6.8581126617225, 0.7105589512081);
-glVertex2f(6.7576725249513, 0.7189289626057);
-glVertex2f(6.6948974394693, 0.7482240024973);
-glVertex2f(6.6279373482885, 0.7817040480877);
-glVertex2f(6.5651622628065, 0.8277391107745);
-glVertex2f(6.5065721830233, 0.8821441848589);
-glVertex2f(6.4647221260354, 0.9449192703409);
-glVertex2f(6.4605371203366, 1.2462396806545);
-glVertex2f(6.4898321602281, 1.3257547889317);
-glVertex2f(6.5233122058185, 1.4220099200041);
-glVertex2f(6.5526072457101, 1.5015250282813);
-glVertex2f(6.5651622628065, 1.6438152220404);
-glVertex2f(6.5944573026981, 1.7651803873056);
-glVertex2f(6.6153823311921, 1.9367656209564);
-glVertex2f(6.6261208515789, 2.2928896669988);
-glVertex2f(6.6334267605329, 2.3531470114361);
-glVertex2f(6.5710414041606, 2.4038351134886);
-glVertex2f(6.5281514716547, 2.4584223003144);
-glVertex2f(6.489160623922, 2.5091104023668);
-glVertex2f(6.4462706914161, 2.5714957587391);
-glVertex2f(6.4033807589101, 2.6455783694312);
-glVertex2f(6.3604908264042, 2.7079637258034);
-glVertex2f(6.3292981482181, 2.7664499974025);
-glVertex2f(6.3020045548052, 2.8444316928678);
-glVertex2f(6.2747109613923, 2.9224133883331);
-glVertex2f(6.2396191984329, 3.0042941685717);
-glVertex2f(6.21232560502, 3.0978722031301);
-glVertex2f(6.1873542289238, 3.1987768422629);
-glVertex2f(6.1811329268339, 3.3045236961133);
-glVertex2f(6.1684494803067, 3.3791337829899);
-glVertex2f(6.1684494803067, 3.4492856849433);
-glVertex2f(6.1732875425104, 3.5194375868967);
-glVertex2f(6.1818385152201, 3.6052288271589);
-glVertex2f(6.2004030677504, 3.7129032318347);
-glVertex2f(6.233819262305, 3.8075824497393);
-glVertex2f(6.2635225463535, 3.8874100256196);
-glVertex2f(6.291369375149, 3.9542424147287);
-glVertex2f(6.3247855697035, 4.0229312590909);
-glVertex2f(6.3600582195111, 4.1027588349712);
-glVertex2f(6.4284444342488, 4.1899235359332);
-glEnd();
-
-//line
-glColor3ub(0,0,0);
-
-glBegin(GL_LINE_STRIP);
-glVertex2f(7.4287370102672, 4.5957314852433);
-glVertex2f(7.4667540656347, 4.5365938435606);
-glVertex2f(7.5005470037392, 4.4690079673516);
-glVertex2f(7.5216675900545, 4.3887497393536);
-glVertex2f(7.5343399418437, 4.2915950423033);
-glVertex2f(7.5132193555284, 3.8227180261039);
-glVertex2f(7.1723033784556, 2.8752502145975);
-glVertex2f(7.1459176369403, 2.8092858608092);
-glVertex2f(7.1492158546297, 2.7565143777785);
-glVertex2f(7.1723033784556, 2.7037428947479);
-glVertex2f(7.2019873376603, 2.6476731940278);
-glVertex2f(7.2316712968651, 2.5784106225501);
-glVertex2f(7.2679516914486, 2.5091480510724);
-glVertex2f(7.2877409975851, 2.4431836972841);
-glVertex2f(7.2844427798957, 2.3739211258064);
-glVertex2f(7.2481623853121, 2.3112549897076);
-glVertex2f(7.1327247661826, 2.0704850983803);
-glVertex2f(7.1008429922529, 1.9995407064384);
-glVertex2f(7.0799179637589, 0.9867693273289);
-glVertex2f(7.0506229238673, 0.9156242304493);
-glVertex2f(7.0422529124697, 0.8319241164733);
-glVertex2f(6.9543677927949, 0.7147439569069);
-glVertex2f(6.8581126617225, 0.7105589512081);
-glVertex2f(6.7576725249513, 0.7189289626057);
-glVertex2f(6.6948974394693, 0.7482240024973);
-glVertex2f(6.6279373482885, 0.7817040480877);
-glVertex2f(6.5651622628065, 0.8277391107745);
-glVertex2f(6.5065721830233, 0.8821441848589);
-glVertex2f(6.4647221260354, 0.9449192703409);
-glVertex2f(6.4605371203366, 1.2462396806545);
-glVertex2f(6.4898321602281, 1.3257547889317);
-glVertex2f(6.5233122058185, 1.4220099200041);
-glVertex2f(6.5526072457101, 1.5015250282813);
-glVertex2f(6.5651622628065, 1.6438152220404);
-glVertex2f(6.5944573026981, 1.7651803873056);
-glVertex2f(6.6153823311921, 1.9367656209564);
-glVertex2f(6.6261208515789, 2.2928896669988);
-glVertex2f(6.6334267605329, 2.3531470114361);
-glVertex2f(6.5710414041606, 2.4038351134886);
-glVertex2f(6.5281514716547, 2.4584223003144);
-glVertex2f(6.489160623922, 2.5091104023668);
-glVertex2f(6.4462706914161, 2.5714957587391);
-glVertex2f(6.4033807589101, 2.6455783694312);
-glVertex2f(6.3604908264042, 2.7079637258034);
-glVertex2f(6.3292981482181, 2.7664499974025);
-glVertex2f(6.3020045548052, 2.8444316928678);
-glVertex2f(6.2747109613923, 2.9224133883331);
-glVertex2f(6.2396191984329, 3.0042941685717);
-glVertex2f(6.21232560502, 3.0978722031301);
-glVertex2f(6.1873542289238, 3.1987768422629);
-glVertex2f(6.1811329268339, 3.3045236961133);
-glVertex2f(6.1684494803067, 3.3791337829899);
-glVertex2f(6.1684494803067, 3.4492856849433);
-glVertex2f(6.1732875425104, 3.5194375868967);
-glVertex2f(6.1818385152201, 3.6052288271589);
-glVertex2f(6.2004030677504, 3.7129032318347);
-glVertex2f(6.233819262305, 3.8075824497393);
-glVertex2f(6.2635225463535, 3.8874100256196);
-glVertex2f(6.291369375149, 3.9542424147287);
-glVertex2f(6.3247855697035, 4.0229312590909);
-glVertex2f(6.3600582195111, 4.1027588349712);
-glVertex2f(6.4284444342488, 4.1899235359332);
-glEnd();
-glPopMatrix();
-
-//ekor
-glPushMatrix();
-glColor3ub(255, 173, 71);
-glTranslated(-0.1,0,0);
-glBegin(GL_POLYGON);
-    glVertex2f(7.3686860926826, 4.7532102127196);
-glVertex2f(7.425281441956, 4.7415444954997);
-glVertex2f(7.4998499526696, 4.7443062921928);
-glVertex2f(7.5716566666901, 4.7415444954997);
-glVertex2f(7.6517487707899, 4.7277355120342);
-glVertex2f(7.7290790781966, 4.7084029351825);
-glVertex2f(7.7953621988309, 4.6807849682516);
-glVertex2f(7.8644071161583, 4.6476434079344);
-glVertex2f(7.9279284400995, 4.6145018476173);
-glVertex2f(7.9816266200453, 4.5826151318563);
-glVertex2f(8.0387375947424, 4.547166940665);
-glVertex2f(8.086001849664, 4.5156574373839);
-glVertex2f(8.1253887287654, 4.4841479341028);
-glVertex2f(8.1647756078668, 4.4467303989565);
-glVertex2f(8.2041624869682, 4.4171902396304);
-glVertex2f(8.2455187100247, 4.377803360529);
-glVertex2f(8.282936245171, 4.3384164814276);
-glVertex2f(8.3129564171884, 4.3002893933675);
-glVertex2f(8.344542541747, 4.2598591539325);
-glVertex2f(8.3723383313585, 4.228273029374);
-glVertex2f(8.392553451076, 4.1865793449567);
-glVertex2f(8.4178223507228, 4.1448856605394);
-glVertex2f(8.4430912503697, 4.1057188660868);
-glVertex2f(8.4645698150695, 4.0703424065812);
-glVertex2f(8.4873118247517, 4.0387562820226);
-glVertex2f(8.5125807243985, 4.0096970474287);
-glVertex2f(8.5340592890983, 3.9743205879232);
-glVertex2f(8.5618550787098, 3.9364172384529);
-glVertex2f(8.5858605333743, 3.9060945588767);
-glVertex2f(8.6149197679682, 3.8732449893358);
-glVertex2f(8.6578768973679, 3.8024920703246);
-glVertex2f(8.5656454136569, 3.855556759583);
-glVertex2f(8.5353227340807, 3.8833525491945);
-glVertex2f(8.5087903894515, 3.9313634585235);
-glVertex2f(8.4835214898046, 3.9680033630114);
-glVertex2f(8.4627729910694, 3.995904042605);
-glVertex2f(8.4455287221022, 4.0217704460557);
-glVertex2f(8.42569781279, 4.044187995713);
-glVertex2f(8.4067291169261, 4.0666055453703);
-glVertex2f(8.3851737807172, 4.0872986681309);
-glVertex2f(8.3662050848533, 4.1079917908915);
-glVertex2f(8.3403386814026, 4.1286849136521);
-glVertex2f(8.3144722779518, 4.1545513171028);
-glVertex2f(8.2938460483233, 4.1772780506081);
-glVertex2f(8.2654270329633, 4.220061797469);
-glVertex2f(8.2381130287915, 4.2493268019388);
-glVertex2f(8.19128902164, 4.2766408061105);
-glVertex2f(8.1659260177663, 4.319562812666);
-glVertex2f(8.1249550115087, 4.3449258165398);
-glVertex2f(8.0859350055491, 4.3800438219034);
-glVertex2f(8.0449639992915, 4.419063827863);
-glVertex2f(7.992286991246, 4.4541818332267);
-glVertex2f(7.9435119837965, 4.4892998385903);
-glVertex2f(7.892785976049, 4.520515843358);
-glVertex2f(7.8440109685995, 4.5439278469338);
-glVertex2f(7.797186961448, 4.5614868496156);
-glVertex2f(7.7464609537005, 4.5868498534894);
-glVertex2f(7.6840289441651, 4.6063598564692);
-glVertex2f(7.6040379319479, 4.6141638576611);
-glVertex2f(7.3855258985741, 4.621967858853);
-glEnd();
-
-
-
-glTranslated(-0.1,0.1,0);
-glBegin(GL_POLYGON);
-glVertex2f(8.6319041813102, 3.8342810310494);
-glVertex2f(8.6845559225746, 3.8132203345436);
-glVertex2f(9.1212109505599, 3.8157502299952);
-glVertex2f(9.1325036414178, 3.7875185028503);
-glVertex2f(9.1607353685628, 3.7691678802061);
-glVertex2f(9.2002597865657, 3.7508172575619);
-glVertex2f(9.2369610318541, 3.7451709121329);
-glVertex2f(9.2793086225715, 3.7338782212749);
-glVertex2f(9.3244793860034, 3.722585530417);
-glVertex2f(9.3668269767208, 3.716939184988);
-glVertex2f(9.4091745674382, 3.716939184988);
-glVertex2f(9.602561898381, 3.7141160122735);
-glVertex2f(9.5644490667353, 3.6788263533423);
-glVertex2f(9.5221014760179, 3.6407135216966);
-glVertex2f(9.3442415950048, 3.4755579178988);
-glVertex2f(9.3047171770019, 3.4445030180394);
-glVertex2f(9.2680159317135, 3.4247408090379);
-glVertex2f(9.2242567546389, 3.4176828772517);
-glVertex2f(9.184732336636, 3.4007438409647);
-glVertex2f(9.1423847459186, 3.3993322546075);
-glVertex2f(9.1, 3.4);
-glVertex2f(9.0562779781265, 3.4035670136792);
-glVertex2f(9.0111072146946, 3.4190944636089);
-glVertex2f(8.9839780505932, 3.4283509753334);
-glVertex2f(8.9534444901812, 3.4413046070233);
-glVertex2f(8.9284624862077, 3.4496319416811);
-glVertex2f(8.9062562604536, 3.4616603139646);
-glVertex2f(8.8812742564801, 3.475539205061);
-glVertex2f(8.8562922525067, 3.4894180961574);
-glVertex2f(8.8276092109076, 3.5116243219115);
-glVertex2f(8.8063282445598, 3.5292042506336);
-glVertex2f(8.7794957217735, 3.5467841793556);
-glVertex2f(8.7619157930515, 3.5634388486712);
-glVertex2f(8.7378590484845, 3.5837945556126);
-glVertex2f(8.7175033415432, 3.6069260407731);
-glVertex2f(8.6980728940083, 3.6282070071209);
-glVertex2f(8.6804929652862, 3.663366864565);
-glVertex2f(8.6666140741899, 3.687423609132);
-glVertex2f(8.6536604424999, 3.7207329477632);
-glVertex2f(8.6416320702164, 3.7679211774908);
-glEnd();
-glPopMatrix();
-
-
-//akhir
-    glPopMatrix();
-}
-
+//Void untuk di DisplayFunc
 void level3(){
     backgroundlevel3();
 
@@ -5275,31 +7767,2221 @@ void level3(){
     glScaled(0.6,0.6,0);
     piramid();
     glPopMatrix();
+    for (int i =0;i<4;i++){
+        glPushMatrix();
+        float kec=0.0f;
+        if (kaktuscol[i][5]==1){
+            kec=-0.4;
+        }else{
+            kec=-1.5;
+        }
+        glTranslated(kaktuscol[i][4],kec,0);
+
+        glScaled(0.5,0.5,0);
+        kaktus();
+        glPopMatrix();
+    }
+
+    fireball();
 
     glPushMatrix();
-    glTranslated(6,-0.4,0);
-    glScaled(0.5,0.5,0);
-    kaktus();
+    glTranslated(0,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
+    glTranslated(0.2,0,0);
+    fireball_status();
     glPopMatrix();
 
 }
 
+void body(void){
 
-void timer (int t){
-    //gerak--;
-    if (gerak < -10) gerak = 10;
-    else gerak--;
-    glutPostRedisplay();
-    glutTimerFunc(120,timer,10);
+	//strip body hitam
+	glBegin(GL_POLYGON);
+		glColor3f(0,0,0);
+		glVertex2f(-0.2479375326055,7.1695209271469);
+		glVertex2f(-2.2446108978344,4.7972357407363);
+		glVertex2f(-3.5718227411507,2.8021001816532);
+		glVertex2f(-4.5425297341512,1.261558896897);
+		glVertex2f(-6.1338671246944,-1.7497410882847);
+		glVertex2f(-6.9417768768163,-3.9531313213444);
+		glVertex2f(-6.599027285007,-2.6555792952092);
+		glVertex2f(-6.7704020809116,-4.3203630268543);
+		glVertex2f(-5.9624923287897,-4.7365589597656);
+		glVertex2f(-4.2487443697432,-5.1282727789762);
+		glVertex2f(-1.8984614544795,-5.3486118022822);
+		glVertex2f(1.6024808047154,-5.4220581433842);
+		glVertex2f(4.834119813203,-5.2017191200782);
+		glVertex2f(6.8906173640588,-4.8100053008676);
+		glVertex2f(7.5026702065754,-4.4672557090583);
+		glVertex2f(7.709507644041,-3.8878003305898);
+		glVertex2f(6.9233393546003,-1.7856546870853);
+		glVertex2f(7.384785959272,-2.7256385114166);
+		glVertex2f(5.3315855044572,0.9288304365744);
+		glVertex2f(3.049013679358,4.0198131163963);
+		glVertex2f(2.0266117160322,5.1373222391011);
+		glVertex2f(1.0279865425513,6.2072777821164);
+	glEnd();
+	glBegin(GL_POLYGON); //body kuning
+		glColor3f(0.807843137,0.807843137,0.137254902);
+		glVertex2f(-6.5654286098696,-3.8279896295712);
+		glVertex2f(-6.1295943440725,-4.4381576016871);
+		glVertex2f(-5.2579258124783,-4.6560747345857);
+		glVertex2f(-5.2579258124783,-4.6560747345857);
+		glVertex2f(-3.4274218961305,-5.0483255738031);
+		glVertex2f(-0.9431665810871,-5.2662427067016);
+		glVertex2f(2.4127572655505,-5.3098261332813);
+		glVertex2f(5.2892634198113,-5.0483255738031);
+		glVertex2f(7.3812678956374,-4.4381576016871);
+		glVertex2f(7.4248513222171,-3.3485719371944);
+		glVertex2f(7.0326004829997,-2.4769034056002);
+		glVertex2f(6.5531827906229,-1.605234874006);
+		glVertex2f(6.0737650982461,-0.6899829158321);
+		glVertex2f(2.9793418110867,3.9734437281968);
+		glVertex2f(1.1950155141763,5.8692084628022);
+		glVertex2f(-0.1311957662281,6.8240805846934);
+		glVertex2f(-1.0330194369031,6.1344507188831);
+		glVertex2f(-5,0);
+		glVertex2f(-6.4439614609531,-2.8307375366507);
+	glEnd();
+
+	//line loop
+	glLineWidth(2);
+	glEnable( GL_LINE_SMOOTH );
+    glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
+	glBegin(GL_LINE_LOOP); //body kuning
+		glColor3ub(0,0,0);
+
+		glVertex2f(-6.5654286098696,-3.8279896295712);
+		glVertex2f(-6.1295943440725,-4.4381576016871);
+		glVertex2f(-5.2579258124783,-4.6560747345857);
+		glVertex2f(-5.2579258124783,-4.6560747345857);
+		glVertex2f(-3.4274218961305,-5.0483255738031);
+		glVertex2f(-0.9431665810871,-5.2662427067016);
+		glVertex2f(2.4127572655505,-5.3098261332813);
+		glVertex2f(5.2892634198113,-5.0483255738031);
+		glVertex2f(7.3812678956374,-4.4381576016871);
+		glVertex2f(7.4248513222171,-3.3485719371944);
+		glVertex2f(7.0326004829997,-2.4769034056002);
+		glVertex2f(6.5531827906229,-1.605234874006);
+		glVertex2f(6.0737650982461,-0.6899829158321);
+		glVertex2f(2.9793418110867,3.9734437281968);
+		glVertex2f(1.1950155141763,5.8692084628022);
+		glVertex2f(-0.1311957662281,6.8240805846934);
+		glVertex2f(-1.0330194369031,6.1344507188831);
+		glVertex2f(-5,0);
+		glVertex2f(-6.4439614609531,-2.8307375366507);
+	glEnd();
+
+
+
+
+	glBegin(GL_POLYGON);//strip putih atas
+		glColor3f(1,1,1);
+		glVertex3f(2.6989423838803,3.1735906043824,1.0);
+		glVertex3f(1.8966971612196,3.5938142924428,1.0);
+		glVertex3f(1.2090583989389,4.2814530547235,1.0);
+		glVertex3f(0.4295906776575,5.1913610486493,1.0);
+		glVertex3f(0.0059816145057,5.7561731328516,1.0);
+		glVertex3f(0.0950595974821,6.2528289887187,1.0);
+		glVertex3f(1.0257812109821,5.4737670907505,1.0);
+		glVertex3f(1.8102424390409,4.7049950872529,1.0);
+		glVertex3f(2.5319467688549,3.7793308381436,1.0);
+		glVertex3f(0.0,6.0,1.0);
+	glEnd();
+
+	glBegin(GL_POLYGON); //alis kiri
+		glColor3f(0.447058824,0.145098039,0.050980392);
+		glVertex2f(-2.395212655955,0.3770462394276);
+		glVertex2f(-1.8653459439985,1.297341054931);
+		glVertex2f(2.3768759616585,-0.2441529554956);
+		glVertex2f(2.1773296849784,-0.8354011826959);
+		glVertex2f(2.0590800395384,-0.9093072110959);
+		glVertex2f(1.8964867770583,-0.9093072110959);
+	glEnd();
+	glBegin(GL_POLYGON);
+		glColor3b(0,125,0);
+		 glVertex2f(5.3446531116021,-1.9503532402756);
+		 glVertex2f(5.5368450971547,-1.8008705848458);
+		 glVertex2f(5.6970050851152,-1.5232599390477);
+		 glVertex2f(5.7610690802994,-1.2242946281881);
+		 glVertex2f(5.7076824176459,-0.9893933125128);
+		 glVertex2f(5.6436184224617,-0.8078786594909);
+		 glVertex2f(5.4727811019705,-0.6263640064691);
+		 glVertex2f(3.5508612464448,-1.2670039583109);
+		 glVertex2f(3.6469572392211,-0.9360066498593);
+ 		 glVertex2f(3.828471892243,-1.3737772836179);
+	glEnd();//
+	glBegin(GL_POLYGON);//alis kanan
+		 glColor3f(0.447058824,0.145098039,0.050980392);
+		 glVertex2f(7.3147120480453,-0.1056925894286);
+		 glVertex2f(6.9700064585138,0.7090660767366);
+		 glVertex2f(3.2471896053059,-0.345512021333);
+		 glVertex2f(3.1930736017976,-0.6341307067104);
+		 glVertex2f(3.2285484034107,-0.8709907843249);
+ 		glVertex2f(3.5626804456672,-0.9127572896069);
+	glEnd();
+	glBegin(GL_POLYGON);//mata hitam kiri
+		glColor3f(0,0,0);
+		glVertex2f(1.680388838318,-0.8284046464973);
+		glVertex2f(1.6624553687358,-1.0974066902303);
+		glVertex2f(1.6649829895366,-1.1782905558583);
+		glVertex2f(1.6498172647314,-1.2743401462916);
+		glVertex2f(1.6295962983244,-1.3476411495169);
+		glVertex2f(1.5992648487139,-1.425997394344);
+		glVertex2f(1.5436571910947,-1.5220469847773);
+		glVertex2f(1.4653009462675,-1.6206241960114);
+		glVertex2f(1.3768342182369,-1.7217290280464);
+		glVertex2f(1.2833122486046,-1.7950300312717);
+		glVertex2f(1.1771521749678,-1.8582205512936);
+		glVertex2f(1.0836302053355,-1.9138282089128);
+		glVertex2f(0.9799977524996,-1.9542701417268);
+		glVertex2f(0.8763652996637,-1.9820739705364);
+		glVertex2f(0.7449290180183,-2.0149330409478);
+		glVertex2f(0.6236032195763,-2.0300987657531);
+		glVertex2f(0.487111696329,-2.0376816281557);
+		glVertex2f(0.3733687602897,-2.0402092489566);
+		glVertex2f(0.2520429618477,-2.0275711449522);
+		glVertex2f(0.125661921804,-2.0022949369434);
+		glVertex2f(0.0068637441629,-1.9694358665321);
+		glVertex2f(-0.096768708673,-1.931521554519);
+		glVertex2f(-0.1928182991062,-1.8834967593023);
+		glVertex2f(-0.2635916815307,-1.8405272056875);
+		glVertex2f(-0.3545860303622,-1.7849195480682);
+		glVertex2f(-0.440525137592,-1.7242566488472);
+		glVertex2f(-0.5214090032199,-1.6307346792149);
+		glVertex2f(-0.5972376272462,-1.5321574679808);
+		glVertex2f(-0.6730662512724,-1.4083040487379);
+		glVertex2f(-0.7261462880908,-1.2920334918977);
+		glVertex2f(-0.7539501169004,-1.185873418261);
+		glVertex2f(-0.761532979303,-1.0569647574164);
+		glVertex2f(-0.741312012896,-0.9331113381735);
+		glVertex2f(-0.700870080082,-0.8067302981298);
+		glVertex2f(-0.6300966976576,-0.6752940164843);
+		glVertex2f(-0.5567956944322,-0.5767168052502);
+		glVertex2f(-0.4556908623972,-0.4579186276091);
+		glVertex2f(-0.3722793759683,-0.3770347619811);
+		glVertex2f(-0.3252458241147,-0.321351211085);
+		glVertex2f(-0.2860630600569,-0.2847806312978);
+	glEnd();
+	glBegin(GL_POLYGON);//mata kiri putih
+		glColor3f(1,1,1);
+		glVertex2f(-0.4695604844269,-0.2866202657589);
+		glVertex2f(-0.636923199897,-0.487455524323);
+		glVertex2f(-0.8042859153671,-0.7552358690752);
+		glVertex2f(-0.8795991373286,-0.9895436707333);
+		glVertex2f(-0.8210221869141,-1.282428422806);
+		glVertex2f(-0.7122364218585,-1.5251043602377);
+		glVertex2f(-0.5616099779354,-1.7426758903488);
+		glVertex2f(-0.3273021762773,-1.9267748773659);
+		glVertex2f(-0.0762581030722,-2.060665049742);
+		glVertex2f(0.2835717351886,-2.144346407477);
+		glVertex2f(0.5848246230347,-2.144346407477);
+		glVertex2f(0.9250566228898,-2.087756118887);
+		glVertex2f(1.2202342719051,-1.9549261768302);
+		glVertex2f(1.4932735972442,-1.7704401461957);
+		glVertex2f(1.6998979515548,-1.4826419384058);
+		glVertex2f(1.781071805034,-1.2317409367429);
+		glVertex2f(1.8032101287101,-0.9070455228261);
+		glVertex2f(1.781071805034,-0.7889744632201);
+		glVertex2f(-0.3294483854249,-0.1764808415135);
+	glEnd();
+	glBegin(GL_POLYGON); //biji mata kiri hitam
+		glColor3f(0,0,0);
+		glVertex2f(1.0069693391377,-0.8973868304337);
+		glVertex2f(0.9537568555053,-0.938505567786);
+		glVertex2f(0.9150568674089,-0.9772055558823);
+		glVertex2f(0.8860318763367,-1.0231617917467);
+		glVertex2f(0.8594256345205,-1.0836305231472);
+		glVertex2f(0.8473318882404,-1.1465180038037);
+		glVertex2f(0.8521693867524,-1.2069867352042);
+		glVertex2f(0.8811943778247,-1.2626179680926);
+		glVertex2f(0.9319881122011,-1.3158304517251);
+		glVertex2f(0.9827818465775,-1.3617866875895);
+		glVertex2f(1.045669327234,-1.3980679264297);
+		glVertex2f(1.1279068019387,-1.4149991712219);
+		glVertex2f(1.2028880288753,-1.427092917502);
+		glVertex2f(1.2681942587878,-1.4198366697339);
+		glVertex2f(1.3335004887003,-1.4053241741978);
+		glVertex2f(1.408481715637,-1.3617866875895);
+		glVertex2f(1.4544379515013,-1.3255054487492);
+		glVertex2f(1.5124879336458,-1.2601992188366);
+		glVertex2f(1.541512924718,-1.177961744132);
+		glVertex2f(1.5245816799259,-1.0666992783551);
+		glVertex2f(1.539094175462,-1.1174930127315);
+		glVertex2f(1.4979754381097,-1.0013930484425);
+		glVertex2f(1.4616941992694,-0.9602743110902);
+		glVertex2f(1.413319214149,-0.9215743229939);
+		glVertex2f(1.3576879812605,-0.8998055796897);
+		glVertex2f(1.3093129961402,-0.8731993378735);
+		glVertex2f(1.2415880169716,-0.8586868423374);
+		glVertex2f(1.169025539291,-0.8635243408494);
+		glVertex2f(1.1061380586345,-0.8659430901054);
+		glVertex2f(1.0601818227701,-0.8828743348976);
+	glEnd();
+	glBegin(GL_POLYGON);//mata hitam kanan
+		glVertex2f(3.3324245598344,-1.3887839881221);
+		glVertex2f(3.606255467909,-0.8416267382064);
+		glVertex2f(5.3766942667894,-0.5431225221161);
+		glVertex2f(5.5104437884106,-0.6857797618689);
+		glVertex2f(5.6,-0.8);
+		glVertex2f(5.6312052505891,-0.8755477738636);
+		glVertex2f(5.6613956161337,-0.9747446892245);
+		glVertex2f(5.6915859816784,-1.0610028764948);
+		glVertex2f(5.721776347223,-1.1990159761274);
+		glVertex2f(5.7260892565865,-1.2852741633977);
+		glVertex2f(5.7045247097689,-1.4060356255762);
+		glVertex2f(5.6700214348608,-1.5181712690277);
+		glVertex2f(5.605327794408,-1.6604972780237);
+		glVertex2f(5.5190696071377,-1.7898845589292);
+		glVertex2f(5.4630017854119,-1.8804556555631);
+		glVertex2f(5.3896823262321,-1.9710267521969);
+		glVertex2f(5.1956014048739,-2.1349173080106);
+	glEnd();
+	glBegin(GL_POLYGON); //cucuk
+		glColor3f(0,0,0);
+		glVertex2f(1.2510858137285,-2.7453599148546);
+		glVertex2f(1.3660827027056,-2.9482956012847);
+		glVertex2f(3.0233908085515,-3.8682707131013);
+		glVertex2f(3.1383876975286,-3.8682707131013);
+		glVertex2f(4.8971636465896,-2.9482956012847);
+		glVertex2f(4.9180174842868,-2.7268703446853);
+		glVertex2f(2.2962921212419,-2.3523381499646);
+		glVertex2f(2.0837197945085,-2.3827056252122);
+	glEnd();
+	glLineWidth(10.0f);
+	glBegin(GL_POLYGON);
+		glColor3f(0,0,0);
+		glVertex2f(1.2510858137285,-2.7453599148546);
+		glVertex2f(1.6115528610977,-2.2777133128731);
+		glVertex2f(2.2992728049605,-1.6329758655017);
+		glVertex2f(2.8150627628575,-1.2676246453246);
+		glVertex2f(3.2448877277718,-1.310607141816);
+		glVertex2f(3.9970814163717,-1.5685021207646);
+		glVertex2f(5.9098025102401,-2.4926257953302);
+		glVertex2f(6.3826099716458,-2.879468263753);
+		glVertex2f(4.9180174842868,-2.7268703446853);
+		glVertex2f(2.2962921212419,-2.3523381499646);
+		glVertex2f(2.0837197945085,-2.3827056252122);
+	glEnd();
+	glLineWidth(10.0f);
+	glBegin(GL_POLYGON);
+		glColor3b(0,0,0);
+		glVertex2f(5.4336202453311,-0.6750112582989);
+		glVertex2f(5.6035578385461,-0.9393586255221);
+		glVertex2f(5.6790856577527,-1.279233811952);
+		glVertex2f(5.5846758837444,-1.5813450887786);
+		glVertex2f(5.4147382905295,-1.8456924560018);
+		glVertex2f(5.269053852525,-2.0345120040184);
+		glVertex2f(4.8502204663482,-1.8994044600904);
+		glVertex2f(4.4584085889569,-1.7102538985912);
+		glVertex2f(4.0936182203513,-1.5616356002704);
+		glVertex2f(3.7558493605312,-1.4940818283064);
+		glVertex2f(3.5126557814608,-1.4130173019495);
+		glVertex2f(3.634252570996,-0.9131193894159);
+	glEnd();
+	glBegin(GL_POLYGON);
+		glColor3f(1,1,1);
+		glVertex2f(5.4336202453311,-0.6750112582989);
+		glVertex2f(5.6035578385461,-0.9393586255221);
+		glVertex2f(5.6790856577527,-1.279233811952);
+		glVertex2f(5.5846758837444,-1.5813450887786);
+		glVertex2f(5.4147382905295,-1.8456924560018);
+		glVertex2f(5.269053852525,-2.0345120040184);
+		glVertex2f(4.8502204663482,-1.8994044600904);
+		glVertex2f(4.4584085889569,-1.7102538985912);
+		glVertex2f(4.0936182203513,-1.5616356002704);
+		glVertex2f(3.7558493605312,-1.4940818283064);
+		glVertex2f(3.5126557814608,-1.4130173019495);
+		glVertex2f(3.634252570996,-0.9131193894159);
+	glEnd();
+	glBegin(GL_POLYGON);
+		glColor3f(1/255,1/255,1/255);
+		glVertex2f(5.3313376168431,-1.4969831038094);
+		glVertex2f(5.415565447673,-1.4717147545605);
+		glVertex2f(5.4768850296845,-1.4307254754074);
+		glVertex2f(5.5231979251953,-1.3776018599685);
+		glVertex2f(5.5511073747867,-1.3262026776822);
+		glVertex2f(5.5624753271641,-1.2624718586415);
+		glVertex2f(5.5550800463165,-1.2144025331316);
+		glVertex2f(5.5384406644092,-1.1700308480456);
+		glVertex2f(5.5070107208066,-1.128987039341);
+		glVertex2f(5.4604285346801,-1.0924768817625);
+		glVertex2f(5.4031027758523,-1.0535209475238);
+		glVertex2f(5.3190261931904,-1.0254954199699);
+		glVertex2f(5.2209368467516,-1.0289986109141);
+		glVertex2f(5.1368602640898,-1.0430113746911);
+		glVertex2f(5.0702996361492,-1.1060688116875);
+		glVertex2f(5,-1.2);
+		glVertex2f(5.0072421991528,-1.302247504565);
+		glVertex2f(5.0457772995395,-1.3758145143941);
+		glVertex2f(5.1088347365359,-1.4388719513905);
+		glVertex2f(5.182401746365,-1.4774070517772);
+		glVertex2f(5.2524655652498,-1.4984261974426);
+	glEnd(); //end of cucuk
+	glBegin(GL_POLYGON); //cucuk orange
+		glColor3f(1,0.222,0);
+		glVertex2f(1.5498514511042,-2.5012938517838);
+		glVertex2f(1.9871894969144,-2.0265010484669);
+		glVertex2f(2.1987718491705,-1.8149186962108);
+		glVertex2f(2.3990194325557,-1.6448971631479);
+		glVertex2f(2.6677851692878,-1.4527658530818);
+		glVertex2f(2.8595383841859,-1.347105918342);
+		glVertex2f(2.9808516425907,-1.3314525946769);
+		glVertex2f(3.1452115410748,-1.3510192492583);
+		glVertex2f(3.6969912002712,-1.5232058095749);
+		glVertex2f(4.733260747401,-1.9521539645898);
+		glVertex2f(5.2340981894536,-2.1925559367751);
+		glVertex2f(5.7357579414881,-2.4643190192363);
+		glVertex2f(5.9829639089975,-2.6291229975759);
+		glVertex2f(6.0833274749165,-2.7139918552109);
+		glVertex2f(6.1446545767387,-2.7906507324887);
+		glVertex2f(4.2680452609766,-2.502413353924);
+		glVertex2f(2.9249817310685,-2.3000339179104);
+		glVertex2f(2.3791705248501,-2.235640460997);
+		glVertex2f(2.2258527702943,-2.2325741059059);
+		glVertex2f(2.1461275379254,-2.2509722364526);
+	glEnd();
+	glBegin(GL_POLYGON);
+		glColor3f(1,0.222,0);
+		glVertex2f(1.5926397869574,-2.8844721101042);
+		glVertex2f(1.8891567327327,-2.701769749576);
+		glVertex2f(2.0188564885701,-2.632453208689);
+		glVertex2f(2.1522527881142,-2.5657550589169);
+		glVertex2f(2.2511500446727,-2.5174563987372);
+		glVertex2f(2.3431474926341,-2.508256653941);
+		glVertex2f(2.5179426437609,-2.5266561435333);
+		glVertex2f(2.6812381138924,-2.5657550589169);
+		glVertex2f(3.0644805273164,-2.6418084334731);
+		glVertex2f(3.6835142802156,-2.7239251557965);
+		glVertex2f(4.2267479817393,-2.8123585490678);
+		glVertex2f(4.4794148196573,-2.8628919166514);
+		glVertex2f(4.3151813750106,-2.9639586518186);
+		glVertex2f(4.1067312337282,-3.0650253869858);
+		glVertex2f(3.7024642930594,-3.2166254897366);
+		glVertex2f(3.0897472111082,-3.4377089729148);
+		glVertex2f(2.9191970955136,-3.4313923019668);
+		glVertex2f(2.6728469285435,-3.3555922505914);
+		glVertex2f(2.3759633939899,-3.2671588573201);
+		glVertex2f(2.0474965046965,-3.1534587802571);
+		glVertex2f(1.8453630343621,-3.0523920450899);
+		glVertex2f(1.7190296154031,-2.9702753227665);
+	glEnd();
+	glBegin(GL_POLYGON);//buntut
+		glColor3f(0,0,0);
+		glVertex2f(-5.0440869414158,0.1087726832799);
+		glVertex2f(-5.2721505097501,0.3052449902698);
+		glVertex2f(-5.3430921074606,0.3967223136334);
+		glVertex2f(-5.4,0.5);
+		glVertex2f(-5.4569720406275,0.6076802226146);
+		glVertex2f(-5.5111116809855,0.7831673327407);
+		glVertex2f(-5.5372480590894,0.98105705267);
+		glVertex2f(-5.5316474066386,1.1733461201485);
+		glVertex2f(-5.5223129858872,1.3469663461243);
+		glVertex2f(-5.4961766077833,1.5261872245509);
+		glVertex2f(-5.47377399798,1.6475346943189);
+		glVertex2f(-5.4457707357258,1.7875510055896);
+		glVertex2f(-5.4735225022027,1.798607228423);
+		glVertex2f(-5.5300610952563,1.7485301888612);
+		glVertex2f(-5.5752919696992,1.7194531981479);
+		glVertex2f(-5.6253690092611,1.6709915469591);
+		glVertex2f(-5.6819076023147,1.6160683422784);
+		glVertex2f(-5.7255230883847,1.5756836329544);
+		glVertex2f(-5.7836770698113,1.5094527096629);
+		glVertex2f(-5.8579849349675,1.4319140677608);
+		glVertex2f(-5.9549082373452,1.3042983862968);
+		glVertex2f(-6.0340622676203,1.1782980932058);
+		glVertex2f(-6.0986778025388,1.0555285768608);
+		glVertex2f(-6.1519856188465,0.9376052256346);
+		glVertex2f(-6.2,0.8);
+		glVertex2f(-6.2330619612854,0.6611315056023);
+		glVertex2f(-6.2643358801859,0.4949888114432);
+		glVertex2f(-6.2780182197049,0.3640292760472);
+		glVertex2f(-6.2819274595675,0.2565251798266);
+		glVertex2f(-6.2799728396362,0.1646580430563);
+		glVertex2f(-6.2780182197049,0.0747455262173);
+		glVertex2f(-6.3307929578496,0.1021102052552);
+		glVertex2f(-6.4207054746886,0.176385762644);
+		glVertex2f(-6.6611237262365,0.3777116155662);
+		glVertex2f(-7.0266376533864,0.7529986423726);
+		glVertex2f(-7.2983298238348,1.1595595880795);
+		glVertex2f(-7.4429716987498,1.4879357365351);
+		glVertex2f(-7.5094287764134,1.7224901282891);
+		glVertex2f(-7.5446119351765,1.9629083798369);
+		glVertex2f(-7.540702695314,2.1603249928965);
+		glVertex2f(-7.540702695314,2.2658744691858);
+		glVertex2f(-7.5778404740084,2.2228728306976);
+		glVertex2f(-7.7009815296792,2.0215469777754);
+		glVertex2f(-7.7850301867244,1.8202211248532);
+		glVertex2f(-7.8534418843193,1.6091221722747);
+		glVertex2f(-7.8991427598555,1.274505294687);
+		glVertex2f(-7.9093812452098,1.0185431608285);
+		glVertex2f(-7.8524357647628,0.6503087218558);
+		glVertex2f(-7.7391688639285,0.284551021245);
+		glVertex2f(-7.6,0);
+		glVertex2f(-7.4772391557492,-0.1991930344015);
+		glVertex2f(-7.2625039895841,-0.4446046528759);
+		glVertex2f(-7.1091217280377,-0.5814688247173);
+		glVertex2f(-6.9533797393905,-0.6852968171488);
+		glVertex2f(-6.8,-0.8);
+		glVertex2f(-6.9109046515776,-0.9023917104145);
+		glVertex2f(-7.2341872643756,-1.1076879681767);
+		glVertex2f(-7.8335579479571,-1.2610702297232);
+		glVertex2f(-7.6990535032164,-1.3814163118596);
+		glVertex2f(-7.4583613389435,-1.494683212694);
+		glVertex2f(-7.1586759971527,-1.5796333883197);
+		glVertex2f(-6.8778684721676,-1.5914320238233);
+		glVertex2f(-6.5829025845783,-1.5749139341183);
+		glVertex2f(-6.3186131492982,-1.5395180276075);
+		glVertex2f(-5.864250894696,-1.4549043865254);
+	glEnd();
+	glBegin(GL_POLYGON); //jambul
+		glColor3f(0,0,0);
+		glVertex2f(0.5711753327718,6.5456425244001);
+		glVertex2f(0.6478000674097,6.7392208013799);
+		glVertex2f(0.6961946366546,6.9126346745077);
+		glVertex2f(0.7305242889035,7.1011171164678);
+		glVertex2f(0.7505883613548,7.2435720308719);
+		glVertex2f(0.7606203975804,7.3900397597662);
+		glVertex2f(0.7626268048256,7.5244690451898);
+		glVertex2f(0.7568942126966,7.7040902652298);
+		glVertex2f(0.7301421160949,7.8703354369689);
+		glVertex2f(0.7454290284388,7.7939008752498);
+		glVertex2f(0.6957465633213,8.0270262884932);
+		glVertex2f(0.636509777989,8.2104692366191);
+		glVertex2f(0.5658078083988,8.3786252724013);
+		glVertex2f(0.4817297905077,8.5219400756247);
+		glVertex2f(0.4339581894332,8.5926420452149);
+		glVertex2f(0.368988811972,8.6977395675787);
+		glVertex2f(0.3059302985537,8.764619809083);
+		glVertex2f(0.2505152413073,8.8143022742004);
+		glVertex2f(0.2008327761898,8.856341283146);
+		glVertex2f(0.18172413576,8.7130264799226);
+		glVertex2f(0.1607046312873,8.5601573564843);
+		glVertex2f(0.1492394470294,8.4130208251749);
+		glVertex2f(0.1339525346856,8.2945472545102);
+		glVertex2f(0.1263090785137,8.1512324512868);
+		glVertex2f(0.1148438942558,8.0537783850949);
+		glVertex2f(0.1033787099979,8.0270262884932);
+		glVertex2f(0.0708940212673,8.0576001131808);
+		glVertex2f(-0.0131839966238,8.1187477625562);
+		glVertex2f(-0.1297467032455,8.1913605961894);
+		glVertex2f(-0.2539528660391,8.2735277500374);
+		glVertex2f(-0.4068219894774,8.3556949038855);
+		glVertex2f(-0.5768888893025,8.4455055139055);
+		glVertex2f(-0.80619257446,8.5429595800974);
+		glVertex2f(-1.0106550270587,8.6251267339455);
+		glVertex2f(-1.253334760517,8.7053830237506);
+		glVertex2f(-1.5399643669638,8.7799067214268);
+		glVertex2f(-1.74170137493,8.8121634621494);
+		glVertex2f(-1.8992340921171,8.830696722995);
+		glVertex2f(-2.0901266788263,8.8455233316714);
+		glVertex2f(-2.2754592872818,8.8510833099251);
+		glVertex2f(-2.4848851348364,8.8473766577559);
+		glVertex2f(-2.6146179607553,8.8362567012486);
+		glVertex2f(-2.7017242867293,8.8158701143185);
+		glVertex2f(-2.8,8.8);
+		glVertex2f(-2.8740836125929,8.7825102447965);
+		glVertex2f(-2.927830069045,8.7695369622046);
+		glVertex2f(-2.9926964820044,8.7621236578664);
+		glVertex2f(-3.0371763080338,8.7454437231054);
+		glVertex2f(-2.8296037865636,8.6453641145395);
+		glVertex2f(-2.4570852435681,8.4804180930141);
+		glVertex2f(-2.0141403093595,8.2858188541359);
+		glVertex2f(-1.8213943965658,8.1875925716545);
+		glVertex2f(-1.5767553534046,8.0374731588055);
+		glVertex2f(-1.4,7.9);
+		glVertex2f(-1.283929832045,7.7724475287142);
+		glVertex2f(-1.20053015824,7.6593946375564);
+		glVertex2f(-1.1960091611841,7.6330418278632);
+		glVertex2f(-1.2268978972741,7.6285215250207);
+		glVertex2f(-1.3745611234604,7.6322884440561);
+		glVertex2f(-1.4958559163992,7.6360553630915);
+		glVertex2f(-1.7376921184697,7.6345485954773);
+		glVertex2f(-1.865333809916,7.6245370819018);
+		glVertex2f(-2,7.6);
+		glVertex2f(-2.1246387044913,7.5855857028884);
+		glVertex2f(-2.2815571170884,7.5444085307884);
+		glVertex2f(-2.4562818743773,7.4865379105399);
+		glVertex2f(-2.6265550454932,7.4075222559697);
+		glVertex2f(-2.7511994583363,7.3385226702887);
+		glVertex2f(-2.8469085610551,7.2728617742375);
+		glVertex2f(-2.9626498015522,7.178265568062);
+		glVertex2f(-2.7011191138904,7.1548947406539);
+		glVertex2f(-2.3505567027694,7.1259594305296);
+		glVertex2f(-2.1,7.1);
+		glVertex2f(-1.8152534654702,7.0781048791702);
+		glVertex2f(-1.4991908471896,7.0502824655892);
+		glVertex2f(-1.5014166402761,7.0213471554649);
+		glVertex2f(-1.6605608459596,6.8699932255841);
+		glVertex2f(-1.8642209133728,6.6652202616276);
+		glVertex2f(-1.9910911193023,6.5383500556981);
+		glVertex2f(-2.0801228427617,6.4437538495226);
+		glVertex2f(-2.0812357393049,6.4270604013739);
+		glVertex2f(-1.8553177410269,6.4370764702631);
+		glVertex2f(-1.5726420190435,6.454882814955);
+		glVertex2f(-1.3177887106412,6.4571086080415);
+		glVertex2f(-1.1608702980442,6.4337377806334);
+		glVertex2f(-1.012855057793,6.3780929534713);
+		glVertex2f(-0.8163856537015,6.2784668119606);
+	glEnd();
 }
+
+void bodyPosition(){
+    glPushMatrix();
+    glTranslated(8,10,0);
+    body();
+    glPopMatrix();
+}
+
+void overgame(){
+    glPushMatrix();//untuk keseluruhan
+    glTranslated(0,3,0);
+    //awal g
+    glPushMatrix();//untuk semua G dan bayangan
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(1.0974108217594, 3.8474271303571);
+        glVertex2f(0.791217320511, 3.8474271303571);
+        glVertex2f(0.7710570988224, 3.8453171792555);
+        glVertex2f(0.7535962015039, 3.8437388174705);
+        glVertex2f(0.7368741918051, 3.840110331634);
+        glVertex2f(0.7223471047075, 3.8356404586809);
+        glVertex2f(0.7089374858481, 3.8317293198469);
+        glVertex2f(0.6944103987505, 3.8272594468938);
+        glVertex2f(0.6821182481294, 3.8216721057024);
+        glVertex2f(0.6703848316275, 3.8132910939153);
+        glVertex2f(0.6618565190048, 3.8091878829601);
+        glVertex2f(0.6501377772079, 3.8008713565236);
+        glVertex2f(0.6414432268424, 3.7948229736607);
+        glVertex2f(0.6350168200506, 3.7891526147267);
+        glVertex2f(0.6289684371877, 3.7834822557927);
+        glVertex2f(0.6229200543247, 3.7759217772141);
+        glVertex2f(0.6170095669331, 3.7712473238553);
+        glVertex2f(0.6115505270217, 3.7636886532088);
+        glVertex2f(0.6050391479559, 3.7575181010372);
+        glVertex2f(0.5990645654865, 3.7495519910781);
+        glVertex2f(0.5928118431095, 3.7401478133968);
+        glVertex2f(0.5860365354215, 3.7274861426166);
+        glVertex2f(0.2959290646977, 2.6602657547916);
+        glVertex2f(0.2921826508797, 2.6515850279395);
+        glVertex2f(0.2905875517159, 2.6428119825385);
+        glVertex2f(0.290188776925, 2.6344377119284);
+        glVertex2f(0.2909863265069, 2.6260634413184);
+        glVertex2f(0.2917838760888, 2.6188854950812);
+        glVertex2f(0.2920697733013, 2.6112802472524);
+        glVertex2f(0.2938807308713, 2.603001584075);
+        glVertex2f(0.2959230525453, 2.5933318376957);
+        glVertex2f(0.2993080766375, 2.5831767654189);
+        glVertex2f(0.305231868799, 2.5730216931422);
+        glVertex2f(0.3120019169835, 2.5611741088193);
+        glVertex2f(0.3204644772141, 2.5510190365425);
+        glVertex2f(0.3283634245623, 2.5420830687943);
+        glVertex2f(0.3402871171111, 2.5331402993827);
+        glVertex2f(0.3544465020128, 2.5219618376182);
+        glVertex2f(0.3700963484831, 2.5137642989909);
+        glVertex2f(0.3909628104435, 2.5055667603636);
+        glVertex2f(0.8538032459636, 2.4989205078878);
+        glVertex2f(0.342671524017, 2.8337584747434);
+        glVertex2f(1.0814851253683, 3.5235349223396);
+    glEnd();
+    glPopMatrix();
+
+    //
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(1.6, 2.4989205078878);
+        glVertex2f(1.619075568372, 2.5021908697699);
+        glVertex2f(1.6368551417091, 2.5098106869144);
+        glVertex2f(1.6559046845703, 2.5174305040589);
+        glVertex2f(1.6774941664797, 2.5301301992997);
+        glVertex2f(1.7003536179132, 2.5402899554923);
+        glVertex2f(1.7206731302985, 2.5529896507331);
+        glVertex2f(1.7384527036356, 2.5682292850221);
+        glVertex2f(1.7549623074487, 2.582198949787);
+        glVertex2f(1.7689319722136, 2.5999785231241);
+        glVertex2f(1.7816316674544, 2.6190280659853);
+        glVertex2f(1.791791423647, 2.644427456467);
+        glVertex2f(1.8027560494341, 2.6717136423768);
+        glVertex2f(1.8139466374656, 2.7075235240777);
+        glVertex2f(1.8391839665751, 2.833046722441);
+        glVertex2f(0.9052776350118, 2.833046722441);
+        glVertex2f(0.8538032459636, 2.4989205078878);
+    glEnd();
+    glPopMatrix();
+
+//
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(1.8391839665751, 2.833046722441);
+        glVertex2f(1.9399284972844, 3.2077622525424);
+        glVertex2f(1.4770465692737, 3.2077622525424);
+        glVertex2f(1.4634870198017, 3.20609052806);
+        glVertex2f(1.4482346144422, 3.2020366503849);
+        glVertex2f(1.4349670579537, 3.195256729138);
+        glVertex2f(1.4226479062884, 3.1874172689874);
+        glVertex2f(1.4108887160626, 3.1806977317155);
+        glVertex2f(1.4002494487153, 3.1694985029289);
+        glVertex2f(1.3907301042467, 3.1571793512637);
+        glVertex2f(1.3828906440961, 3.1493398911131);
+        glVertex2f(1.3739312610669, 3.1336609708119);
+        glVertex2f(1.2882413932642, 2.833046722441);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(1.0974108217594, 3.8474271303571);
+        glVertex2f(1.0314851253683,3.5235349223396);
+        glVertex2f(1.9186599909336, 3.5235349223396);
+        glVertex2f(1.9370763407361, 3.5268464762683);
+        glVertex2f(1.9559826935082, 3.5306277468227);
+        glVertex2f(1.9726202839476, 3.5397027961533);
+        glVertex2f(1.989257874387, 3.5472653372621);
+        glVertex2f(2.0036267024937, 3.5586091489253);
+        glVertex2f(2.0172392764896, 3.5737342311429);
+        glVertex2f(2.0316081045963, 3.592640583915);
+        glVertex2f(2.0406831539269, 3.6168407154632);
+        glVertex2f(2.1029676682042, 3.8474271303571);
+    glEnd();
+    glPopMatrix();
+    //akhir G
+
+    //bayangan g atas
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.2957116716906, 3.8347130866205);
+        glVertex2f(2.1804008094867, 3.8347130866205);
+        glVertex2f(2.1344966701365, 3.6505065159592);
+        glVertex2f(2.1312788405072, 3.6372357059466);
+        glVertex2f(2.1247799059975, 3.6177389024175);
+        glVertex2f(2.1145672946251, 3.588493697124);
+        glVertex2f(2.1110623428949, 3.5766438690307);
+        glVertex2f(2.1033438021323, 3.5657677434106);
+        glVertex2f(2.0941420718804, 3.5597127014382);
+        glVertex2f(2.0862505085472, 3.5573916533991);
+        glVertex2f(2.0774305259984, 3.5559990245756);
+        glVertex2f(2.0690747530573, 3.5569274437912);
+        glVertex2f(2.0718600107044, 3.5365022210465);
+        glVertex2f(2.081144202861, 3.5262896096741);
+        glVertex2f(2.0899641854099, 3.5221117232036);
+        glVertex2f(2.1, 3.52);
+        glVertex2f(2.1145672946251, 3.5193264655566);
+        glVertex2f(2.1303504212915, 3.5202548847723);
+        glVertex2f(2.1470619671735, 3.523968561635);
+        glVertex2f(2.1628450938399, 3.5313959153603);
+        glVertex2f(2.1786282205063, 3.5425369459484);
+        glVertex2f(2.196268185604, 3.5541421861442);
+        glVertex2f(2.2092660546234, 3.5638905879087);
+        glVertex2f(2.2194786659957, 3.5750316184968);
+        glVertex2f(2.2264418101133, 3.5847800202613);
+        glVertex2f(2.2334049542308, 3.596849470065);
+        glVertex2f(2.2399038887405, 3.6103115486922);
+        glVertex2f(2.2426891463875, 3.6242378369272);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan G tengah
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(1.2653169764119, 3.4765359657901);
+        glVertex2f(1.1391764074272, 3.4747524998018);
+        glVertex2f(0.9864514480198, 2.8858275084935);
+        glVertex2f(1.1041332666584, 2.8865955163644);
+    glEnd();
+    glPopMatrix();
+
+    //bayagan G bawah
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.1238908556515, 3.1765612584853);
+        glVertex2f(1.9995166158831, 3.1786515818428);
+        glVertex2f(1.8590835680118, 2.6495999032269);
+        glVertex2f(1.9786755730861, 2.6405516602493);
+    glEnd();
+    glPopMatrix();
+    //lanjutan g
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(1.8590835680118, 2.6495999032269);
+        glVertex2f(1.8512401515619, 2.6260703623488);
+        glVertex2f(1.8435167926816, 2.6067619651482);
+        glVertex2f(1.8357934338013, 2.5884189878076);
+        glVertex2f(1.824208395481, 2.5729722700471);
+        glVertex2f(1.8155196167407, 2.5623526515867);
+        glVertex2f(1.8068308380004, 2.5469059338262);
+        glVertex2f(1.7933149599599, 2.5362863153659);
+        glVertex2f(1.7759374024793, 2.5218050174654);
+        glVertex2f(1.7624215244389, 2.5082891394249);
+        glVertex2f(1.75, 2.5);
+        glVertex2f(1.735389768358, 2.4870499025042);
+        glVertex2f(1.7324935087779, 2.4716031847437);
+        glVertex2f(1.7479402265384, 2.4687069251636);
+        glVertex2f(1.7691794634591, 2.4706377648837);
+        glVertex2f(1.8000728989802, 2.481257383344);
+        glVertex2f(1.8917877856832, 2.5208395976053);
+        glVertex2f(1.9091653431638, 2.5343554756458);
+        glVertex2f(1.9236466410643, 2.5478713536862);
+        glVertex2f(1.9381279389648, 2.5642834913068);
+        glVertex2f(1.9516438170052, 2.5816610487874);
+        glVertex2f(1.9632288553256, 2.5971077665479);
+        glVertex2f(1.9719176340659, 2.6154507438885);
+        glVertex2f(1.9786755730861, 2.6405516602493);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    //awal A
+    glPushMatrix(); //untuk semua A
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.2067737791564, 3.8181411850273);
+        glVertex2f(3.1760610844512, 3.8079677540202);
+        glVertex2f(3.1487222212746, 3.7994243592775);
+        glVertex2f(3.1265093949436, 3.7823375697921);
+        glVertex2f(3.1094226054582, 3.7652507803067);
+        glVertex2f(3.0836834368887, 3.7421836349166);
+        glVertex2f(2.0704097001298, 2.4943948180557);
+        glVertex2f(2.6003606550228, 2.4943948180557);
+        glVertex2f(2.7944509728976, 2.7222399738218);
+        glVertex2f(3.2623787207751, 3.3101862982868);
+        glVertex2f(3.4939311303421, 2.4943948180557);
+        glVertex2f(4.0536923819701, 2.4943948180557);
+        glVertex2f(3.6686916781024, 3.7288807520822);
+        glVertex2f(3.6634681165219, 3.7501736204585);
+        glVertex2f(3.6503515689735, 3.7692522350743);
+        glVertex2f(3.6360426080117, 3.7835611960361);
+        glVertex2f(3.619565467092, 3.7984696491819);
+        glVertex2f(3.601781205204, 3.8067266279156);
+        glVertex2f(3.5788067641643, 3.8133715313733);
+        glVertex2f(3.5561509093081, 3.8169487716138);
+        glVertex2f(3.2353917010801, 3.8205260118542);
+    glEnd();
+    glPopMatrix();
+
+    //A bagian tengah
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.7944509728976, 2.7222399738218);
+        glVertex2f(3.024140987741, 3.047025082575);
+        glVertex2f(3.3691597781182, 3.047025082575);
+        glVertex2f(3.4476370133252, 2.7222399738218);
+    glEnd();
+    glPopMatrix();
+
+    //A bayangan pertama
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.7371086308481, 3.7914076562327);
+        glVertex2f(3.7452522058212, 3.7975967732122);
+        glVertex2f(3.7530700377953, 3.8002027172036);
+        glVertex2f(3.763168070762, 3.802808661195);
+        glVertex2f(3.7745690757243, 3.802808661195);
+        glVertex2f(3.7869473096834, 3.8018314321982);
+        glVertex2f(3.79704534265, 3.7995512312057);
+        glVertex2f(3.8074691186155, 3.7956423152187);
+        glVertex2f(3.8185443805789, 3.789778941238);
+        glVertex2f(3.830922614538, 3.7848927962542);
+        glVertex2f(3.843626591496, 3.7783779362757);
+        glVertex2f(3.8511186804713, 3.7721888192962);
+        glVertex2f(3.8602394844411, 3.7627422723274);
+        glVertex2f(4.2333794136086, 2.4984650560995);
+        glVertex2f(4.1176071006257, 2.4881895082858);
+        glVertex2f(3.7369661704642, 3.7663076821766);
+        glVertex2f(3.7327565362614, 3.7803397961859);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan A bawah
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.8505732268905, 2.6901022976556);
+        glVertex2f(2.9376551263034,2.6901022976556);
+        glVertex2f(2.796015616999, 2.483372103795);
+        glVertex2f(2.6973563725869, 2.483372103795);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan A tengah
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.2371941134114, 3.1986146337234);
+        glVertex2f(3.2647216337675, 3.105444564826);
+        glVertex2f(3.1694340633042, 3.105444564826);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+    //akhir A
+
+    //awal M
+    glPushMatrix();
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(5.0635658861368, 3.8120443250206);
+        glVertex2f(4.7717155092292, 3.8120443250206);
+        glVertex2f(4.7588484256724, 3.8114594575862);
+        glVertex2f(4.7469390578974, 3.8094538144375);
+        glVertex2f(4.7352149036813, 3.807562821822);
+        glVertex2f(4.7242471465113, 3.8030244395447);
+        glVertex2f(4.712144793772, 3.796595064652);
+        glVertex2f(4.6985296469403, 3.7909220868055);
+        glVertex2f(4.6841581030625, 3.7822235207741);
+        glVertex2f(4.6711110735523, 3.7734562081647);
+        glVertex2f(4.6551882816228, 3.7622512805107);
+        glVertex2f(4.6398552227278, 3.7480976876845);
+        glVertex2f(4.6257016299017, 3.736303026996);
+        glVertex2f(4.6139069692132, 3.7233289002387);
+        glVertex2f(4.6044712406624, 3.7115342395503);
+        glVertex2f(4.5972029074046, 3.7019944283185);
+        glVertex2f(4.5902081304296, 3.6872175338192);
+        glVertex2f(4.271814580076, 2.482215178619);
+        glVertex2f(4.6562953612251, 2.482215178619);
+        glVertex2f(4.6710525100218, 2.4856896939482);
+        glVertex2f(4.6840127964481, 2.491706969789);
+        glVertex2f(4.6941958786401, 2.5005014498639);
+        glVertex2f(4.7034532260874, 2.5083701951941);
+        glVertex2f(4.7127105735347, 2.5162389405243);
+        glVertex2f(4.7210421862373, 2.5241076858546);
+        glVertex2f(4.7284480641952, 2.5342907680466);
+        glVertex2f(4.7363168095254, 2.5444738502387);
+        glVertex2f(4.7437226874833, 2.5555826671754);
+        glVertex2f(4.749739963324, 2.5694686883464);
+        glVertex2f(4.7567831799065, 2.5813276269885);
+        glVertex2f(4.7576539369026, 2.5952597389259);
+        glVertex2f(4.8239983442971, 2.8477185921816);
+        glVertex2f(4.9400355717182, 2.482215178619);
+        glVertex2f(5.4853319841807, 2.482215178619);
+
+    glEnd();
+    glPopMatrix();
+    //lanjutan
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(5.4853319841807, 2.482215178619);
+        glVertex2f(5.7905825303401, 2.8515648944203);
+        glVertex2f(6.0146217427682, 3.7614139384623);
+        glVertex2f(5.3348277475257, 2.9482925685312);
+    glEnd();
+    glPopMatrix();
+    //lanjutan
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.0146217427682, 3.7614139384623);
+        glVertex2f(5.6974309904488, 2.482215178619);
+        glVertex2f(5.6974309904488, 2.482215178619);
+        glVertex2f(6.0542389273862, 2.482215178619);
+        glVertex2f(6.0716717064567, 2.4856094158382);
+        glVertex2f(6.0856344923519, 2.4925908087858);
+        glVertex2f(6.1, 2.5);
+        glVertex2f(6.1114921046508, 2.5079433430742);
+        glVertex2f(6.1223728204524, 2.5183059295519);
+        glVertex2f(6.1353179836103, 2.5274147893334);
+        glVertex2f(6.143839467246, 2.5354064239849);
+        glVertex2f(6.1543509384758, 2.5478304189577);
+        glVertex2f(6.1627858837161, 2.5606159789437);
+        glVertex2f(6.1670239263762, 2.5749600433807);
+        glVertex2f(6.4837419328758, 3.8120443250206);
+        glVertex2f(6.1214674386932, 3.8120443250206);
+        glVertex2f(6.1076490238161, 3.8108727401537);
+        glVertex2f(6.0947981406914, 3.8073679538469);
+        glVertex2f(6.0807789954644, 3.8038631675402);
+        glVertex2f(6.0677856476851, 3.7995430837696);
+        glVertex2f(6.0544930981639, 3.79334880862);
+        glVertex2f(6.0393056908348, 3.7834185807509);
+        glVertex2f(6.0247054864991, 3.7698656393971);
+        glVertex2f(6.0146217427682, 3.7614139384623);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(5.2706449613682, 3.8120443250206);
+        glVertex2f(5.1527658058007, 3.8120443250206);
+        glVertex2f(5.3709127066402, 3.1005522569746);
+        glVertex2f(5.4600750247005, 3.2009153110112);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.6820918028911, 3.8120443250206);
+        glVertex2f(6.568578717894, 3.8120443250206);
+        glVertex2f(6.2619553550643, 2.6459356977337);
+        glVertex2f(6.3825726469507, 2.6459356977337);
+    glEnd();
+    glPopMatrix();
+
+    //
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(6.2619553550643,2.6459356977337);
+        glVertex2f(6.3825726469507,2.6459356977337);
+        glVertex2f(6.36351142344,2.5748518139094);
+        glVertex2f(6.3582611779707,2.5538508320319);
+        glVertex2f(6.3488107361258,2.5391501447177);
+        glVertex2f(6.3362101469993,2.5265495555912);
+        glVertex2f(6.325546128085,2.5138738821073);
+        glVertex2f(6.3085391024886,2.5043499477733);
+        glVertex2f(6.2915320768922,2.4948260134393);
+        glVertex2f(6.2718039272004,2.4893837652485);
+        glVertex2f(6.254796901604,2.4866626411531);
+        glVertex2f(6.2303067847452,2.4853020791054);
+        glVertex2f(6.2044561058387,2.4853020791054);
+        glVertex2f(6.1867687992185,2.4873429221769);
+        glVertex2f(6.2,2.5);
+        glVertex2f(6.2167011642681,2.5091119149403);
+        glVertex2f(6.2275856606498,2.5206766923459);
+        glVertex2f(6.2323476278168,2.5363231558945);
+        glVertex2f(6.2405110001031,2.562173834801);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+    //akhir M
+
+    //awal E
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.3119625360849,3.8029520806043);
+        glVertex2f(8.2798210560114,3.6475461179827);
+        glVertex2f(8.275467495114,3.6323086548418);
+        glVertex2f(8.2667603733192,3.6148944112522);
+        glVertex2f(8.2547880808513,3.5963917774382);
+        glVertex2f(8.2417273981591,3.5822427045216);
+        glVertex2f(8.2275783252425,3.5659168511563);
+        glVertex2f(8.2140504577898,3.5511356145234);
+        glVertex2f(8.196927391935,3.5372740850219);
+        glVertex2f(8.1814350942569,3.5242279396087);
+        glVertex2f(8.1610504920488,3.5095510260189);
+        glVertex2f(8.1341428171342,3.4965048806058);
+        glVertex2f(8.1023428376896,3.4916125760758);
+        glVertex2f(7.3857797836057,3.4916125760758);
+        glVertex2f(6.8566379639379,3.4916125760758);
+        glVertex2f(6.9010234859113,3.6595569631829);
+        glVertex2f(6.9081521571827,3.6830309724463);
+        glVertex2f(6.9188717075461,3.7044700731732);
+        glVertex2f(6.9320697412765,3.7241855955235);
+        glVertex2f(6.9495728682287,3.7427826679102);
+        glVertex2f(6.9659820497463,3.7575509312761);
+        glVertex2f(6.9829904329181,3.7715781467228);
+        glVertex2f(7.0043349424555,3.7843444574868);
+        glVertex2f(7.0253866282013,3.7934668546433);
+        glVertex2f(7.0470586323547,3.8002652338142);
+        glVertex2f(7.0738928974172,3.8029520806043);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.3806553913788, 3.4990081757712);
+        glVertex2f(7.3059593201442, 3.3068307106687);
+        glVertex2f(6.7998975915065, 3.3068307106687);
+        glVertex2f(6.8566379639379, 3.4916125760758);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.0040863646547, 3.3068307106687);
+        glVertex2f(7.9510473100623, 3.1168935557095);
+        glVertex2f(7.946425683745, 3.1038776302493);
+        glVertex2f(7.9408623058148, 3.0927170268534);
+        glVertex2f(7.9322634675513, 3.0831627621161);
+        glVertex2f(7.9230276783053, 3.0707422179577);
+        glVertex2f(7.9109256096382, 3.0592771002731);
+        glVertex2f(7.9010528694097, 3.0487674090621);
+        glVertex2f(7.8886323252513, 3.0398500953074);
+        glVertex2f(7.8774856830579, 3.0312512570439);
+        glVertex2f(7.8642773994721, 3.0240420589886);
+        glVertex2f(7.8515277859122, 3.0172119088672);
+        glVertex2f(7.8378674856694, 3.0112924454287);
+        glVertex2f(7.8251178721094, 3.006283668673);
+        glVertex2f(7.8137342885737, 3.0021855786002);
+        glVertex2f(7.8, 3);
+        glVertex2f(7.7868337642469, 2.9980440154411);
+        glVertex2f(7.2554621275863, 2.9980440154411);
+        glVertex2f(6.7158575325943, 2.9980440154411);
+        glVertex2f(6.8087700757935, 3.3068307106687);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.2554621275863, 2.9980440154411);
+        glVertex2f(7.1926071580313, 2.8018161727043);
+        glVertex2f(6.6373577214013, 2.7050250658794);
+        glVertex2f(6.7158575325943, 2.9980440154411);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.1926071580313, 2.8018161727043);
+        glVertex2f(8.0584022950296, 2.8018161727043);
+        glVertex2f(8.02, 2.64);
+        glVertex2f(8.0163137901117, 2.6249235022962);
+        glVertex2f(8.0090344005341, 2.6109470743071);
+        glVertex2f(8.0004353721208, 2.5973772326727);
+        glVertex2f(7.9939897366038, 2.5898120923274);
+        glVertex2f(7.9880652610686, 2.579956967187);
+        glVertex2f(7.9796368820479, 2.5715285881663);
+        glVertex2f(7.9704422867526, 2.5627171010083);
+        glVertex2f(7.9616307995946, 2.5562042626741);
+        glVertex2f(7.9497544473382, 2.5473927755161);
+        glVertex2f(7.94, 2.54);
+        glVertex2f(7.928559740739, 2.5316784422725);
+        glVertex2f(7.9166319326213, 2.5235334625377);
+        glVertex2f(7.9073578209953, 2.516367103554);
+        glVertex2f(7.8955544061985, 2.5075145424564);
+        glVertex2f(7.8845940924587, 2.5045636887572);
+        glVertex2f(7.8723691271335, 2.5016128350581);
+        glVertex2f(7.8597226112799, 2.4973973297735);
+        glVertex2f(7.8453898933124, 2.4957111276597);
+        glVertex2f(7.8285278721742, 2.493181824489);
+        glVertex2f(7.8120874015644, 2.4919171729036);
+        glVertex2f(6.6879643624052, 2.4919171729036);
+        glVertex2f(6.6697295615921, 2.5011059073155);
+        glVertex2f(6.6599321915648, 2.5129658815591);
+        glVertex2f(6.6511661236457, 2.5268884600189);
+        glVertex2f(6.6424000557265, 2.542873642695);
+        glVertex2f(6.6356965920236, 2.5567962211549);
+        glVertex2f(6.631055732537, 2.573297054885);
+        glVertex2f(6.6269305241045, 2.59547005021);
+        glVertex2f(6.6252380409277, 2.6183417371756);
+        glVertex2f(6.6257357536809, 2.6402410983169);
+        glVertex2f(6.6289189626837, 2.6676534201301);
+        glVertex2f(6.6373577214013, 2.7050250658794);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan E pertama
+
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.5,3.8029520806043);
+        glVertex2f(8.4,3.8029520806043);
+        glVertex2f(8.3556903171755,3.6398657051416);
+        glVertex2f(8.4634033595141,3.6398657051416);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.3556903171755,3.6398657051416);
+        glVertex2f(8.4634033595141,3.6398657051416);
+        glVertex2f(8.45, 3.6);
+        glVertex2f(8.4392732163862, 3.5842945683199);
+        glVertex2f(8.4316720944721, 3.5706125488744);
+        glVertex2f(8.4185038100492, 3.5568385750882);
+        glVertex2f(8.4022481071032, 3.5465718153329);
+        glVertex2f(8.3885590940961, 3.5345939289516);
+        glVertex2f(8.3714478278371, 3.5256105141657);
+        glVertex2f(8.3560476882041, 3.5183382260056);
+        glVertex2f(8.3393642036016, 3.5097825928762);
+        glVertex2f(8.3209695923733, 3.5037936496855);
+        glVertex2f(8.3, 3.5);
+        glVertex2f(8.2775841447414, 3.5011165881456);
+        glVertex2f(8.2595157459714, 3.5044017515583);
+        glVertex2f(8.2406928833182, 3.5116702875109);
+        glVertex2f(8.2552705669395, 3.5164194258241);
+        glVertex2f(8.2683662017551, 3.5202102674813);
+        glVertex2f(8.2800833486954, 3.5271027068579);
+        glVertex2f(8.2911112516981, 3.5339951462345);
+        glVertex2f(8.29938217895, 3.5439891833307);
+        glVertex2f(8.3079977281708, 3.5553617083021);
+        glVertex2f(8.3173025213293, 3.5708696968996);
+    glEnd();
+    glPopMatrix();
+
+    //bayang E kedua
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.5550781830823,3.4429844524599);
+        glVertex2f(7.4424029988565,3.4429844524599);
+        glVertex2f(7.4181005081411,3.3612397109628);
+        glVertex2f(7.5307176203868,3.3612397109628);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan E ketiga
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2,3.3068307106687);
+        glVertex2f(8.0883576045314,3.3068307106687);
+        glVertex2f(8.0501503851752,3.1515538840225);
+        glVertex2f(8.158683375938,3.1515538840225);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.0501503851752, 3.1515538840225);
+        glVertex2f(8.158683375938, 3.1515538840225);
+        glVertex2f(8.158683375938, 3.1363230876955);
+        glVertex2f(8.1549318005289, 3.1235677313045);
+        glVertex2f(8.1504073398929, 3.109983449976);
+        glVertex2f(8.1427251705216, 3.0979114695353);
+        glVertex2f(8.1347686379584, 3.088583121013);
+        glVertex2f(8.1251659262443, 3.078706046107);
+        glVertex2f(8.1138989752096, 3.0670864829112);
+        glVertex2f(8.1026069733502, 3.0572673508595);
+        glVertex2f(8.0903330582856, 3.0464663056027);
+        glVertex2f(8.0790410564262, 3.036647173551);
+        glVertex2f(8.0618575753358, 3.0268280414994);
+        glVertex2f(8.0466379206557, 3.0189727358581);
+        glVertex2f(8.0289634829627, 3.0135722132296);
+        glVertex2f(8.0053975660388, 3.0052259509857);
+        glVertex2f(7.9376455548823, 3.0076807339986);
+        glVertex2f(7.9532341592745, 3.0148339861589);
+        glVertex2f(7.9689835015054, 3.0251953955213);
+        glVertex2f(7.9810027363658, 3.0368001740072);
+        glVertex2f(7.9946797967242, 3.0513061471146);
+        glVertex2f(8.0066990315845, 3.0645687510985);
+        glVertex2f(8.02, 3.08);
+        glVertex2f(8.0323953268033, 3.0977252610582);
+        glVertex2f(8.0402699979187, 3.111816777791);
+        glVertex2f(8.0456579307872, 3.1321251401414);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan E3
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.4346614079561, 2.9489102143313);
+        glVertex2f(7.3261053035999, 2.9536691311249);
+        glVertex2f(7.2959512295261, 2.8632069089036);
+        glVertex2f(7.4047649780675, 2.8632069089036);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan e terakhir
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2569004833216,2.7985566375596);
+        glVertex2f(8.1410368546387,2.7985566375596);
+        glVertex2f(8.1060083157346,2.6712413711581);
+        glVertex2f(8.2178301899286,2.662484236432);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glVertex2f(8.1060083157346, 2.6712413711581);
+        glVertex2f(8.2178301899286, 2.662484236432);
+        glVertex2f(8.2119773146279, 2.6385176570862);
+        glVertex2f(8.2051887082181, 2.6222250017027);
+        glVertex2f(8.1977212411673, 2.6066112069602);
+        glVertex2f(8.1875383315526, 2.5876031090128);
+        glVertex2f(8.1766765612969, 2.5726681749112);
+        glVertex2f(8.1644570697593, 2.5611275440145);
+        glVertex2f(8.15, 2.55);
+        glVertex2f(8.1359449228381, 2.5407617247852);
+        glVertex2f(8.1223677100185, 2.5332942577344);
+        glVertex2f(8.1047173333531, 2.5237902087607);
+        glVertex2f(8.0870669566876, 2.5190381842738);
+        glVertex2f(8.0687377193811, 2.5142861597869);
+        glVertex2f(8.0436198756649, 2.5095341353001);
+        glVertex2f(8.0239329170765, 2.511570717223);
+        glVertex2f(8.006961401052, 2.5170016023509);
+        glVertex2f(8.0239329170765, 2.5305788151705);
+        glVertex2f(8.0415832937419, 2.5414405854261);
+        glVertex2f(8.0592336704074, 2.5577332408096);
+        glVertex2f(8.074168604509, 2.5760624781161);
+        glVertex2f(8.0816360715597, 2.5916762728586);
+        glVertex2f(8.0897823992515, 2.6106843708061);
+        glVertex2f(8.0952132843793, 2.6303713293945);
+        glVertex2f(8.1, 2.65);
+    glEnd();
+    glPopMatrix();
+
+    //awal O
+
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(2.7339472183724, 1.7681242313563);
+        glVertex2f(2.7392144017013, 1.7830085637688);
+        glVertex2f(2.7433454316629, 1.7961527500102);
+        glVertex2f(2.7459742689111, 1.8077947435383);
+        glVertex2f(2.7478520098028, 1.8183100925314);
+        glVertex2f(2.7497297506944, 1.8284498933462);
+        glVertex2f(2.7493542025161, 1.8382141459827);
+        glVertex2f(2.7474764616244, 1.8472273022625);
+        glVertex2f(2.7452231725545, 1.8554893621856);
+        glVertex2f(2.7414676907712, 1.8633758739305);
+        glVertex2f(2.737712208988, 1.8716379338536);
+        glVertex2f(2.7320789863131, 1.8787733492418);
+        glVertex2f(2.727032501856, 1.8876547128397);
+        glVertex2f(2.7207820044274, 1.8945631573661);
+        glVertex2f(2.7151894540965, 1.9008136547948);
+        glVertex2f(2.7082810095701, 1.9067351786745);
+        glVertex2f(2.700385644397, 1.9119987554566);
+        glVertex2f(2.6918323321263, 1.9169333586897);
+        glVertex2f(2.6839369669532, 1.9205520677273);
+        glVertex2f(2.6740677604869, 1.9238418032161);
+        glVertex2f(2.6661723953139, 1.9281184593515);
+        glVertex2f(2.655316268201, 1.9297633270959);
+        glVertex2f(2.6437490684794, 1.9301240418515);
+        glVertex2f(1.4540514330533, 1.9301240418515);
+        glVertex2f(1.4313621699985, 1.9294024736949);
+        glVertex2f(1.4169744790873, 1.9288595419624);
+        glVertex2f(1.4051108838507, 1.9276144529326);
+        glVertex2f(1.3948039756814, 1.9243213323547);
+        glVertex2f(1.3847750027698, 1.9211302955192);
+        glVertex2f(1.3747460298583, 1.9174833962787);
+        glVertex2f(1.3644961115069, 1.9117380392183);
+        glVertex2f(1.3561280994091, 1.9055390809109);
+        glVertex2f(1.3478584606642, 1.8998537042738);
+        glVertex2f(1.3395888219193, 1.8944267538475);
+        glVertex2f(1.3308023307529, 1.8874492461565);
+        glVertex2f(1.3225007985706, 1.878172928428);
+        glVertex2f(1.3132293484201, 1.8698762638237);
+        glVertex2f(1.3031507261998, 1.8585055105495);
+        glVertex2f(1.2946488272929, 1.8468394607405);
+        glVertex2f(1.286815460371, 1.8359597844602);
+        glVertex2f(1.2789820934491, 1.8242097340774);
+        glVertex2f(1.2681794969165, 1.8067154942038);
+        glVertex2f(1.2571581837235, 1.7681242313563);
+    glEnd();
+    glPopMatrix();
+
+    //O bawah
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(1.2571581837235,1.7864265410564);
+        glVertex2f(1.4051108838507, 1.9276144529326);
+        glVertex2f(1.3948039756814, 1.9243213323547);
+        glVertex2f(1.3847750027698, 1.9211302955192);
+        glVertex2f(1.3747460298583, 1.9174833962787);
+        glVertex2f(1.3644961115069, 1.9117380392183);
+        glVertex2f(1.3561280994091, 1.9055390809109);
+        glVertex2f(1.3478584606642, 1.8998537042738);
+        glVertex2f(1.3395888219193, 1.8944267538475);
+        glVertex2f(1.3308023307529, 1.8874492461565);
+        glVertex2f(1.3225007985706, 1.878172928428);
+        glVertex2f(1.3132293484201, 1.8698762638237);
+        glVertex2f(1.3031507261998, 1.8585055105495);
+        glVertex2f(1.2946488272929, 1.8468394607405);
+        glVertex2f(1.286815460371, 1.8359597844602);
+        glVertex2f(1.2789820934491, 1.8242097340774);
+        glVertex2f(1.2681794969165, 1.8067154942038);
+        glVertex2f(1.2571581837235, 1.7864265410564);
+        glVertex2f(0.9873823164991, 0.7598128965055);
+        glVertex2f(0.9800515833047, 0.7484504665109);
+        glVertex2f(0.9759066470265, 0.7364301513042);
+        glVertex2f(0.9742486725153, 0.7244098360976);
+        glVertex2f(0.9754313367219, 0.7131208960467);
+        glVertex2f(0.97715012791, 0.7049286355903);
+        glVertex2f(0.9800515833047, 0.6962242694062);
+        glVertex2f(0.9841965195828, 0.6871054095942);
+        glVertex2f(0.9891704431166, 0.6792300306658);
+        glVertex2f(1.02, 0.64);
+        glVertex2f(1.0343725168035, 0.6254218456817);
+        glVertex2f(1.0430549208062, 0.6175663372983);
+        glVertex2f(1.0533911160475, 0.6109511723439);
+        glVertex2f(1.0637273112888, 0.6068166942474);
+        glVertex2f(1.075303849959, 0.6043360073895);
+        glVertex2f(1.0865196630656, 0.6030987241946);
+        glVertex2f(1.1024529556541, 0.6031293650863);
+        glVertex2f(2.2907631925546, 0.6031293650863);
+        glVertex2f(2.3016660583463, 0.6046844699874);
+        glVertex2f(2.3158430626154, 0.6081207547576);
+        glVertex2f(2.3262606422417, 0.6112460286455);
+        glVertex2f(2.3366782218679, 0.6143713025333);
+        glVertex2f(2.3491793174194, 0.6195800923464);
+        glVertex2f(2.3616804129709, 0.6258306401222);
+        glVertex2f(2.3741815085224, 0.6320811878979);
+        glVertex2f(2.3840782091673, 0.6404152515989);
+        glVertex2f(2.3962010232657, 0.6493073844003);
+        glVertex2f(2.4055772990927, 0.6575116257489);
+        glVertex2f(2.4157349312386, 0.6684506142137);
+        glVertex2f(2.4263391912876, 0.6791457070894);
+        glVertex2f(2.4343344201301, 0.6911385503533);
+        glVertex2f(2.4423296489727, 0.7028458497299);
+        glVertex2f(2.450075160811, 0.7142643946811);
+        glVertex2f(2.455983123379, 0.7243079310469);
+        glVertex2f(2.4613002896903, 0.7340560692842);
+        glVertex2f(2.4640472089567, 0.7445831185102);
+        glVertex2f(2.7339472183724, 1.7681242313563);
+    glEnd();
+    glPopMatrix();
+
+    //O tengah
+    glPushMatrix();
+    glColor3ub(0,0,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(1.763364100072,1.633141817858);
+        glVertex2f(2.151941866678,1.633141817858);
+        glVertex2f(1.9582245517622,0.9103849363812);
+        glVertex2f(1.5748940086385,0.9103849363812);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan O
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+    glVertex2f(1.8294831486332,1.5857110816327);
+    glVertex2f(1.9447812025967,1.5857110816327);
+    glVertex2f(1.7875443345023,0.971970986103);
+    glVertex2f(1.6668644418056,0.971970986103);
+    glEnd();
+    glPopMatrix();
+
+    //awal v
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.7229425056301, 1.0513470750063);
+        glVertex2f(3.6158627534089, 1.8858093921351);
+        glVertex2f(3.6131184230783, 1.8956879810402);
+        glVertex2f(3.6101956685344, 1.904456244672);
+        glVertex2f(3.605717595406, 1.9119941553092);
+        glVertex2f(3.600788120568, 1.9169615612035);
+        glVertex2f(3.5955960861732, 1.9216343921588);
+        glVertex2f(3.5901444500586, 1.9265668248339);
+        glVertex2f(3.5839140087848, 1.9302012489103);
+        glVertex2f(3.5782027709505, 1.9325376643879);
+        glVertex2f(3.5715626916985, 1.934724043607);
+        glVertex2f(3.5652226849635, 1.9359124867446);
+        glVertex2f(3.0004253242714, 1.9394895409054);
+        glVertex2f(3.2227313296349, 0.7076685969358);
+        glVertex2f(3.2246026503672, 0.6958317981125);
+        glVertex2f(3.2278996902435, 0.6801708586999);
+        glVertex2f(3.2353180299652, 0.6682190891482);
+        glVertex2f(3.2452091495942, 0.6562673195965);
+        glVertex2f(3.2551002692232, 0.6439034200603);
+        glVertex2f(3.267876298744, 0.631539520524);
+        glVertex2f(3.28, 0.62);
+        glVertex2f(3.2954890077083, 0.6142300611733);
+        glVertex2f(3.3176039391923, 0.6111428647091);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glVertex2f(3.3176039391923, 0.6111428647091);
+    glVertex2f(3.8897748353522, 0.6111428647091);
+    glVertex2f(3.901774799637, 0.6116211143414);
+    glVertex2f(3.9159331096592, 0.6146079663227);
+    glVertex2f(3.9284993625516, 0.6169350501917);
+    glVertex2f(3.9429272825392, 0.6211238011558);
+    glVertex2f(3.9578206193006, 0.6262433856675);
+    glVertex2f(3.9731793728358, 0.6327592205007);
+    glVertex2f(3.9876072928234, 0.6402058888814);
+    glVertex2f(4.0006389624897, 0.6518413082262);
+    glVertex2f(4.0122743818345, 0.663476727571);
+    glVertex2f(4.0280900908864, 0.6789892696743);
+    glVertex2f(4.0420251120882, 0.6927657522559);
+    glVertex2f(4.8403432794202, 1.9394895409054);
+    glVertex2f(4.4378534348221, 1.9394895409054);
+    glVertex2f(4.4198998020627, 1.9384317156367);
+    glVertex2f(4.4045911603994, 1.9360145616899);
+    glVertex2f(4.3885738161615, 1.9331721861983);
+    glVertex2f(4.3715567231259, 1.9295688178316);
+    glVertex2f(4.3540469878585, 1.9245404791226);
+    glVertex2f(4.3387755061092, 1.9205566143184);
+    glVertex2f(4.3254959567619, 1.9185646819163);
+    glVertex2f(4.3102244750125, 1.9099329748405);
+    glVertex2f(4.297708053785, 1.9037193267031);
+    glVertex2f(4.2841806278067, 1.8919955575219);
+    glVertex2f(4.2724568586255, 1.8811736167392);
+    glVertex2f(3.7229425056301, 1.0513470750063);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan v 1
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(3.8700004649691,1.4261076239712);
+        glVertex2f(3.7813149401028,1.2991955797659);
+        glVertex2f(3.6966357298939, 1.9099941968784);
+        glVertex2f(3.6724966317016, 1.9408386001241);
+        glVertex2f(3.7489371093105, 1.9448617831561);
+        glVertex2f(3.8012384887271, 1.9180405629425);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan v 2
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(5.0361571159137, 1.930097990517);
+        glVertex2f(4.9231833775706, 1.9362378676008);
+        glVertex2f(4.1165211705517, 0.68730253212);
+        glVertex2f(4.0331225049526, 0.61031914849);
+        glVertex2f(4.1261440935055, 0.6167344304592);
+        glVertex2f(4.2127504000892, 0.6616414042433);
+    glEnd();
+    glPopMatrix();
+
+    //awal e2
+    glPushMatrix();
+    glTranslated(-1.68,-1.87,0);
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.3119625360849,3.8029520806043);
+        glVertex2f(8.2798210560114,3.6475461179827);
+        glVertex2f(8.275467495114,3.6323086548418);
+        glVertex2f(8.2667603733192,3.6148944112522);
+        glVertex2f(8.2547880808513,3.5963917774382);
+        glVertex2f(8.2417273981591,3.5822427045216);
+        glVertex2f(8.2275783252425,3.5659168511563);
+        glVertex2f(8.2140504577898,3.5511356145234);
+        glVertex2f(8.196927391935,3.5372740850219);
+        glVertex2f(8.1814350942569,3.5242279396087);
+        glVertex2f(8.1610504920488,3.5095510260189);
+        glVertex2f(8.1341428171342,3.4965048806058);
+        glVertex2f(8.1023428376896,3.4916125760758);
+        glVertex2f(7.3857797836057,3.4916125760758);
+        glVertex2f(6.8566379639379,3.4916125760758);
+        glVertex2f(6.9010234859113,3.6595569631829);
+        glVertex2f(6.9081521571827,3.6830309724463);
+        glVertex2f(6.9188717075461,3.7044700731732);
+        glVertex2f(6.9320697412765,3.7241855955235);
+        glVertex2f(6.9495728682287,3.7427826679102);
+        glVertex2f(6.9659820497463,3.7575509312761);
+        glVertex2f(6.9829904329181,3.7715781467228);
+        glVertex2f(7.0043349424555,3.7843444574868);
+        glVertex2f(7.0253866282013,3.7934668546433);
+        glVertex2f(7.0470586323547,3.8002652338142);
+        glVertex2f(7.0738928974172,3.8029520806043);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.3806553913788, 3.4990081757712);
+        glVertex2f(7.3059593201442, 3.3068307106687);
+        glVertex2f(6.7998975915065, 3.3068307106687);
+        glVertex2f(6.8566379639379, 3.4916125760758);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.0040863646547, 3.3068307106687);
+        glVertex2f(7.9510473100623, 3.1168935557095);
+        glVertex2f(7.946425683745, 3.1038776302493);
+        glVertex2f(7.9408623058148, 3.0927170268534);
+        glVertex2f(7.9322634675513, 3.0831627621161);
+        glVertex2f(7.9230276783053, 3.0707422179577);
+        glVertex2f(7.9109256096382, 3.0592771002731);
+        glVertex2f(7.9010528694097, 3.0487674090621);
+        glVertex2f(7.8886323252513, 3.0398500953074);
+        glVertex2f(7.8774856830579, 3.0312512570439);
+        glVertex2f(7.8642773994721, 3.0240420589886);
+        glVertex2f(7.8515277859122, 3.0172119088672);
+        glVertex2f(7.8378674856694, 3.0112924454287);
+        glVertex2f(7.8251178721094, 3.006283668673);
+        glVertex2f(7.8137342885737, 3.0021855786002);
+        glVertex2f(7.8, 3);
+        glVertex2f(7.7868337642469, 2.9980440154411);
+        glVertex2f(7.2554621275863, 2.9980440154411);
+        glVertex2f(6.7158575325943, 2.9980440154411);
+        glVertex2f(6.8087700757935, 3.3068307106687);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.2554621275863, 2.9980440154411);
+        glVertex2f(7.1926071580313, 2.8018161727043);
+        glVertex2f(6.6373577214013, 2.7050250658794);
+        glVertex2f(6.7158575325943, 2.9980440154411);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.1926071580313, 2.8018161727043);
+        glVertex2f(8.0584022950296, 2.8018161727043);
+        glVertex2f(8.02, 2.64);
+        glVertex2f(8.0163137901117, 2.6249235022962);
+        glVertex2f(8.0090344005341, 2.6109470743071);
+        glVertex2f(8.0004353721208, 2.5973772326727);
+        glVertex2f(7.9939897366038, 2.5898120923274);
+        glVertex2f(7.9880652610686, 2.579956967187);
+        glVertex2f(7.9796368820479, 2.5715285881663);
+        glVertex2f(7.9704422867526, 2.5627171010083);
+        glVertex2f(7.9616307995946, 2.5562042626741);
+        glVertex2f(7.9497544473382, 2.5473927755161);
+        glVertex2f(7.94, 2.54);
+        glVertex2f(7.928559740739, 2.5316784422725);
+        glVertex2f(7.9166319326213, 2.5235334625377);
+        glVertex2f(7.9073578209953, 2.516367103554);
+        glVertex2f(7.8955544061985, 2.5075145424564);
+        glVertex2f(7.8845940924587, 2.5045636887572);
+        glVertex2f(7.8723691271335, 2.5016128350581);
+        glVertex2f(7.8597226112799, 2.4973973297735);
+        glVertex2f(7.8453898933124, 2.4957111276597);
+        glVertex2f(7.8285278721742, 2.493181824489);
+        glVertex2f(7.8120874015644, 2.4919171729036);
+        glVertex2f(6.6879643624052, 2.4919171729036);
+        glVertex2f(6.6697295615921, 2.5011059073155);
+        glVertex2f(6.6599321915648, 2.5129658815591);
+        glVertex2f(6.6511661236457, 2.5268884600189);
+        glVertex2f(6.6424000557265, 2.542873642695);
+        glVertex2f(6.6356965920236, 2.5567962211549);
+        glVertex2f(6.631055732537, 2.573297054885);
+        glVertex2f(6.6269305241045, 2.59547005021);
+        glVertex2f(6.6252380409277, 2.6183417371756);
+        glVertex2f(6.6257357536809, 2.6402410983169);
+        glVertex2f(6.6289189626837, 2.6676534201301);
+        glVertex2f(6.6373577214013, 2.7050250658794);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan E pertama
+
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.5,3.8029520806043);
+        glVertex2f(8.4,3.8029520806043);
+        glVertex2f(8.3556903171755,3.6398657051416);
+        glVertex2f(8.4634033595141,3.6398657051416);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.3556903171755,3.6398657051416);
+        glVertex2f(8.4634033595141,3.6398657051416);
+        glVertex2f(8.45, 3.6);
+        glVertex2f(8.4392732163862, 3.5842945683199);
+        glVertex2f(8.4316720944721, 3.5706125488744);
+        glVertex2f(8.4185038100492, 3.5568385750882);
+        glVertex2f(8.4022481071032, 3.5465718153329);
+        glVertex2f(8.3885590940961, 3.5345939289516);
+        glVertex2f(8.3714478278371, 3.5256105141657);
+        glVertex2f(8.3560476882041, 3.5183382260056);
+        glVertex2f(8.3393642036016, 3.5097825928762);
+        glVertex2f(8.3209695923733, 3.5037936496855);
+        glVertex2f(8.3, 3.5);
+        glVertex2f(8.2775841447414, 3.5011165881456);
+        glVertex2f(8.2595157459714, 3.5044017515583);
+        glVertex2f(8.2406928833182, 3.5116702875109);
+        glVertex2f(8.2552705669395, 3.5164194258241);
+        glVertex2f(8.2683662017551, 3.5202102674813);
+        glVertex2f(8.2800833486954, 3.5271027068579);
+        glVertex2f(8.2911112516981, 3.5339951462345);
+        glVertex2f(8.29938217895, 3.5439891833307);
+        glVertex2f(8.3079977281708, 3.5553617083021);
+        glVertex2f(8.3173025213293, 3.5708696968996);
+    glEnd();
+    glPopMatrix();
+
+    //bayang E kedua
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.5550781830823,3.4429844524599);
+        glVertex2f(7.4424029988565,3.4429844524599);
+        glVertex2f(7.4181005081411,3.3612397109628);
+        glVertex2f(7.5307176203868,3.3612397109628);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan E ketiga
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2,3.3068307106687);
+        glVertex2f(8.0883576045314,3.3068307106687);
+        glVertex2f(8.0501503851752,3.1515538840225);
+        glVertex2f(8.158683375938,3.1515538840225);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glVertex2f(8.0501503851752, 3.1515538840225);
+        glVertex2f(8.158683375938, 3.1515538840225);
+        glVertex2f(8.158683375938, 3.1363230876955);
+        glVertex2f(8.1549318005289, 3.1235677313045);
+        glVertex2f(8.1504073398929, 3.109983449976);
+        glVertex2f(8.1427251705216, 3.0979114695353);
+        glVertex2f(8.1347686379584, 3.088583121013);
+        glVertex2f(8.1251659262443, 3.078706046107);
+        glVertex2f(8.1138989752096, 3.0670864829112);
+        glVertex2f(8.1026069733502, 3.0572673508595);
+        glVertex2f(8.0903330582856, 3.0464663056027);
+        glVertex2f(8.0790410564262, 3.036647173551);
+        glVertex2f(8.0618575753358, 3.0268280414994);
+        glVertex2f(8.0466379206557, 3.0189727358581);
+        glVertex2f(8.0289634829627, 3.0135722132296);
+        glVertex2f(8.0053975660388, 3.0052259509857);
+        glVertex2f(7.9376455548823, 3.0076807339986);
+        glVertex2f(7.9532341592745, 3.0148339861589);
+        glVertex2f(7.9689835015054, 3.0251953955213);
+        glVertex2f(7.9810027363658, 3.0368001740072);
+        glVertex2f(7.9946797967242, 3.0513061471146);
+        glVertex2f(8.0066990315845, 3.0645687510985);
+        glVertex2f(8.02, 3.08);
+        glVertex2f(8.0323953268033, 3.0977252610582);
+        glVertex2f(8.0402699979187, 3.111816777791);
+        glVertex2f(8.0456579307872, 3.1321251401414);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan E3
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.4346614079561, 2.9489102143313);
+        glVertex2f(7.3261053035999, 2.9536691311249);
+        glVertex2f(7.2959512295261, 2.8632069089036);
+        glVertex2f(7.4047649780675, 2.8632069089036);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan e terakhir
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.2569004833216,2.7985566375596);
+        glVertex2f(8.1410368546387,2.7985566375596);
+        glVertex2f(8.1060083157346,2.6712413711581);
+        glVertex2f(8.2178301899286,2.662484236432);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glVertex2f(8.1060083157346, 2.6712413711581);
+        glVertex2f(8.2178301899286, 2.662484236432);
+        glVertex2f(8.2119773146279, 2.6385176570862);
+        glVertex2f(8.2051887082181, 2.6222250017027);
+        glVertex2f(8.1977212411673, 2.6066112069602);
+        glVertex2f(8.1875383315526, 2.5876031090128);
+        glVertex2f(8.1766765612969, 2.5726681749112);
+        glVertex2f(8.1644570697593, 2.5611275440145);
+        glVertex2f(8.15, 2.55);
+        glVertex2f(8.1359449228381, 2.5407617247852);
+        glVertex2f(8.1223677100185, 2.5332942577344);
+        glVertex2f(8.1047173333531, 2.5237902087607);
+        glVertex2f(8.0870669566876, 2.5190381842738);
+        glVertex2f(8.0687377193811, 2.5142861597869);
+        glVertex2f(8.0436198756649, 2.5095341353001);
+        glVertex2f(8.0239329170765, 2.511570717223);
+        glVertex2f(8.006961401052, 2.5170016023509);
+        glVertex2f(8.0239329170765, 2.5305788151705);
+        glVertex2f(8.0415832937419, 2.5414405854261);
+        glVertex2f(8.0592336704074, 2.5577332408096);
+        glVertex2f(8.074168604509, 2.5760624781161);
+        glVertex2f(8.0816360715597, 2.5916762728586);
+        glVertex2f(8.0897823992515, 2.6106843708061);
+        glVertex2f(8.0952132843793, 2.6303713293945);
+        glVertex2f(8.1, 2.65);
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+    //awal R
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.0743177440723, 0.6744842117039);
+        glVertex2f(7.0641327770535, 0.6569146611829);
+        glVertex2f(7.0497242608912, 0.6407050805003);
+        glVertex2f(7.0323139705284, 0.626296564338);
+        glVertex2f(7.0101008414449, 0.613689112696);
+        glVertex2f(6.9880239083402, 0.6067068443533);
+        glVertex2f(6.9614720993971, 0.603203026549);
+        glVertex2f(6.517431320735, 0.603203026549);
+        glVertex2f(6.8339824742981, 1.8218551448202);
+        glVertex2f(6.8405126455629, 1.835786176852);
+        glVertex2f(6.8505255748358, 1.8488465193817);
+        glVertex2f(6.8593018261124, 1.8613417729821);
+        glVertex2f(6.8690849629932, 1.8725520498281);
+        glVertex2f(6.8809461845033, 1.8855993934891);
+        glVertex2f(6.8945865892398, 1.9010189814522);
+        glVertex2f(6.9103267906789, 1.9113127368725);
+        glVertex2f(6.9263020966243, 1.9214534517325);
+        glVertex2f(6.9432540067972, 1.9289499535644);
+        glVertex2f(6.9615384863389, 1.9359154695802);
+        glVertex2f(6.98, 1.94);
+        glVertex2f(7.3990463469573, 1.94);
+        glVertex2f(7.1678818620606, 0.998128296237);
+    glEnd();
+    glPopMatrix();
+
+    //R kedua
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.3990463469573, 1.94);
+        glVertex2f(8.2518290018053, 1.94);
+        glVertex2f(8.2666590862535, 1.9370614344032);
+        glVertex2f(8.2803239846101, 1.9322667332254);
+        glVertex2f(8.2927902076723, 1.9253144165177);
+        glVertex2f(8.3070286384043, 1.9158286237498);
+        glVertex2f(8.3191870266595, 1.9056966335371);
+        glVertex2f(8.3326963469431, 1.8928627792677);
+        glVertex2f(8.3431660701629, 1.8773270609416);
+        glVertex2f(8.350933929326, 1.8628045416367);
+        glVertex2f(8.3573508564607, 1.8442292262468);
+        glVertex2f(8.3597149875103, 1.8239652458214);
+        glVertex2f(8.3556621914252, 1.7996484693109);
+        glVertex2f(8.1723842238113, 1.112755253513);
+        glVertex2f(8.1642479318212, 1.0958046452003);
+        glVertex2f(8.1569976521611, 1.0838674955565);
+        glVertex2f(8.147804303098, 1.073360810913);
+        glVertex2f(8.1363126167691, 1.0598991212135);
+        glVertex2f(8.1235075948599, 1.0470940993042);
+        glVertex2f(8.1084753277126, 1.0349618526825);
+        glVertex2f(8.0951465080887, 1.0252272924229);
+        glVertex2f(8.0807451902323, 1.0157543230862);
+        glVertex2f(8.0640306886919, 1.0075795142576);
+        glVertex2f(8.0459184953117, 0.99829120996);
+        glVertex2f(8.0273418867166, 0.9936470578113);
+        glVertex2f(8.0073720324769, 0.9894673208774);
+        glVertex2f(7.9850801021628, 0.9899317360922);
+        glVertex2f(7.9604660957743, 0.9880740752327);
+        glVertex2f(7.9335300133115, 0.9903961513071);
+        glVertex2f(7.9000921178403, 0.9973623795303);
+        glVertex2f(7.3087147471989, 0.998128296237);
+        glVertex2f(7.1678818620606, 0.998128296237);
+    glEnd();
+    glPopMatrix();
+
+    //R terakhir
+    glPushMatrix();
+    glColor3ub(252, 0, 252);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.9000921178403, 0.9973623795303);
+        glVertex2f(8.0714890415766, 0.603203026549);
+        glVertex2f(7.5745906010666, 0.603203026549);
+        glVertex2f(7.5596910984844, 0.6049554976511);
+        glVertex2f(7.5453982573963, 0.6092851487686);
+        glVertex2f(7.5281042156963, 0.6183645206611);
+        glVertex2f(7.5151336844213, 0.6274438925536);
+        glVertex2f(7.5025955041888, 0.6412791259136);
+        glVertex2f(7.4922190791688, 0.6546820082311);
+        glVertex2f(7.4827073562338, 0.6711113478461);
+        glVertex2f(7.4755903802597, 0.6874679714345);
+        glVertex2f(7.35, 0.95);
+        glVertex2f(7.3087147471989, 0.998128296237);
+    glEnd();
+    glPopMatrix();
+
+    //kotak R tengah
+    glPushMatrix();
+    glColor3ub(0,0,0);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.2441890655993,1.3030071674191);
+        glVertex2f(7.6726837432693,1.3030071674191);
+        glVertex2f(7.7612050988359,1.6340000621463);
+        glVertex2f(7.3327104211659,1.6340000621463);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan R dalam
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+    glVertex2f(7.3378420939523,1.3556068134804);
+    glVertex2f(7.4507388952546,1.3556068134804);
+    glVertex2f(7.509753132299,1.5724199887087);
+    glVertex2f(7.3968563309967,1.5724199887087);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan R kanan atas
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.3866835193382, 1.9402644441134);
+        glVertex2f(8.4440671698472, 1.9477492680928);
+        glVertex2f(8.5239052922945, 1.9003453828897);
+        glVertex2f(8.5538445882123, 1.8429617323807);
+        glVertex2f(8.5513496468858, 1.8005477298305);
+        glVertex2f(8.4354934783018,1.8075109462185);
+        glVertex2f(8.4286281768632,1.8830292620439);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glVertex2f(8.5513496468858, 1.8005477298305);
+        glVertex2f(8.3589699855782, 1.0990954635759);
+        glVertex2f(8.2594992216485, 1.0115611913178);
+        glVertex2f(8.1421237202116, 0.9876882079747);
+        glVertex2f(8.2128996056467, 1.0427395104236);
+        glVertex2f(8.2442782417739, 1.0751635054607);
+         glVertex2f(8.4286281768632,1.8830292620439);
+    glEnd();
+    glPopMatrix();
+
+    //bayangan R kanan bawah
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(8.1045655622626,0.9628379174351);
+        glVertex2f(8.0157985796697,0.9318937457021);
+        glVertex2f(8.168547548426,0.60764506635);
+        glVertex2f(8.2693375015592,0.617131179586);
+    glEnd();
+    glPopMatrix();
+
+
+    //bayangan R kiri bawah
+    glPushMatrix();
+    glColor3ub(20, 209, 229);
+    glBegin(GL_POLYGON);
+        glVertex2f(7.2339246534783, 0.9354566005677);
+        glVertex2f(7.2707795772728, 0.9268970635755);
+        glVertex2f(7.3023781736802, 0.8927705794554);
+        glVertex2f(7.3156495841714, 0.8358931059219);
+        glVertex2f(7.2699703327214, 0.6560078697452);
+        glVertex2f(7.241703677253, 0.631687253377);
+        glVertex2f(7.1905171377672, 0.6201290025254);
+        glVertex2f(7.1104349711522, 0.613524287753);
+        glVertex2f(7.150888849133, 0.6630596485458);
+    glEnd();
+    glPopMatrix();
+
+    //////////////////////////////////////
+    glPopMatrix();//penutup seluruhnya
+}
+
+void timer_universal (int t){
+    //gerak--;
+    moven[6]=moven[0]+ moven[4];
+    moven[7]=moven[1]+ moven[4];
+
+    for(int i =0;i<4;i++){
+        kaktuscol[i][4]-=0.2;
+        kaktuscol[i][6] = kaktuscol[i][0] + kaktuscol [i][4];
+        kaktuscol[i][7] = kaktuscol [i][1] + kaktuscol [i][4];
+
+    if (((kaktuscol[i][6]<=moven[6]&&moven[6]<=kaktuscol[i][7])||
+        (kaktuscol[i][6]<=moven[7]&&moven[7]<=kaktuscol[i][7]))&&(ver==kaktuscol[i][5])){
+        //exit(1);
+    }
+    if(kaktuscol[i][4]<=-3){
+        kaktuscol[i][4]=10;
+        }
+    }
+
+    if(scene[1]||scene[2]||scene[3]){
+        //Untuk Menggerakkan blackbird (semua level)
+        for (int i =0;i<1;i++){
+            xx-=1;
+            if(xx<=-40){
+                xx=10;
+            }
+        }
+        //Untuk Menggerakkan Fire ball (semua Level)
+        for (int i =0;i<2;i++){
+            fireball_all[i]-=0.2;
+            if(fireball_all[i]<=-5){
+                fireball_all[i]=70;
+            }
+        }
+        //Untuk Menggerakkan Marka
+        for (int i =0;i<6;i++){
+            marka[i]-=0.2;
+            if(marka[i]<=-2){
+                marka[i]=10;
+            }
+        }
+        //Untuk Menggerakkan cloud di Level 1
+        for (int i =0;i<6;i++){
+            cloudlvl1[i]-=0.2;
+            if(cloudlvl1[i]<=-5.5){
+                cloudlvl1[i]=14;
+            }
+        }
+    }
+
+    if(scene[1]){
+        //Untuk Menggerakkan Rumput di Level 1
+        for (int i =0;i<6;i++){
+            rumputlvl1[i]-=0.2;
+            if(rumputlvl1[i]<=-2.5){
+                rumputlvl1[i]=10;
+            }
+        }
+        //Untuk Menggerakkan batu di Level 1
+        for (int i =0;i<1;i++){
+            stonelvl1-=3;
+            if(stonelvl1<=-200){
+                stonelvl1=30;
+            }
+        }
+        //Untuk Menggerakkan tree di Level 1
+        for (int i =0;i<6;i++){
+            treelvl1[i]-=0.2;
+            if(treelvl1[i]<=-5.5){
+                treelvl1[i]=6;
+            }
+        }
+    }
+
+    if(scene[2]){
+        //Untuk Menggerakkan lamp di level 2
+        for (int i =0;i<=5;i++){
+            lamplvl2[i]-=0.2;
+            if(lamplvl2[i]<=-1){
+                lamplvl2[i]=10;
+            }
+        }
+        //Untuk Menggerakkan got di level 2
+        for (int i =0;i<=2;i++){
+            gotlvl2[i]-=0.2;
+            if(gotlvl2[i]<=-3){
+                gotlvl2[i]=10;
+            }
+        }
+        //Untuk Menggerakkan roadline di level 2
+        for (int i =0;i<=2;i++){
+            roadlinelvl2[i]-=0.2;
+            if(roadlinelvl2[i]<=-3){
+                roadlinelvl2[i]=10;
+            }
+        }
+    }
+
+    if(scene[3]){
+        //Untuk Menggerakkan piramid di level 3
+        for (int i =0;i<=1;i++){
+            piramidlvl3-=0.2;
+            if(piramidlvl3<=-7){
+                piramidlvl3=18;
+            }
+        }
+    }
+    glutPostRedisplay();
+    glutTimerFunc(50,timer_universal,0);
+}
+
+void timer_buildlvl2 (int t){
+    //Untuk Menggerakkan lamp di level 2
+    for (int i =0;i<=1;i++){
+        buildlvl2-=0.2;
+        if(buildlvl2<=-6){
+            buildlvl2=6;
+        }
+    }
+    glutPostRedisplay();
+    glutTimerFunc(100,timer_buildlvl2,0);
+}
+
+void keyboard(int key, int z, int zz){
+    if (scene[0]||scene[5]){
+        switch (key) {                  // key untuk arah panah di ===Background Awal===
+        case GLUT_KEY_UP:
+            if ( ver < 2) {
+            panah[0] += panah[1];
+            ver++;
+            }
+            break;
+        case GLUT_KEY_DOWN:
+            if (ver >= 1){
+            panah[0] -= panah[1];
+            ver--;
+            }
+            break;
+        }
+    }
+    if (scene[1]||scene[2]||scene[3]){
+        switch(key){
+        case GLUT_KEY_RIGHT:
+            moven[4]+=0.2;
+            break;
+        case GLUT_KEY_LEFT:
+            moven[4]-=0.2;
+            break;
+        case GLUT_KEY_UP:
+            if ( ver< 2) {
+            moven[5] +=1.2;
+            ver++;
+            }
+            break;
+        case GLUT_KEY_DOWN:
+            if (ver >= 2){
+            moven[5] -=1.2;
+            ver--;
+            }
+            break;
+        }
+    }
+
+    glutPostRedisplay();
+}
+
+void myKeyboard(unsigned char keyASCII,int z,int zz){
+    switch (keyASCII){
+    case 13:
+        if ( ver>= 2) {
+        scene[5] = false;
+        scene[0] = false;
+        scene[1] = true;
+        }
+        else if ( ver == 1) {
+        scene[5] = false;
+        scene[0] = false;
+        scene[4] = true;
+        }
+        else if ( ver == 0) {
+        exit(1);
+        }
+        return;
+///Case ini digunakan jika colisen belum berhasil
+    case 27:                                //Tekan ESC untuk pindah scene 0
+        if (scene[1]||scene[2]||scene[3]||scene[4]||scene[5]) {
+        scene[5] = false;
+        scene[4] = false;
+        scene[3] = false;
+        scene[2] = false;
+        scene[1] = false;
+        scene[0] = true;
+        }
+        break;
+    case 49:                                //Tekan 1 untuk pindah scene 1
+        if (scene[2]||scene[3]) {
+        scene[3] = false;
+        scene[2] = false;
+        scene[1] = true;
+        }
+        break;
+    case 50:                                //Tekan 2 untuk pindah scene 2
+        if (scene[1]||scene[3]) {
+        scene[3] = false;
+        scene[2] = true;
+        scene[1] = false;
+        }
+        break;
+    case 51:                                //Tekan 3 untuk pindah scene 3
+        if (scene[1]||scene[2]) {
+        scene[3] = true;
+        scene[2] = false;
+        scene[1] = false;
+        }
+        break;
+    case 53:                                //Tekan 3 untuk pindah scene 3
+        if (scene[1]||scene[2]||scene[3]) {
+        scene[5] = true;
+        scene[3] = false;
+        scene[2] = false;
+        scene[1] = false;
+        }
+        break;
+    }
+}
+
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
 
-    level3();
+    if(scene[0]){
+        backgroundawal();
+        glPushMatrix();
+        glTranslated(0,panah[0],0);
+        arahPanah();
+        glPopMatrix();
+    }
+    if(scene[1]){
+        level1();
+        glPushMatrix();
+        glTranslated(moven[4],moven[5],0);
+        quads();
+        glPushMatrix();
+        glScaled(0.07,0.07,0);
+        bodyPosition();
+        glPopMatrix();
+        glColor3f(1,1,1);
+        glPopMatrix();
+    }
+    if(scene[2]){
+        level2();
+        glPushMatrix();
+        glTranslated(moven[4],moven[5],0);
+        quads();
+        glPushMatrix();
+        glScaled(0.07,0.07,0);
+        bodyPosition();
+        glPopMatrix();
+        glColor3f(1,1,1);
+        glPopMatrix();
+    }
+    if (scene[3]){
+        level3();
+        glPushMatrix();
+        glTranslated(moven[4],moven[5],0);
+        quads();
+        glPushMatrix();
+        glScaled(0.07,0.07,0);
+        bodyPosition();
+        glPopMatrix();
+        glColor3f(1,1,1);
+        glPopMatrix();
 
+    }
+    if (scene[4]){
+        backgroundawalAboutDisplay();
+        glPushMatrix();
+        glColor3ub(0,0,0);
+        glTranslated(-2.4,4.5,0);
+        isiAbout(0,0,"1. Firratus Saadah                        182410102004");
+        glPopMatrix();
 
+        glPushMatrix();
+        glTranslated(-2.4,4,0);
+        isiAbout(0,0,"2. Zihan Muhammad Al Ghifari Ibnu Zain    182410102036");
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslated(-2.4,3.5,0);
+        isiAbout(0,0,"3. Mylian Gedhe                           182410102048");
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslated(-2.4,3,0);
+        isiAbout(0,0,"4. Denta Firdaus Fatoni Maulana           182410102056");
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslated(-2.49,0.6,0);
+        hastag(0,0,"#bagikamidesainjugapenting");
+        glPopMatrix();
+    }
+    if (scene[5]){
+        blackScreen();
+        glPushMatrix();
+        glTranslated(2,1,0);
+        glScaled(0.6,1,0);
+        overgame();
+        glPopMatrix();
+        glPushMatrix();
+        glTranslated(0,panah[0],0);
+        arahPanah();
+        glPopMatrix();
+    }
     glFlush();
 
 }
@@ -5323,7 +10005,10 @@ int main(int argc, char* argv[]) {
     glutInitWindowPosition(0,0);
     glutCreateWindow("Project Akhir Lari Dari Kenyataan");
     glutDisplayFunc(display);
+    glutSpecialFunc(keyboard);
+    glutKeyboardFunc(myKeyboard);
     myinit();
-    glutTimerFunc(120,timer,0);
+    glutTimerFunc(50,timer_universal,0);
+    glutTimerFunc(100,timer_buildlvl2,0);
     glutMainLoop();
     return 0; }
