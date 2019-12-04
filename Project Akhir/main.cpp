@@ -18,9 +18,9 @@ float cloudlvl1[]       ={0.0f,2.0f,6.0f,5.0f};
 ///End lvl 1
 ///Start lvl 2
 float   lamplvl2[]        ={0.0f,1.5f,3.0f,6.0f,9.0f,12.0f,15.0f};
-float   gotlvl2[]         ={9.0f,5.0f};
-double  buildlvl2         = -2;
+float   gotlvl2[]         ={1.2f,5.2f};
 float roadlinelvl2[]      ={-2.5f,-1.5f,-0.5f,1.5f,2.5f,3.5f,4.5f};
+double  buildlvl2         = {-2};
 ///End lvl 2
 ///Start lvl 3
 double piramidlvl3      =0;
@@ -9118,12 +9118,6 @@ void level3(){
     stone();
     glPopMatrix();
 
-    glPushMatrix();
-    glTranslated(10,0,0);
-    glScaled(0.04,0.08,0);
-    stone();
-    glPopMatrix();
-
     kaktusposition();
 
     fireball();
@@ -11990,13 +11984,11 @@ void timer_universal (int t){
         ver=2;
     }
     //Untuk pindah scene game over jika heart sudah tidak ada
-    if (heartStatus_bar==0){
+    if ((scene[1]||scene[2]||scene[3])&&heartStatus_bar==0){
         scene[1]=false;
         scene[2]=false;
         scene[3]=false;
         scene[5]=true;
-        heartStatus_bar=3;
-        ver=2;
     }
 
     if(scene[1]||scene[2]||scene[3]){
@@ -12079,14 +12071,14 @@ void timer_universal (int t){
         //Untuk Menggerakkan got di level 2
         for (int i =0;i<=2;i++){
             gotlvl2[i]-=0.2;
-            if(gotlvl2[i]<=-3){
+            if(gotlvl2[i]<=-4){
                 gotlvl2[i]=10;
             }
-            if(ver==2&&moven[4]>=gotlvl2[0]+0.5){
+            if(ver==2&&moven[4]>=gotlvl2[0]+0.2){
                 heartStatus_bar-=1;
                 gotlvl2[i]=70;
             }
-            if(ver==1&&moven[4]>=gotlvl2[1]+0.5){
+            if(ver==1&&moven[4]>=gotlvl2[1]+0.2){
                 heartStatus_bar-=1;
                 gotlvl2[i]=30;
             }
@@ -12208,6 +12200,7 @@ void myKeyboard(unsigned char keyASCII,int z,int zz){
         fireballStatus_bar=0;
         moven[4]=0.0f;
         moven[5]=1.0f;
+        ver=2;
 
         }
         if ( ver == 1) {
@@ -12215,6 +12208,10 @@ void myKeyboard(unsigned char keyASCII,int z,int zz){
         scene[5] = false;
         scene[0] = false;
         scene[4] = true;
+        fireballStatus_bar=0;
+        moven[4]=0.0f;
+        moven[5]=1.0f;
+        ver=2;
         }
         if ( ver == 0) {
         exit(1);
@@ -12229,7 +12226,10 @@ void myKeyboard(unsigned char keyASCII,int z,int zz){
         scene[2] = false;
         scene[1] = false;
         scene[0] = true;
+        moven[4]=0.0f;
+        moven[5]=1.0f;
         ver=2;
+        panah[0]=0.0;
         }
         break;
     case 49:    //1                                //Tekan 1 untuk pindah scene 1 (lvl1)
